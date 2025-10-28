@@ -63,5 +63,5 @@ public interface PsicologoRepository extends CrudRepository<Psicologo, Integer> 
      *
      * @return una lista de psicólogos con historiales clínicos; si no hay coincidencias, la lista estará vacía.
      */
-    List<Psicologo> findByHistorialesClinicoIsNotEmpty();
+    //List<Psicologo> findByHistorialesClinicoIsNotEmpty();
 }

@@ -33,9 +33,9 @@ public class HistorialClinico {
     @JoinColumn(name = "id")
     private Paciente paciente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "psicologo_id")
-    private Psicologo psicologo;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "psicologo_id")
+    //private Psicologo psicologo;
     
     private String observaciones;
 

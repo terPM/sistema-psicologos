@@ -34,7 +34,7 @@ public interface HistorialClinicoRepository extends CrudRepository<HistorialClin
      * @param psicologo el psicólogo del cual se buscan los historiales; no debe ser {@code null}.
      * @return una lista de historiales clínicos; si no hay coincidencias, la lista estará vacía.
      */
-    List<HistorialClinico> findByPsicologo(Psicologo psicologo);
+    //List<HistorialClinico> findByPsicologo(Psicologo psicologo);
 
     /**
      * Encuentra historiales clínicos filtrados por el estado de consentimiento y psicólogo asignado.
@@ -43,5 +43,5 @@ public interface HistorialClinicoRepository extends CrudRepository<HistorialClin
      * @param psicologo el psicólogo asignado; no debe ser {@code null}.
      * @return una lista de historiales clínicos que cumplen con los criterios; si no hay coincidencias, la lista estará vacía.
      */
-    List<HistorialClinico> findByConsentimientoAceptadoAndPsicologo(boolean consentimientoAceptado, Psicologo psicologo);
+    //List<HistorialClinico> findByConsentimientoAceptadoAndPsicologo(boolean consentimientoAceptado, Psicologo psicologo);
 }

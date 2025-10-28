@@ -35,6 +35,6 @@ public class Psicologo {
     private List<Paciente> pacientes;
 
     // Relación: Psicologo accede 1 <--> 1...* HistorialClinico
-    @OneToMany(mappedBy = "psicologo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<HistorialClinico> historialesClinico;
+    /*@OneToMany(mappedBy = "psicologo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<HistorialClinico> historialesClinico;*/
 }
