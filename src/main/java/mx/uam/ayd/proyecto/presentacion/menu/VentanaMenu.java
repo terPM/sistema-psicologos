@@ -1,8 +1,10 @@
 package mx.uam.ayd.proyecto.presentacion.menu;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TextArea;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,9 @@ public class VentanaMenu {
     private Stage stage;
     private ControlMenu control;
     private boolean initialized = false;
+
+    @FXML
+    private TextArea avisoDisplayArea;
 
     /**
      * Constructor vacío requerido por Spring y JavaFX.
@@ -97,6 +102,10 @@ public class VentanaMenu {
         
         initializeUI();
         stage.show();
+
+        if (control != null) {
+            control.actualizarDisplayAviso();
+        }
     }
     
     /**
@@ -141,6 +150,40 @@ public class VentanaMenu {
     private void handleListarPsicologo() {
         if (control != null) {
             control.listarPsicologo();
+        }
+    }
+    
+    /**
+     * Acción del botón "Publicar Aviso".
+     * Abre una nueva ventana para que el administrador pueda escribir y publicar un aviso.
+     */
+    @FXML
+    void handlePublicarAviso(ActionEvent event) {
+         if (control != null) {
+            control.publicar();
+        }
+    }
+
+        
+    /**
+     * Acción del botón "Lista de Avisos".
+     * Abre una nueva ventana para que el administrador pueda ver la lista de avisos.
+     */
+    @FXML
+    void handleListaAvisos(ActionEvent event) {
+         if (control != null) {
+            control.listaAvisos();
+        }
+    }
+
+    /**
+     * Actualiza el contenido del TextArea de avisos.
+     * Este método es llamado por ControlMenu.
+     * * @param texto El contenido formateado del aviso.
+     */
+    public void actualizarAviso(String texto) { 
+        if (avisoDisplayArea != null) {
+            avisoDisplayArea.setText(texto);
         }
     }
     

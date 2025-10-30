@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="300.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label layoutX="30.0" layoutY="25.0" text="Publicar Nuevo Aviso">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            
+            <Label layoutX="30.0" layoutY="60.0" text="Escriba el contenido del aviso:" />
+            
+            <TextArea fx:id="textAreaAviso" layoutX="30.0" layoutY="85.0" prefHeight="150.0" prefWidth="340.0" wrapText="true" />
+            
+            <Button fx:id="btnCancelar" layoutX="220.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="25.0" prefWidth="70.0" text="Cancelar" />
+            
+            <Button fx:id="btnPublicar" layoutX="300.0" layoutY="250.0" mnemonicParsing="false" onAction="#handlePublicar" prefHeight="25.0" prefWidth="70.0" style="-fx-font-weight: bold;" text="Publicar" />
+         </children>
+    </AnchorPane>
+  </children>
+</VBox>

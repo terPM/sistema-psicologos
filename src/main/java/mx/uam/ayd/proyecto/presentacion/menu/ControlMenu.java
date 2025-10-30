@@ -1,13 +1,17 @@
 package mx.uam.ayd.proyecto.presentacion.menu;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import mx.uam.ayd.proyecto.presentacion.listarpacientes.ControlListarPacientes;
+import jakarta.annotation.PostConstruct;
+import mx.uam.ayd.proyecto.negocio.ServicioAviso;
+import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
+import mx.uam.ayd.proyecto.presentacion.agregarPaciente.ControlAgregarPaciente;
 import mx.uam.ayd.proyecto.presentacion.agregarPsicologo.ControlAgregarPsicologo;
 import mx.uam.ayd.proyecto.presentacion.listarPsicologo.ControlListarPsicologo;
-import mx.uam.ayd.proyecto.presentacion.agregarPaciente.ControlAgregarPaciente;
+import mx.uam.ayd.proyecto.presentacion.listarpacientes.ControlListarPacientes;
+import mx.uam.ayd.proyecto.presentacion.publicarAviso.ControlPublicarAviso;
+import mx.uam.ayd.proyecto.presentacion.listaAvisos.ControlListaAvisos;
 
 /**
  * Controlador principal del menú de la aplicación.
@@ -37,6 +41,11 @@ public class ControlMenu {
     private final ControlAgregarPaciente controlAgregarPaciente;
     private final ControlAgregarPsicologo controlAgregarPsicologo;
     private final ControlListarPsicologo controlListarPsicologo;
+    private final ControlPublicarAviso controlPublicarAviso;
+    private final ControlListaAvisos controlListaAvisos;
+
+    private final ServicioAviso servicioAviso;
+    
     
     /**
      * Constructor que inyecta todas las dependencias necesarias para gestionar las opciones del menú.
@@ -46,6 +55,7 @@ public class ControlMenu {
      * @param controlAgregarPsicologo controlador para la funcionalidad de agregar psicólogos
      * @param controlListarPsicologo controlador para la funcionalidad de listar psicólogos
      * @param controlAgregarPaciente controlador para la funcionalidad de agregar pacientes
+     * @param controlPublicarAviso controlador para la funcionalidad de publicar avisos
      */
     @Autowired
     public ControlMenu(
@@ -53,13 +63,19 @@ public class ControlMenu {
             ControlListarPacientes controlListarPacientes,
             ControlAgregarPsicologo controlAgregarPsicologo,
             ControlListarPsicologo controlListarPsicologo,
-            ControlAgregarPaciente controlAgregarPaciente
+            ControlAgregarPaciente controlAgregarPaciente,
+            ControlPublicarAviso controlPublicarAviso,
+            ServicioAviso servicioAviso,
+            ControlListaAvisos controlListaAvisos
         ) {
         this.ventana = ventana;
         this.controlListarPacientes = controlListarPacientes;
         this.controlAgregarPsicologo = controlAgregarPsicologo;
         this.controlListarPsicologo = controlListarPsicologo;
         this.controlAgregarPaciente = controlAgregarPaciente;
+        this.controlPublicarAviso = controlPublicarAviso;
+        this.servicioAviso = servicioAviso;
+        this.controlListaAvisos = controlListaAvisos;
     }
     
     /**
@@ -105,7 +121,29 @@ public class ControlMenu {
     public void listarPsicologo() {
         controlListarPsicologo.inicia();
     }
+
+    public void publicar() {
+        controlPublicarAviso.inicia(this);
+    }
     
+    public void actualizarDisplayAviso() { 
+        Aviso ultimoAviso = servicioAviso.obtenerUltimoAviso();
+        
+        String textoAviso = "Aún no hay avisos publicados.";
+        
+        if (ultimoAviso != null) {
+            textoAviso = "Publicado el: " + ultimoAviso.getFecha().toString() + "\n\n" 
+                       + ultimoAviso.getContenido();
+        }
+        
+        // Llama al método en la ventana para actualizar el texto
+        ventana.actualizarAviso(textoAviso);
+    }
+
+    public void listaAvisos() {
+        controlListaAvisos.inicia();
+    }
+
     /**
      * Finaliza la ejecución de la aplicación.
      */
