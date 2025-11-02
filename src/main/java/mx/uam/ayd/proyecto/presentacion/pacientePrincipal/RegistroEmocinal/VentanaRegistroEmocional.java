@@ -56,6 +56,7 @@ public class VentanaRegistroEmocional {
 
                 stage = new Stage();
                 stage.setTitle("Registro Emocional");
+                stage.setResizable(false); //TAMAÑO ESTATICO 
                 stage.setScene(new Scene(root));
                 stage.initModality(Modality.APPLICATION_MODAL);
             }

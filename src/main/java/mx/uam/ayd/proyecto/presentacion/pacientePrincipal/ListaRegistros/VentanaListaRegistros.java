@@ -42,6 +42,7 @@ public class VentanaListaRegistros {
 
                 stage = new Stage();
                 stage.setTitle("Historial de Registros");
+                stage.setResizable(false);//TAMAÑO ESTATICO 
                 stage.setScene(new Scene(root));
                 stage.initModality(Modality.APPLICATION_MODAL);
             }

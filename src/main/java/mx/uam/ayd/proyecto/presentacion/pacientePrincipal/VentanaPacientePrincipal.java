@@ -31,16 +31,12 @@ public class VentanaPacientePrincipal {
         try {
             stage = new Stage();
             stage.setTitle("Menú Principal - Paciente");
-
+            stage.setResizable(false);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventanaPacientePrincipal.fxml"));
-
             loader.setController(this);
-
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
-
             stage.setOnCloseRequest(e -> Platform.exit());
-
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,6 +81,13 @@ public class VentanaPacientePrincipal {
     private void handleListaRegistros() {
         if (controlador != null) {
             controlador.iniciarListaRegistros();
+        }
+    }
+
+    @FXML // ❗ Debe coincidir con onAction="#handleLineaCaptura" en el FXML
+    private void handleLineaCaptura() {
+        if (controlador != null) {
+            controlador.iniciarLineaCaptura();
         }
     }
 }

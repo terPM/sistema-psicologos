@@ -80,7 +80,7 @@ public class ControlPrincipalCentro {
             case "Paciente":
                 if (USER_PACIENTE.equals(usuario) && PASS_PACIENTE.equals(contrasena)) {
                     autenticado = true;
-                    mostrarSistemaPrincipalPaciente();
+                    mostrarSistemaPrincipalPaciente(usuario);
                 }
                 break;
             default:
@@ -104,8 +104,8 @@ public class ControlPrincipalCentro {
         controlMenuAdmin.inicia();
     }
 
-    public void mostrarSistemaPrincipalPaciente() {
+    public void mostrarSistemaPrincipalPaciente(String nombreDeUsuario) {
         ventanaLogin.cerrarLogin();
-        controlPaciente.inicia();
+        controlPaciente.inicia(nombreDeUsuario);
     }
 }

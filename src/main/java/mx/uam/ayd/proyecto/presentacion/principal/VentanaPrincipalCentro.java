@@ -73,7 +73,7 @@ public class VentanaPrincipalCentro { // CORRECCIÓN 2: Clase renombrada
         try {
             stage = new Stage();
             stage.setTitle("Login - Centro Psicológico TechSolutions");
-
+            stage.setResizable(false);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventanaLogin.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 640, 420);
