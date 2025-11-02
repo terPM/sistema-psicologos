@@ -13,6 +13,7 @@ import mx.uam.ayd.proyecto.presentacion.listarpacientes.ControlListarPacientes;
 import mx.uam.ayd.proyecto.presentacion.publicarAviso.ControlPublicarAviso;
 import mx.uam.ayd.proyecto.presentacion.listaAvisos.ControlListaAvisos;
 
+
 /**
  * Controlador principal del menú de la aplicación.
  * 
@@ -44,6 +45,7 @@ public class ControlMenu {
     private final ControlPublicarAviso controlPublicarAviso;
     private final ControlListaAvisos controlListaAvisos;
 
+
     private final ServicioAviso servicioAviso;
     
     
@@ -67,6 +69,7 @@ public class ControlMenu {
             ControlPublicarAviso controlPublicarAviso,
             ServicioAviso servicioAviso,
             ControlListaAvisos controlListaAvisos
+
         ) {
         this.ventana = ventana;
         this.controlListarPacientes = controlListarPacientes;
@@ -76,6 +79,7 @@ public class ControlMenu {
         this.controlPublicarAviso = controlPublicarAviso;
         this.servicioAviso = servicioAviso;
         this.controlListaAvisos = controlListaAvisos;
+
     }
     
     /**
@@ -125,7 +129,9 @@ public class ControlMenu {
     public void publicar() {
         controlPublicarAviso.inicia(this);
     }
-    
+
+
+
     public void actualizarDisplayAviso() { 
         Aviso ultimoAviso = servicioAviso.obtenerUltimoAviso();
         

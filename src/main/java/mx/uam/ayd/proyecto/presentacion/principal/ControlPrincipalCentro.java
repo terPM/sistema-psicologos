@@ -1,104 +1,111 @@
-package mx.uam.ayd.proyecto.presentacion.principal;
+package mx.uam.ayd.proyecto.presentacion.principal; // Paquete correcto
+
 import mx.uam.ayd.proyecto.presentacion.menu.ControlMenu;
+import mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ControlPsicologo;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ControlPaciente;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * Controlador principal del flujo de inicio de sesión (login) 
- * del sistema del Centro Psicológico.
- * 
- * <p>Esta clase se encarga de:</p>
- * <ul>
- *   <li>Inicializar y mostrar la ventana de login.</li>
- *   <li>Recibir las credenciales ingresadas por el usuario.</li>
- *   <li>Validar la entrada de usuario y contraseña.</li>
- *   <li>Autenticar contra las credenciales definidas para el sistema.</li>
- *   <li>Redirigir al menú principal ({@link ControlMenu}) en caso de autenticación exitosa.</li>
- * </ul>
- * 
- * <p>Actualmente, la autenticación es básica y se realiza contra credenciales 
- * definidas en código:
- * <pre>
- * Usuario: Admin
- * Contraseña: admin1234
- * </pre>
- * </p>
- * 
- * <p>En futuras versiones se podría integrar con un servicio de usuarios
- * para autenticar contra una base de datos.</p>
- * 
- * @author 
- */
 @Component
 public class ControlPrincipalCentro {
 
+    // --- Credenciales de prueba ---
+    private static final String USER_PSICOLOGO = "psicologo";
+    private static final String PASS_PSICOLOGO = "psi1234";
+    private static final String USER_ADMIN = "admin";
+    private static final String PASS_ADMIN = "admin1234";
+    private static final String USER_PACIENTE = "paciente";
+    private static final String PASS_PACIENTE = "pa1234";
+    // ----------------------------
+
+    // Usa la clase de Ventana renombrada
     private final VentanaPrincipalCentro ventanaLogin;
-    private final ControlMenu controlMenu;
-    
-    /**
-     * Constructor con inyección de dependencias.
-     *
-     * @param ventanaLogin instancia de {@link VentanaPrincipalCentro}
-     * @param controlMenu instancia de {@link ControlMenu}
-     */
+
+    // ControlMenu (el menú completo) ahora es solo para el Administrador
+    private final ControlMenu controlMenuAdmin;
+
+    // Controladores de flujos únicos
+    private final ControlPsicologo controlPsicologo;
+    private final ControlPaciente controlPaciente;
+
     @Autowired
-    public ControlPrincipalCentro(VentanaPrincipalCentro ventanaLogin, ControlMenu controlMenu) {
+    public ControlPrincipalCentro(
+            VentanaPrincipalCentro ventanaLogin, // Constructor usa clase renombrada
+            ControlMenu controlMenuAdmin,
+            ControlPsicologo controlPsicologo,
+            ControlPaciente controlPaciente
+    ) {
         this.ventanaLogin = ventanaLogin;
-        this.controlMenu = controlMenu;
+        this.controlMenuAdmin = controlMenuAdmin;
+        this.controlPsicologo = controlPsicologo;
+        this.controlPaciente = controlPaciente;
     }
-    
-    /**
-     * Inicializa la conexión entre este controlador y la ventana de login.
-     * Este método se ejecuta automáticamente después de que el bean es construido.
-     */
+
     @PostConstruct
     public void init() {
-        ventanaLogin.setControlPrincipalCentro(this);
+        // CORRECCIÓN: Llama al método renombrado en la ventana
+        ventanaLogin.setControlLoginPrincipal(this);
     }
-    
-    /**
-     * Inicia el flujo de la ventana de login
-     */
+
     public void inicia() {
         ventanaLogin.muestra();
     }
-    
-    /**
-     * Autentica las credenciales del usuario
-     * 
-     * @param usuario nombre de usuario
-     * @param contrasena contraseña
-     */
-    public void autenticar(String usuario, String contrasena) {
-        // Validación de campos vacíos
-        if (usuario == null || usuario.trim().isEmpty()) {
-            ventanaLogin.mostrarError("Por favor ingrese un usuario");
+
+    public void autenticar(String rol, String usuario, String contrasena) {
+
+        if (usuario == null || usuario.trim().isEmpty() ||
+                contrasena == null || contrasena.trim().isEmpty() ||
+                rol == null || rol.trim().isEmpty()) {
+            ventanaLogin.mostrarError("Por favor ingrese usuario, contraseña y seleccione un rol.");
             return;
         }
-        
-        if (contrasena == null || contrasena.trim().isEmpty()) {
-            ventanaLogin.mostrarError("Por favor ingrese una contraseña");
-            return;
+
+        boolean autenticado = false;
+
+        switch (rol) {
+            case "Psicólogo":
+                if (USER_PSICOLOGO.equals(usuario) && PASS_PSICOLOGO.equals(contrasena)) {
+                    autenticado = true;
+                    mostrarSistemaPrincipalPsicologo();
+                }
+                break;
+            case "Administrador":
+                if (USER_ADMIN.equals(usuario) && PASS_ADMIN.equals(contrasena)) {
+                    autenticado = true;
+                    mostrarSistemaPrincipalAdministrativo();
+                }
+                break;
+            case "Paciente":
+                if (USER_PACIENTE.equals(usuario) && PASS_PACIENTE.equals(contrasena)) {
+                    autenticado = true;
+                    mostrarSistemaPrincipalPaciente();
+                }
+                break;
+            default:
+                ventanaLogin.mostrarError("Rol seleccionado no válido.");
+                return;
         }
-        
-        // Autenticación para el centro psicológico
-        if ("Admin".equals(usuario) && "admin1234".equals(contrasena)) {
-            ventanaLogin.cerrarLogin();
-            mostrarSistemaPrincipal();
-        } else {
-            ventanaLogin.mostrarError("Usuario o contraseña incorrectos");
+
+        if (!autenticado) {
+            ventanaLogin.mostrarError("Credenciales incorrectas para el rol seleccionado.");
         }
     }
-    
-    /**
-     * Muestra el sistema principal después de un login exitoso.
-     * Este método cierra la ventana de login y delega la ejecución 
-     * del menú principal al {@link ControlMenu}.
-     */
-    private void mostrarSistemaPrincipal() {
+
+    public void mostrarSistemaPrincipalPsicologo() {
         ventanaLogin.cerrarLogin();
-        controlMenu.inicia();
+        controlPsicologo.inicia();
+    }
+
+    public void mostrarSistemaPrincipalAdministrativo() {
+        ventanaLogin.cerrarLogin();
+        // El Administrador es el ÚNICO que ve el menú completo (ControlMenu)
+        controlMenuAdmin.inicia();
+    }
+
+    public void mostrarSistemaPrincipalPaciente() {
+        ventanaLogin.cerrarLogin();
+        controlPaciente.inicia();
     }
 }

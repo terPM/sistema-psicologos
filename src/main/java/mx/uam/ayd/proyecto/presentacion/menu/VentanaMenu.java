@@ -176,6 +176,7 @@ public class VentanaMenu {
         }
     }
 
+
     /**
      * Actualiza el contenido del TextArea de avisos.
      * Este método es llamado por ControlMenu.

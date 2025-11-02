@@ -14,21 +14,21 @@ import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
 
 
 /**
- * 
- * Clase principal que arranca la aplicación 
- * construida usando el principio de 
+ * * Clase principal que arranca la aplicación
+ * construida usando el principio de
  * inversión de control
  * Adaptada para usar JavaFX
- * 
- * @author Humberto Cervantes (c) 21 Nov 2022
+ * * @author Humberto Cervantes (c) 21 Nov 2022
  */
 @SpringBootApplication
 public class ProyectoApplication {
 
+    // CORRECCIÓN 2: Usa la clase renombrada
     private final ControlPrincipalCentro controlPrincipalCentro;
-    
+
     @Autowired
     public ProyectoApplication(
+            // CORRECCIÓN 3: Usa la clase renombrada en el constructor
             ControlPrincipalCentro controlPrincipalCentro,
             PsicologoRepository psicologoRepository) {
         this.controlPrincipalCentro = controlPrincipalCentro;
@@ -43,14 +43,14 @@ public class ProyectoApplication {
         // Launch JavaFX application
         Application.launch(JavaFXApplication.class, args);
     }
-    
+
     /**
      * Clase interna para manejar la inicialización de JavaFX
      */
     public static class JavaFXApplication extends Application {
-        
+
         private static ConfigurableApplicationContext applicationContext;
-        
+
         @Override
         public void init() throws Exception {
             // Create Spring application context
@@ -58,7 +58,7 @@ public class ProyectoApplication {
             builder.headless(false);
             applicationContext = builder.run(getParameters().getRaw().toArray(new String[0]));
         }
-        
+
         @Override
         public void start(Stage primaryStage) {
             // Initialize the application on the JavaFX thread
@@ -66,25 +66,26 @@ public class ProyectoApplication {
                 applicationContext.getBean(ProyectoApplication.class).inicia();
             });
         }
-        
+
         @Override
         public void stop() throws Exception {
             applicationContext.close();
             Platform.exit();
         }
     }
-    
+
     /**
      * Metodo que arranca la aplicacion
      * inicializa la bd y arranca los controladores
      */
     public void inicia() {
-        
+
         // Make sure controllers are created on JavaFX thread
         Platform.runLater(() -> {
             // Nuestro proyecto arranca con loggin
-            controlPrincipalCentro.inicia();      
-            
+            // CORRECCIÓN 4: El nombre del atributo ya usa la clase renombrada
+            controlPrincipalCentro.inicia();
+
             // Se comenta el del profe
             // controlPrincipal.inicia();
         });

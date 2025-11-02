@@ -1,4 +1,4 @@
-package mx.uam.ayd.proyecto.presentacion.principal;
+package mx.uam.ayd.proyecto.presentacion.principal; // CORRECCIÓN 1: Paquete renombrado
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,55 +10,41 @@ import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 import javafx.scene.control.PasswordField;
-
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 
-/**
- * Ventana de login para el Centro Psicológico.
- * 
- * <p>Esta clase representa la interfaz gráfica de autenticación
- * inicial del sistema. Sus responsabilidades incluyen:</p>
- * <ul>
- *   <li>Mostrar el formulario de ingreso de credenciales.</li>
- *   <li>Gestionar la visibilidad de la contraseña (modo oculto/visible).</li>
- *   <li>Delegar la validación y autenticación de credenciales al 
- *       {@link ControlPrincipalCentro}.</li>
- *   <li>Mostrar mensajes de error cuando las credenciales no son válidas.</li>
- * </ul>
- * 
- * <p>La ventana está construida con JavaFX y vinculada a un archivo
- * FXML para su diseño visual.</p>
- * 
- * @author 
- */
 @Component
-public class VentanaPrincipalCentro {
+public class VentanaPrincipalCentro { // CORRECCIÓN 2: Clase renombrada
 
-    @FXML
-    private TextField textFieldUsuario;
-    
+    @FXML private TextField textFieldUsuario;
     @FXML private PasswordField passwordFieldOculto;
     @FXML private TextField passwordFieldVisible;
     @FXML private Button btnTogglePassword;
-    private boolean mostrando = false;
+    @FXML private ComboBox<String> miComboBox;
 
-    /**
-     * Inicializa la lógica de sincronización entre el campo de contraseña visible
-     * y el campo oculto. Este método es invocado automáticamente por JavaFX
-     * después de cargar el FXML.
-     */
+    private boolean mostrando = false;
+    private Stage stage;
+    private ControlPrincipalCentro control; // Referencia al controlador renombrado
+    private boolean initialized = false;
+
     @FXML
     private void initialize() {
         // Sincroniza ambos campos para que siempre tengan el mismo texto
         if (passwordFieldVisible != null && passwordFieldOculto != null) {
             passwordFieldVisible.textProperty().bindBidirectional(passwordFieldOculto.textProperty());
         }
+
+        // Llenar el ComboBox con los roles: CAMBIADO A PACIENTE
+        if (miComboBox != null) {
+            miComboBox.getItems().clear();
+            miComboBox.getItems().addAll("Psicólogo", "Administrador", "Paciente");
+            miComboBox.getSelectionModel().selectFirst();
+        }
     }
 
     /**
-     * Alterna la visibilidad de la contraseña entre modo oculto y texto plano.
+     * Alterna la visibilidad de la contraseña.
      */
-    // Ncesitamos manejar el cambio entre una version y otra
     @FXML
     private void togglePasswordVisibility() {
         mostrando = !mostrando;
@@ -67,49 +53,35 @@ public class VentanaPrincipalCentro {
         passwordFieldOculto.setVisible(!mostrando);
         passwordFieldOculto.setManaged(!mostrando);
         if (btnTogglePassword != null) {
-            // No puede procesar emoji por eso usamos prefijo
             btnTogglePassword.setText(mostrando ? "O" : "V");
         }
     }
 
-    private Stage stage;
-    private ControlPrincipalCentro control;
-    private boolean initialized = false;
-
     /**
-     * Constructor por defecto.  
-     * No inicializa la interfaz hasta que se invoque {@link #muestra()}.
-     */
-    public VentanaPrincipalCentro() {
-        // Constructor vacío
-    }
-
-    /**
-     * Inicializa la interfaz gráfica de la ventana en el hilo de aplicación JavaFX.
-     * Carga el archivo FXML y configura el {@link Stage}.
+     * Inicializa la interfaz gráfica de la ventana. (MÉTODO RESTAURADO)
      */
     private void initializeUI() {
         if (initialized) {
             return;
         }
-        
+
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::initializeUI);
             return;
         }
-        
+
         try {
             stage = new Stage();
             stage.setTitle("Login - Centro Psicológico TechSolutions");
-            
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventanaLogin.fxml"));
             loader.setController(this);
-            Scene scene = new Scene(loader.load(), 640, 400);
+            Scene scene = new Scene(loader.load(), 640, 420);
             stage.setScene(scene);
-            
+
             // Cerrar aplicación al cerrar ventana de login
             stage.setOnCloseRequest(e -> Platform.exit());
-            
+
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,46 +89,41 @@ public class VentanaPrincipalCentro {
     }
 
     /**
-     * Establece el controlador para esta ventana
-     * 
-     * @param control el controlador principal del centro
+     * Establece el controlador para esta ventana. (MÉTODO CORREGIDO)
      */
-    public void setControlPrincipalCentro(ControlPrincipalCentro control) {
+    public void setControlLoginPrincipal(ControlPrincipalCentro control) {
         this.control = control;
     }
 
     /**
-     * Muestra la ventana de login.
-     * Si la interfaz no está inicializada, la carga antes de mostrarla.
+     * Muestra la ventana de login. (MÉTODO RESTAURADO)
      */
     public void muestra() {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> this.muestra());
             return;
         }
-        
+
         initializeUI();
         stage.show();
     }
 
     /**
-     * Maneja el evento del botón "Ingresar".
-     * Recupera las credenciales y las envía al controlador para su autenticación.
+     * Maneja el evento del botón "Ingresar". (MÉTODO RESTAURADO)
      */
     @FXML
     private void handleIngresar() {
         String usuario = textFieldUsuario.getText();
         String contrasena = passwordFieldOculto.getText();
-        
+        String rol = miComboBox.getValue();
+
         if (control != null) {
-            control.autenticar(usuario, contrasena);
+            control.autenticar(rol, usuario, contrasena);
         }
     }
 
     /**
-     * Muestra un mensaje de error en una ventana de diálogo
-     * 
-     * @param mensaje el mensaje de error a mostrar
+     * Muestra un mensaje de error en una ventana de diálogo. (MÉTODO RESTAURADO)
      */
     public void mostrarError(String mensaje) {
         Platform.runLater(() -> {
@@ -169,7 +136,7 @@ public class VentanaPrincipalCentro {
     }
 
     /**
-     * Cierra la ventana de login
+     * Cierra la ventana de login. (MÉTODO RESTAURADO)
      */
     public void cerrarLogin() {
         if (stage != null) {
