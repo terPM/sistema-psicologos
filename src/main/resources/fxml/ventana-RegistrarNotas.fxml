@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.psicologos.controller.RegistrarNotasController"
+      alignment="TOP_CENTER" spacing="15">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Registrar Notas del Paciente">
+        <font>
+            <Font size="20"/>
+        </font>
+    </Label>
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" minWidth="120"/>
+            <ColumnConstraints halignment="LEFT" minWidth="200"/>
+        </columnConstraints>
+
+        <!-- Paciente -->
+        <Label text="Paciente:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="comboPaciente" promptText="Seleccione un paciente"
+                  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <!-- Fecha -->
+        <Label text="Fecha:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtFecha" promptText="DD/MM/AAAA"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Nota -->
+        <Label text="Nota o comentario:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextArea fx:id="txtNota" prefRowCount="5" wrapText="true"
+                  promptText="Escriba aquí las observaciones o notas de la sesión..."
+                  GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <!-- Botones -->
+    <HBox spacing="10" alignment="CENTER">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+        <Button fx:id="btnGuardar" text="Guardar" onAction="#guardarNota"/>
+        <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelarAccion"/>
+    </HBox>
+
+</VBox>
