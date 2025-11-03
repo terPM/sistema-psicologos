@@ -12,6 +12,9 @@ import mx.uam.ayd.proyecto.presentacion.listarPsicologo.ControlListarPsicologo;
 import mx.uam.ayd.proyecto.presentacion.listarpacientes.ControlListarPacientes;
 import mx.uam.ayd.proyecto.presentacion.publicarAviso.ControlPublicarAviso;
 import mx.uam.ayd.proyecto.presentacion.listaAvisos.ControlListaAvisos;
+import mx.uam.ayd.proyecto.presentacion.registrarNotas.ControlRegistrarNotas;
+
+
 
 
 /**
@@ -45,10 +48,12 @@ public class ControlMenu {
     private final ControlPublicarAviso controlPublicarAviso;
     private final ControlListaAvisos controlListaAvisos;
 
-
     private final ServicioAviso servicioAviso;
-    
-    
+    private final ControlRegistrarNotas controlRegistrarNotas;
+
+
+
+
     /**
      * Constructor que inyecta todas las dependencias necesarias para gestionar las opciones del menú.
      * 
@@ -68,7 +73,8 @@ public class ControlMenu {
             ControlAgregarPaciente controlAgregarPaciente,
             ControlPublicarAviso controlPublicarAviso,
             ServicioAviso servicioAviso,
-            ControlListaAvisos controlListaAvisos
+            ControlListaAvisos controlListaAvisos,
+            ControlRegistrarNotas controlRegistrarNotas
 
         ) {
         this.ventana = ventana;
@@ -79,6 +85,7 @@ public class ControlMenu {
         this.controlPublicarAviso = controlPublicarAviso;
         this.servicioAviso = servicioAviso;
         this.controlListaAvisos = controlListaAvisos;
+        this.controlRegistrarNotas = controlRegistrarNotas;
 
     }
     
@@ -125,6 +132,14 @@ public class ControlMenu {
     public void listarPsicologo() {
         controlListarPsicologo.inicia();
     }
+
+    /**
+     * Abre la ventana para registrar notas de pacientes.
+     */
+    public void registrarNotas() {
+        controlRegistrarNotas.inicia();
+    }
+
 
     public void publicar() {
         controlPublicarAviso.inicia(this);

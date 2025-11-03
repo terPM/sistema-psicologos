@@ -187,7 +187,13 @@ public class VentanaMenu {
             avisoDisplayArea.setText(texto);
         }
     }
-    
+    @FXML
+    private void handleRegistrarNotas(ActionEvent event) {
+        if (control != null) {
+            control.registrarNotas();
+        }
+    }
+
     /**
      * Acción del botón "Salir".
      * Llama al controlador para cerrar la aplicación.

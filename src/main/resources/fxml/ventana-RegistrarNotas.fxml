@@ -14,7 +14,6 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.psicologos.controller.RegistrarNotasController"
       alignment="TOP_CENTER" spacing="15">
 
     <padding>

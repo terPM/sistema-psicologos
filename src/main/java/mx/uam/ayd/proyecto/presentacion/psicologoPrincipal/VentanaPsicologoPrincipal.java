@@ -65,4 +65,11 @@ public class VentanaPsicologoPrincipal {
             controlador.salir();
         }
     }
+    @FXML
+    private void handleRegistrarNotas() {
+        if (controlador != null) {
+            controlador.registrarNotas();
+        }
+    }
+
 }

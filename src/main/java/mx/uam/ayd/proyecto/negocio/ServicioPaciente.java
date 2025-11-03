@@ -96,9 +96,8 @@ public class ServicioPaciente {
         pacienteRepository.save(paciente);
     }
 
-    public List<PacienteTodosLosPacientes();
-}> obtenerPacientes() {
-        return recuperar
-
+    public List<Paciente> obtenerPacientes() {
+        return recuperarTodosLosPacientes();
+    }
 
 }
