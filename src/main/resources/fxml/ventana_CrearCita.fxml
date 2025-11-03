@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="40.0" VBox.vgrow="NEVER">
+         <children>
+            <Label layoutX="14.0" layoutY="11.0" text="Seleccione un paciente, el dia y horario para poder agendar la cita por favor.">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <GridPane VBox.vgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="292.0" minWidth="10.0" prefWidth="64.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="538.0" minWidth="10.0" prefWidth="31.999959309895843" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="592.6667073567709" minWidth="10.0" prefWidth="209.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Paciente:" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="9.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Psicólogo:" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="9.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Fecha:" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="9.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Horario:" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="9.0" />
+               </GridPane.margin>
+            </Label>
+            <DatePicker fx:id="fechaCita" onAction="#onFechaSeleccionada" maxHeight="-Infinity" prefHeight="25.0" prefWidth="240.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </DatePicker>
+            <Label text="ID" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Label text="Nombre" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <ComboBox fx:id="seleccionPaciente" onAction="#onPacienteSeleccionado" maxHeight="-Infinity" prefHeight="25.0" prefWidth="240.0" promptText="Seleccione un paciente" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <ComboBox fx:id="seleccionHorario" maxHeight="-Infinity" prefHeight="25.0" prefWidth="240.0" promptText="8:00 - 9:00" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <TextField fx:id="nombrePsicologo" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="240.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+               <GridPane.margin>
+                  <Insets left="15.0" right="15.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="idPaciente" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="idPsicologo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </VBox.margin>
+      </GridPane>
+      <AnchorPane maxHeight="-Infinity" prefHeight="40.0" prefWidth="600.0" VBox.vgrow="NEVER">
+         <children>
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Guardar" prefHeight="25.0" prefWidth="90.0" style="-fx-background-color: #3aa667;" text="Guardar" textFill="WHITE" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
+               <font>
+                  <Font name="Calibri Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

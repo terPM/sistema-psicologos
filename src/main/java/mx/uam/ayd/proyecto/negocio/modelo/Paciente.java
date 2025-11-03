@@ -35,7 +35,7 @@ public class Paciente {
     private String correo;
     private int edad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
 

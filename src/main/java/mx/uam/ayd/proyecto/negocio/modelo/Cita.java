@@ -2,7 +2,7 @@ package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Entidad que representa una cita agendada entre un paciente y un psicólogo.
@@ -24,15 +24,12 @@ public class Cita {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Temporal(TemporalType.DATE)
-    private Date fechaCita;
-
-    @Temporal(TemporalType.TIME)
-    private Date horaCita;
+    private LocalDateTime fechaCita;
 
     @Enumerated(EnumType.STRING)
     private TipoConfirmacionCita estadoCita;
     
+    private String motivo;
     private String detallesAdicionalesPsicologo;
     private String detallesAdicionalesPaciente;
     private String notaPostSesion;
@@ -42,4 +39,9 @@ public class Cita {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
+
+    // Relación con Psicologo
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "psicologo_id")
+    private Psicologo psicologo;
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="BOTTOM_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.3" prefHeight="525.0" prefWidth="660.0" VBox.vgrow="ALWAYS">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="10.0" layoutY="10.0" text="Pacientes" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                  <Button contentDisplay="CENTER" layoutX="17.0" layoutY="35.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAgregarPaciente" prefHeight="25.0" prefWidth="140.0" text="Agregar paciente" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Button layoutX="17.0" layoutY="71.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleListarPacientes" prefHeight="25.0" prefWidth="140.0" text="Listar pacientes" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Separator layoutY="110.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
+                  <Label layoutX="10.0" layoutY="122.0" text="Psicológos" AnchorPane.leftAnchor="10.0" />
+                  <Button layoutX="17.0" layoutY="147.0" mnemonicParsing="false" onAction="#handleAgregarPsicologo" prefHeight="25.0" prefWidth="140.0" text="Agregar psicológo" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Button layoutX="17.0" layoutY="182.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleListarPsicologo" prefHeight="25.0" prefWidth="140.0" text="Listar psicológos" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Label layoutX="10.0" layoutY="234.0" text="Citas" AnchorPane.leftAnchor="10.0" />
+                  <Button layoutX="17.0" layoutY="259.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCrearCita" prefHeight="25.0" prefWidth="140.0" text="Crear cita" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Separator layoutY="222.0" prefWidth="400.0" />
+                  <Button layoutX="17.0" layoutY="294.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleListarCita" prefHeight="25.0" prefWidth="140.0" text="Listar citas" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Label layoutX="10.0" layoutY="346.0" text="Avisos" AnchorPane.leftAnchor="10.0" />
+                  <Separator layoutY="334.0" prefWidth="400.0" />
+                  <Button layoutX="17.0" layoutY="371.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePublicarAviso" prefHeight="25.0" prefWidth="140.0" text="Publicar aviso" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Button layoutX="18.0" layoutY="406.0" mnemonicParsing="false" onAction="#handleListaAvisos" prefHeight="25.0" prefWidth="140.0" text="Lista de avisos" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="481.0" prefWidth="485.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="90.0" text="Centro de atención psicológica " textAlignment="CENTER">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="95.0" layoutY="128.0" text="BIENESTAR EMOCIONAL" textFill="RED">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="avisoDisplayArea" layoutX="61.0" layoutY="195.0" prefHeight="200.0" prefWidth="320.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="43.0" prefWidth="625.0" style="-fx-background-color: #E6E3E3;" VBox.vgrow="NEVER">
+         <children>
+            <Button layoutX="461.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSalir" prefHeight="25.0" prefWidth="90.0" style="-fx-background-color: FF0000;" text="Salir" textFill="#fdfdfd" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+               <font>
+                  <Font name="Calibri Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

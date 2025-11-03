@@ -1,6 +1,6 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
-import java.time.LocalDate;;
+import java.time.LocalDate;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.text.SimpleDateFormat;

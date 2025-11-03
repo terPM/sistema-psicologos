@@ -70,9 +70,9 @@ public class VentanaMenu {
             stage = new Stage();
             stage.setTitle("Centro Psicológico - Menú Principal");
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventanaPrincipal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana_Menu.fxml"));
             loader.setController(this);
-            Scene scene = new Scene(loader.load(), 640, 400);
+            Scene scene = new Scene(loader.load(), 700, 500);
             stage.setScene(scene);
             
             initialized = true;
@@ -191,6 +191,20 @@ public class VentanaMenu {
     private void handleRegistrarNotas(ActionEvent event) {
         if (control != null) {
             control.registrarNotas();
+        }
+    }
+
+    @FXML
+    private void handleCrearCita(ActionEvent event) {
+        if (control != null) {
+            control.crearCita();
+        }
+    }
+
+    @FXML
+    private void handleListarCita(ActionEvent event) {
+        if (control != null) {
+            control.listarCita();
         }
     }
 

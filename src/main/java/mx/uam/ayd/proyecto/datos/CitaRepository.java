@@ -5,7 +5,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import mx.uam.ayd.proyecto.negocio.modelo.TipoConfirmacionCita;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Repositorio para gestionar operaciones de persistencia sobre la entidad {@link Cita}.
@@ -43,7 +43,7 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
      * @param fechaCita la fecha de la cita; no debe ser {@code null}.
      * @return una lista de citas en la fecha especificada; si no hay coincidencias, la lista estará vacía.
      */
-    List<Cita> findByFechaCita(Date fechaCita);
+    Cita findByFechaCita(LocalDateTime fechaCita);
 
     /**
      * Busca citas por paciente y estado.
