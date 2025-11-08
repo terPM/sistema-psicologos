@@ -43,15 +43,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="329.0" prefWidth="639.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button layoutX="426.0" layoutY="195.0" mnemonicParsing="false" onAction="#handleAgregarPaciente" prefHeight="25.0" prefWidth="150.0" text="Agregar paciente" />
-            <Button layoutX="402.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleCeper" prefWidth="80.0" text="CEPER" />
-            <Button layoutX="240.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleBDI" prefWidth="80.0" text="BDI-II" />
-            <Button layoutX="97.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleBAI" prefWidth="80.0" text="BAI" />
-            <TextArea layoutX="22.0" layoutY="31.0" prefHeight="84.0" prefWidth="596.0" text="Para agregar un nuevo paciente llene los campos mostrados a continuación, después oprima el botón &#10;&quot;Agregar&quot;, para poder llenar su historial clínico. &#10;Finalmente debera elegir las baterías a llenar.&#10;                                                                NO CIERRE ESTA VENTANA">
+            <Button layoutX="426.0" layoutY="195.0" mnemonicParsing="false" onAction="#handleAgregarPaciente" prefHeight="25.0" prefWidth="150.0" text="Agregar paciente" AnchorPane.bottomAnchor="150.0" AnchorPane.rightAnchor="42.0" />
+            <Button layoutX="402.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleCeper" prefWidth="80.0" text="CEPER" />
+            <Button layoutX="240.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleBDI" prefWidth="80.0" text="BDI-II" />
+            <Button layoutX="97.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleBAI" prefWidth="80.0" text="BAI" />
+            <TextArea disable="true" layoutX="22.0" layoutY="31.0" prefHeight="84.0" prefWidth="595.0" text="Para agregar un nuevo paciente llene los campos mostrados a continuación, después oprima el botón &#10;&quot;Agregar&quot;, para poder llenar su historial clínico. &#10;Finalmente debera elegir las baterías a llenar.&#10;                                                                NO CIERRE ESTA VENTANA" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
                <font>
                   <Font name="Leelawadee UI Semilight" size="12.0" />
                </font>
@@ -66,6 +66,8 @@
                 <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Nombre:" />
@@ -76,6 +78,10 @@
                   <TextField fx:id="textFieldTelefono" prefHeight="25.0" prefWidth="228.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label text="Edad:" GridPane.rowIndex="3" />
                   <TextField fx:id="textFieldEdad" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Usuario:" GridPane.rowIndex="4" />
+                  <Label text="Contraseña:" GridPane.rowIndex="5" />
+                  <TextField fx:id="textFieldUsuario" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="textFieldContrasena" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
             </GridPane>
       </children>

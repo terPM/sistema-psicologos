@@ -99,9 +99,9 @@ public class ControlAgregarPaciente {
      * @param telefono Teléfono del paciente
      * @param edad Edad del paciente
      */
-    public void agregarPaciente(String nombre, String correo, String telefono, int edad) {
+    public void agregarPaciente(String nombre, String correo, String telefono, int edad, String usuario, String contrasena) {
         try {
-			Paciente paciente = servicioPaciente.agregarPaciente(nombre, correo, telefono, edad);
+			Paciente paciente = servicioPaciente.agregarPaciente(nombre, correo, telefono, edad, usuario, contrasena);
             pacienteID = paciente.getId();
 
 			ventanaAgregarPaciente.muestraDialogoConMensaje("Paciente agregado exitosamente");

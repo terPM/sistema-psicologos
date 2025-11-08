@@ -70,7 +70,7 @@ public class ServicioPsicologo {
      * @return el psicólogo registrado.
      * @throws IllegalArgumentException si algún dato es inválido o ya existe conflicto de correo/teléfono.
      */
-    public Psicologo agregarPsicologo(String nombre, String correo, String telefono, TipoEspecialidad especialidad) {
+    public Psicologo agregarPsicologo(String nombre, String correo, String telefono, TipoEspecialidad especialidad, String usuario, String contrasena) {
         if(nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
         }
@@ -95,6 +95,11 @@ public class ServicioPsicologo {
             throw new IllegalArgumentException("Ese psicologo ya existe: Telefono no disponible");
         }
 
+        psicologo = psicologoRepository.findByUsuario(usuario);
+        if (psicologo != null){
+            throw new IllegalArgumentException("Ya existe un psicologo con este usuario");
+        }
+
 
         // Si las reglas fueron validadas correctamente
         log.info("Agregando psicologo nombre: "+nombre+" correo: "+correo);
@@ -105,6 +110,8 @@ public class ServicioPsicologo {
         psicologo.setCorreo(correo);
         psicologo.setTelefono(telefono);
         psicologo.setEspecialidad(especialidad);
+        psicologo.setUsuario(usuario);
+        psicologo.setContrasena(contrasena);
 
         psicologoRepository.save(psicologo);
 

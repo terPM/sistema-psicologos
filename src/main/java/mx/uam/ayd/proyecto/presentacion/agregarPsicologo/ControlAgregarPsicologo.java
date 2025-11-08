@@ -75,9 +75,9 @@ public class ControlAgregarPsicologo {
      * @param telefono número de teléfono
      * @param especialidad especialidad del psicólogo
      */
-    public void agregarPsicologo(String nombre, String correo, String telefono, TipoEspecialidad especialidad) {
+    public void agregarPsicologo(String nombre, String correo, String telefono, TipoEspecialidad especialidad, String usuario, String contrasena) {
         try {
-            servicioPsicologo.agregarPsicologo(nombre, correo, telefono, especialidad);
+            servicioPsicologo.agregarPsicologo(nombre, correo, telefono, especialidad, usuario, contrasena);
             ventanaAgregarPsicologo.mostrarExito("Psicologo agregado exitosamente");
         } catch(Exception ex) {
             ventanaAgregarPsicologo.mostrarError("Error al agregar Psicologo: "+ex.getMessage());

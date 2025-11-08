@@ -1,10 +1,15 @@
 package mx.uam.ayd.proyecto.presentacion.principal; // Paquete correcto
 
+import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
+import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.presentacion.menu.ControlMenu;
 import mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ControlPsicologo;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ControlPaciente;
+import mx.uam.ayd.proyecto.datos.*;
 
 import jakarta.annotation.PostConstruct;
+
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,17 +35,24 @@ public class ControlPrincipalCentro {
     private final ControlPsicologo controlPsicologo;
     private final ControlPaciente controlPaciente;
 
+    private final PsicologoRepository psicologoRepository;
+    private final PacienteRepository pacienteRepository;
+
     @Autowired
     public ControlPrincipalCentro(
             VentanaPrincipalCentro ventanaLogin, // Constructor usa clase renombrada
             ControlMenu controlMenuAdmin,
             ControlPsicologo controlPsicologo,
-            ControlPaciente controlPaciente
+            ControlPaciente controlPaciente,
+            PsicologoRepository psicologoRepository,
+            PacienteRepository pacienteRepository
     ) {
         this.ventanaLogin = ventanaLogin;
         this.controlMenuAdmin = controlMenuAdmin;
         this.controlPsicologo = controlPsicologo;
         this.controlPaciente = controlPaciente;
+        this.pacienteRepository = pacienteRepository;
+        this.psicologoRepository = psicologoRepository;
     }
 
     @PostConstruct
@@ -66,7 +78,8 @@ public class ControlPrincipalCentro {
 
         switch (rol) {
             case "Psicólogo":
-                if (USER_PSICOLOGO.equals(usuario) && PASS_PSICOLOGO.equals(contrasena)) {
+                Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
+                if (psicologo.getUsuario().equals(usuario) && psicologo.getContrasena().equals(contrasena)) {
                     autenticado = true;
                     mostrarSistemaPrincipalPsicologo();
                 }
@@ -78,7 +91,8 @@ public class ControlPrincipalCentro {
                 }
                 break;
             case "Paciente":
-                if (USER_PACIENTE.equals(usuario) && PASS_PACIENTE.equals(contrasena)) {
+                Paciente paciente = pacienteRepository.findByUsuario(usuario);
+                if (paciente != null && paciente.getContrasena().equals(contrasena)) {
                     autenticado = true;
                     mostrarSistemaPrincipalPaciente(usuario);
                 }

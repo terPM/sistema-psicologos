@@ -1,5 +1,6 @@
 package mx.uam.ayd.proyecto.datos;
 
+import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.negocio.modelo.TipoEspecialidad;
 import org.springframework.data.repository.CrudRepository;
@@ -64,4 +65,8 @@ public interface PsicologoRepository extends CrudRepository<Psicologo, Integer> 
      * @return una lista de psicólogos con historiales clínicos; si no hay coincidencias, la lista estará vacía.
      */
     //List<Psicologo> findByHistorialesClinicoIsNotEmpty();
+
+    Psicologo findByUsuario(String usuario);
+
+    Psicologo findByUsuarioAndContrasena(String usuario, String contrasena);
 }

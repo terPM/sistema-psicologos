@@ -50,6 +50,12 @@ public class VentanaAgregarPsicologo {
     @FXML
     private ComboBox<TipoEspecialidad> comboBoxEspecialidad;
 
+    @FXML
+    private TextField textFieldUsuario;
+    
+    @FXML 
+    private TextField textFieldContrasena;
+
     private Stage stage;
     private ControlAgregarPsicologo controlAgregarPsicologo;
     private boolean initialized = false;
@@ -133,6 +139,8 @@ public class VentanaAgregarPsicologo {
         String correo = textFieldCorreo.getText();
         String telefono = textFieldTelefono.getText();
         TipoEspecialidad especialidad = comboBoxEspecialidad.getValue();
+        String usuario = textFieldUsuario.getText().trim();
+        String contrasena = textFieldContrasena.getText().trim();
 
         // Validaciones 
         if (nombre == null || nombre.trim().isEmpty()){
@@ -159,9 +167,17 @@ public class VentanaAgregarPsicologo {
             mostrarError("Debe seleccionar una especialidad");
             return;
         }
+        
+        if (usuario == null) {
+            mostrarError("El usuario no puede ser nulo");
+        }
+
+        if (contrasena == null) {
+            mostrarError("La contraseña no puede ser nula");
+        }
 
         if (controlAgregarPsicologo != null){
-            controlAgregarPsicologo.agregarPsicologo(nombre, correo, telefono, especialidad);
+            controlAgregarPsicologo.agregarPsicologo(nombre, correo, telefono, especialidad, usuario, contrasena);
         }
     }
 

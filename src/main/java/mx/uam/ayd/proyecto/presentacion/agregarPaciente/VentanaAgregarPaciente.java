@@ -54,6 +54,10 @@ public class VentanaAgregarPaciente {
 
     @FXML
     private TextField textFieldEdad;
+    @FXML
+    private TextField textFieldUsuario;
+    @FXML 
+    private TextField textFieldContrasena;
 
     /**
      * Establece el controlador asociado a esta ventana
@@ -96,6 +100,8 @@ public class VentanaAgregarPaciente {
         textFieldTelefono.clear();
         textFieldCorreo.clear();
         textFieldEdad.clear();
+        textFieldUsuario.clear();
+        textFieldContrasena.clear();
     }
 
     /**
@@ -172,6 +178,9 @@ public class VentanaAgregarPaciente {
         String telefono = textFieldTelefono.getText().trim();
         String correo = textFieldCorreo.getText().trim();
         String edadStr = textFieldEdad.getText().trim();
+        String usuario = textFieldUsuario.getText().trim();
+        String contrasena = textFieldContrasena.getText().trim();
+
 
         //Expresiones regulares en java para validar correo y telefono
         String regexCorreo = "^[\\w._%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$";
@@ -184,6 +193,8 @@ public class VentanaAgregarPaciente {
         if (telefono.isEmpty()) errores.append("- El teléfono no debe estar vacío.\n");
         if (correo.isEmpty()) errores.append("- El correo no debe estar vacío.\n");
         if (edadStr.isEmpty()) errores.append("- La edad no debe estar vacía.\n");
+        if (usuario.isEmpty()) errores.append("- El usuario no debe estar vacío.\n");
+        if (contrasena.isEmpty()) errores.append("- La contraseña no debe estar vacía.\n");
 
         // Validar formato correo
         if (!correo.isEmpty() && !correo.matches(regexCorreo)) {
@@ -215,7 +226,7 @@ public class VentanaAgregarPaciente {
 
         // Si pasa las validaciones, continuar
         int edad = Integer.parseInt(edadStr);
-        controlAgregarPaciente.agregarPaciente(nombre, correo, telefono, edad);
+        controlAgregarPaciente.agregarPaciente(nombre, correo, telefono, edad, usuario, contrasena);
     }
 
     /** Abre la ventana de captura CEPER del paciente actual. */

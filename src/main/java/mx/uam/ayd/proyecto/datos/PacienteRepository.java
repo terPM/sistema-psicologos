@@ -3,6 +3,7 @@ package mx.uam.ayd.proyecto.datos;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repositorio para gestionar operaciones de persistencia sobre la entidad {@link Paciente}.
@@ -31,4 +32,6 @@ public interface PacienteRepository extends CrudRepository<Paciente, Long> {
      * @return una lista de pacientes en el rango de edad; si no hay coincidencias, la lista estará vacía.
      */
     List<Paciente> findByEdadBetween(int edad1, int edad2);
+
+    Paciente findByUsuario(String usuario);
 }

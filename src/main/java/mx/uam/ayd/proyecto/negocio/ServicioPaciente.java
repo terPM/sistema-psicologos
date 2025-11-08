@@ -44,7 +44,7 @@ public class ServicioPaciente {
      * @return el paciente registrado.
      * @throws IllegalArgumentException si alguno de los parámetros es inválido o si el correo ya está registrado.
      */
-    public Paciente agregarPaciente(String nombre, String correo, String telefono, int edad) {
+    public Paciente agregarPaciente(String nombre, String correo, String telefono, int edad, String usuario, String contrasena) {
         if(nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
         }
@@ -54,12 +54,21 @@ public class ServicioPaciente {
         if(telefono == null || telefono.trim().isEmpty()) {
             throw new IllegalArgumentException("El telefono no puede ser nulo o vacio");
         }
+        if(usuario == null || usuario.trim().isEmpty()){
+            throw new IllegalArgumentException("El usuario no puede ser nulo");
+        }
+        if (contrasena==null || contrasena.trim().isEmpty()){
+            throw new IllegalArgumentException("La contraseña no puede ser nula");
+        }
 
         Paciente paciente = pacienteRepository.findByCorreo(correo);
         if (paciente != null){
             throw new IllegalArgumentException("Este correo ya ha sido registrado en el centro");
         }
-
+        paciente = pacienteRepository.findByUsuario(usuario);
+        if (paciente != null){
+            throw new IllegalArgumentException("Ya existe un paciente con este usuario");
+        }
         log.info("Agregando paciente nombre: "+nombre+" correo: "+correo);
 
         paciente = new Paciente();
@@ -67,6 +76,9 @@ public class ServicioPaciente {
         paciente.setCorreo(correo);
         paciente.setTelefono(telefono);
         paciente.setEdad(edad);
+        paciente.setUsuario(usuario);
+        paciente.setContrasena(contrasena);
+
 
         pacienteRepository.save(paciente);
 

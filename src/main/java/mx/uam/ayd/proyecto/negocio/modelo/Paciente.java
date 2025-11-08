@@ -34,6 +34,8 @@ public class Paciente {
     private String telefono;
     private String correo;
     private int edad;
+    private String usuario;
+    private String contrasena;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "psicologo_id")
