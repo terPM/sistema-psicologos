@@ -74,7 +74,7 @@ public class VentanaMenu {
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 700, 500);
             stage.setScene(scene);
-            
+            stage.setOnCloseRequest(e -> handleSalir());
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,7 +107,19 @@ public class VentanaMenu {
             control.actualizarDisplayAviso();
         }
     }
-    
+
+    /**
+     * Oculta la ventana sin cerrar el hilo de JavaFX.
+     */
+    public void oculta() {
+        if (!Platform.isFxApplicationThread()) {
+            Platform.runLater(this::oculta);
+            return;
+        }
+        if (stage != null) {
+            stage.hide(); 
+        }
+    }
     /**
      * Acción del botón "Agregar Paciente".
      * Llama al controlador para iniciar el flujo de agregar paciente.

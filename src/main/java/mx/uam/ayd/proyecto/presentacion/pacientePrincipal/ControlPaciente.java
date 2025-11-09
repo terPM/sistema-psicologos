@@ -8,32 +8,33 @@ import org.springframework.context.annotation.Lazy;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.ControlRegistroEmocinal;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
+import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
 
 @Component
 public class ControlPaciente {
 
     @Autowired
     private VentanaPacientePrincipal ventana;
-
     @Autowired
     private ControlRegistroEmocinal controlRegistroEmocinal;
-
     @Autowired
     private ControlListaRegistros controlListaRegistros;
-    
     @Autowired
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
 
+    private ControlPrincipalCentro controlPrincipal;    
     private String nombreUsuarioActivo;
 
     /**
-     * ❗ MODIFICACIÓN CRÍTICA: Inicia el flujo principal del paciente, 
-     * ❗ recibiendo y guardando el nombre de usuario de la sesión.
+     * Inicia el flujo principal del paciente, 
+     * recibiendo y guardando el nombre de usuario de la sesión.
      * @param nombreUsuarioActivo El nombre de usuario que ingresó en el login.
+     * @param controlPrincipal La referencia al controlador principal para la salida.
      */
-    public void inicia(String nombreUsuarioActivo) { 
-        this.nombreUsuarioActivo = nombreUsuarioActivo; // ❗ GUARDA LA SESIÓN
+    public void inicia(String nombreUsuarioActivo, ControlPrincipalCentro controlPrincipal) { 
+        this.nombreUsuarioActivo = nombreUsuarioActivo;
+        this.controlPrincipal = controlPrincipal; 
         ventana.setControlador(this);
         ventana.muestra();
     }
@@ -41,7 +42,7 @@ public class ControlPaciente {
     /**
      * Devuelve el nombre del usuario activo (obtenido del login).
      */
-    public String getNombreUsuarioActivo() { // <-- 4. MÉTODO PARA RECUPERAR EL NOMBRE
+    public String getNombreUsuarioActivo() { 
         return nombreUsuarioActivo;
     }
 
@@ -49,7 +50,12 @@ public class ControlPaciente {
      * Cierra la aplicación
      */
     public void salir() {
-        Platform.exit();
+        ventana.oculta(); // Oculta la ventana actual del paciente
+        if (controlPrincipal != null) {
+            controlPrincipal.regresaAlLogin(); // Llama al método de ControlPrincipalCentro
+        } else {
+            Platform.exit(); // Fallback por si la referencia es nula
+        }
     }
 
     /**
@@ -68,7 +74,6 @@ public class ControlPaciente {
 
     /**
      * Inicia el sub-flujo de Generar Línea de Captura.
-     * ❗ Se mantiene una sola implementación.
      */
     public void iniciarLineaCaptura() { 
         if (nombreUsuarioActivo != null) {

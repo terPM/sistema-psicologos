@@ -5,11 +5,11 @@ import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.presentacion.menu.ControlMenu;
 import mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ControlPsicologo;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ControlPaciente;
-import mx.uam.ayd.proyecto.datos.*;
+import mx.uam.ayd.proyecto.datos.PsicologoRepository;
+import mx.uam.ayd.proyecto.datos.PacienteRepository;
 
 import jakarta.annotation.PostConstruct;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +17,8 @@ import org.springframework.stereotype.Component;
 public class ControlPrincipalCentro {
 
     // --- Credenciales de prueba ---
-    private static final String USER_PSICOLOGO = "psicologo";
-    private static final String PASS_PSICOLOGO = "psi1234";
     private static final String USER_ADMIN = "admin";
     private static final String PASS_ADMIN = "admin1234";
-    private static final String USER_PACIENTE = "paciente";
-    private static final String PASS_PACIENTE = "pa1234";
     // ----------------------------
 
     // Usa la clase de Ventana renombrada
@@ -57,11 +53,14 @@ public class ControlPrincipalCentro {
 
     @PostConstruct
     public void init() {
-        // CORRECCIÓN: Llama al método renombrado en la ventana
         ventanaLogin.setControlLoginPrincipal(this);
     }
 
     public void inicia() {
+        ventanaLogin.muestra();
+    }
+
+    public void regresaAlLogin() {
         ventanaLogin.muestra();
     }
 
@@ -79,11 +78,11 @@ public class ControlPrincipalCentro {
         switch (rol) {
             case "Psicólogo":
                 Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
-                if (psicologo.getUsuario().equals(usuario) && psicologo.getContrasena().equals(contrasena)) {
-                    autenticado = true;
-                    mostrarSistemaPrincipalPsicologo();
-                }
-                break;
+            if (psicologo != null) { 
+                autenticado = true;
+                mostrarSistemaPrincipalPsicologo();
+            }
+            break;
             case "Administrador":
                 if (USER_ADMIN.equals(usuario) && PASS_ADMIN.equals(contrasena)) {
                     autenticado = true;
@@ -109,17 +108,16 @@ public class ControlPrincipalCentro {
 
     public void mostrarSistemaPrincipalPsicologo() {
         ventanaLogin.cerrarLogin();
-        controlPsicologo.inicia();
+        controlPsicologo.inicia(this);
     }
 
     public void mostrarSistemaPrincipalAdministrativo() {
         ventanaLogin.cerrarLogin();
-        // El Administrador es el ÚNICO que ve el menú completo (ControlMenu)
-        controlMenuAdmin.inicia();
+        controlMenuAdmin.inicia(this);
     }
 
     public void mostrarSistemaPrincipalPaciente(String nombreDeUsuario) {
         ventanaLogin.cerrarLogin();
-        controlPaciente.inicia(nombreDeUsuario);
+        controlPaciente.inicia(nombreDeUsuario, this);
     }
 }

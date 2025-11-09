@@ -36,7 +36,7 @@ public class VentanaPacientePrincipal {
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
-            stage.setOnCloseRequest(e -> Platform.exit());
+            stage.setOnCloseRequest(e -> handleSalir());
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,11 +52,26 @@ public class VentanaPacientePrincipal {
             Platform.runLater(this::muestra);
             return;
         }
-
+        oculta();
         initializeUI();
         stage.show();
     }
 
+
+    /**
+     * Método para ocultar la ventana sin cerrar la aplicación.
+     */
+    public void oculta() {
+        if (!Platform.isFxApplicationThread()) {
+            Platform.runLater(this::oculta);
+            return;
+        }
+        if (stage != null) {
+            stage.hide(); 
+        }
+    }
+
+    
     @FXML
     private void handleSalir() {
         if (controlador != null) {
@@ -84,7 +99,7 @@ public class VentanaPacientePrincipal {
         }
     }
 
-    @FXML // ❗ Debe coincidir con onAction="#handleLineaCaptura" en el FXML
+    @FXML
     private void handleLineaCaptura() {
         if (controlador != null) {
             controlador.iniciarLineaCaptura();

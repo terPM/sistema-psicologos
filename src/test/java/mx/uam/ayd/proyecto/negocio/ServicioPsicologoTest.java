@@ -33,6 +33,11 @@ public class ServicioPsicologoTest {
 
     @InjectMocks
     private ServicioPsicologo servicio;
+    
+    // --- Valores de prueba para los 2 String que faltaban ---
+    private final String USUARIO_VALIDO = "test_user_psi";
+    private final String CONTRASENA_VALIDA = "test_pass_psi";
+    // --------------------------------------------------------
 
     // Pruebas sobre el filtrado de 
     @Test
@@ -66,16 +71,23 @@ public class ServicioPsicologoTest {
         String tel= "555-0002";
         TipoEspecialidad esp=TipoEspecialidad.FAMILIAR;
 
+        // **CORREGIDO:** Variable 'usuraio' renombrada a 'usuario'
+        String usuario = "juan_psi";
+        String contrasena = "1234";
+
         when(psicologoRepository.findByCorreo(correo)).thenReturn(null);
         when(psicologoRepository.save(any(Psicologo.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Psicologo p = servicio.agregarPsicologo(nombre, correo, tel, esp);
+        // **CORREGIDO:** Se pasan los 6 argumentos
+        Psicologo p = servicio.agregarPsicologo(nombre, correo, tel, esp, usuario, contrasena);
 
         assertNotNull(p);
         assertEquals(nombre, p.getNombre());
         assertEquals(correo, p.getCorreo());
         assertEquals(tel, p.getTelefono());
         assertEquals(esp, p.getEspecialidad());
+        assertEquals(usuario, p.getUsuario()); 
+        assertEquals(contrasena, p.getContrasena());
     }
 
     @Test
@@ -84,27 +96,29 @@ public class ServicioPsicologoTest {
         when(psicologoRepository.findByCorreo(correo)).thenReturn(new Psicologo());
 
         IllegalArgumentException ex=assertThrows(IllegalArgumentException.class, () ->
-            servicio.agregarPsicologo("mmmm", correo, "1111", TipoEspecialidad.MARITAL));
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicio.agregarPsicologo("mmmm", correo, "1111", TipoEspecialidad.MARITAL, USUARIO_VALIDO, CONTRASENA_VALIDA));
 
         assertTrue(ex.getMessage().toLowerCase().contains("correo"));
     }
 
     @Test
     void testAgregarPsicologo_parametrosInvalidos() {
+        // **CORREGIDO:** Se pasa USUARIO_VALIDO y CONTRASENA_VALIDA en todos los casos
         assertThrows(IllegalArgumentException.class, () ->
-            servicio.agregarPsicologo(null, "a@h.com", "1", TipoEspecialidad.DELAMUJER));
+            servicio.agregarPsicologo(null, "a@h.com", "1", TipoEspecialidad.DELAMUJER, USUARIO_VALIDO, CONTRASENA_VALIDA));
         assertThrows(IllegalArgumentException.class, () ->
-            servicio.agregarPsicologo("   ", "a@h.com", "1", TipoEspecialidad.DELAMUJER));
+            servicio.agregarPsicologo("   ", "a@h.com", "1", TipoEspecialidad.DELAMUJER, USUARIO_VALIDO, CONTRASENA_VALIDA));
 
         assertThrows(IllegalArgumentException.class, () ->
-            servicio.agregarPsicologo("Juan", null, "1", TipoEspecialidad.FAMILIAR));
+            servicio.agregarPsicologo("Juan", null, "1", TipoEspecialidad.FAMILIAR, USUARIO_VALIDO, CONTRASENA_VALIDA));
         assertThrows(IllegalArgumentException.class, () ->
-            servicio.agregarPsicologo("Juan", "   ", "1", TipoEspecialidad.FAMILIAR));
+            servicio.agregarPsicologo("Juan", "   ", "1", TipoEspecialidad.FAMILIAR, USUARIO_VALIDO, CONTRASENA_VALIDA));
 
         assertThrows(IllegalArgumentException.class, () ->
-            servicio.agregarPsicologo("Juan", "a@a.com", null, TipoEspecialidad.INFANTIL));
+            servicio.agregarPsicologo("Juan", "a@a.com", null, TipoEspecialidad.INFANTIL, USUARIO_VALIDO, CONTRASENA_VALIDA));
         assertThrows(IllegalArgumentException.class, () ->
-            servicio.agregarPsicologo("Juan", "a@a.com", "   ", TipoEspecialidad.INFANTIL));
+            servicio.agregarPsicologo("Juan", "a@a.com", "   ", TipoEspecialidad.INFANTIL, USUARIO_VALIDO, CONTRASENA_VALIDA));
     }
 
     // Obtencion de Psicologos por edad del paciente

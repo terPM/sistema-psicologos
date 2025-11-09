@@ -26,6 +26,11 @@ class ServicioPacienteTest {
 
     @InjectMocks
     private ServicioPaciente servicioPaciente;
+    
+    // --- Valores de prueba para los 2 String que faltaban ---
+    private final String CONTRASENA_VALIDA = "pa_pass123";
+    private final String USUARIO_VALIDO = "pa_user1";
+    // --------------------------------------------------------
 
     @Test
     void testAgregarPaciente() {
@@ -40,7 +45,8 @@ class ServicioPacienteTest {
 
         when(pacienteRepository.save(any(Paciente.class))).thenReturn(pacienteGuardado);
 
-        Paciente result = servicioPaciente.agregarPaciente("Juan", "test@correo.com", "123456789", 30);
+        // **CORREGIDO:** Se pasan los 6 argumentos (nombre, correo, telefono, edad, CONTRASENA_VALIDA, USUARIO_VALIDO)
+        Paciente result = servicioPaciente.agregarPaciente("Juan", "test@correo.com", "123456789", 30, CONTRASENA_VALIDA, USUARIO_VALIDO);
 
         assertNotNull(result);
         assertEquals("Juan", result.getNombre());
@@ -50,32 +56,39 @@ class ServicioPacienteTest {
 
         // Caso 2: Nombre nulo o vacío
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioPaciente.agregarPaciente(null, "correo@dominio.com", "123456789", 25);
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicioPaciente.agregarPaciente(null, "correo@dominio.com", "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioPaciente.agregarPaciente(" ", "correo@dominio.com", "123456789", 25);
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicioPaciente.agregarPaciente(" ", "correo@dominio.com", "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
         });
 
         // Caso 3: Correo nulo o vacío
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioPaciente.agregarPaciente("Juan", null, "123456789", 25);
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicioPaciente.agregarPaciente("Juan", null, "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioPaciente.agregarPaciente("Juan", " ", "123456789", 25);
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicioPaciente.agregarPaciente("Juan", " ", "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
         });
 
         // Caso 4: Teléfono nulo o vacío
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", null, 25);
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", null, 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", " ", 25);
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", " ", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
         });
 
         // Caso 5: Correo duplicado
         when(pacienteRepository.findByCorreo("repetido@correo.com")).thenReturn(new Paciente());
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioPaciente.agregarPaciente("Pedro", "repetido@correo.com", "111222333", 40);
+            // **CORREGIDO:** Se pasan los 6 argumentos
+            servicioPaciente.agregarPaciente("Pedro", "repetido@correo.com", "111222333", 40, CONTRASENA_VALIDA, USUARIO_VALIDO);
         });
     }
 

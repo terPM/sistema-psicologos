@@ -1,4 +1,4 @@
-package mx.uam.ayd.proyecto.presentacion.principal; // CORRECCIÓN 1: Paquete renombrado
+package mx.uam.ayd.proyecto.presentacion.principal; 
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
 @Component
-public class VentanaPrincipalCentro { // CORRECCIÓN 2: Clase renombrada
+public class VentanaPrincipalCentro { 
 
     @FXML private TextField textFieldUsuario;
     @FXML private PasswordField passwordFieldOculto;
@@ -34,7 +34,7 @@ public class VentanaPrincipalCentro { // CORRECCIÓN 2: Clase renombrada
             passwordFieldVisible.textProperty().bindBidirectional(passwordFieldOculto.textProperty());
         }
 
-        // Llenar el ComboBox con los roles: CAMBIADO A PACIENTE
+        // Llenar el ComboBox con los roles:
         if (miComboBox != null) {
             miComboBox.getItems().clear();
             miComboBox.getItems().addAll("Psicólogo", "Administrador", "Paciente");
@@ -58,7 +58,7 @@ public class VentanaPrincipalCentro { // CORRECCIÓN 2: Clase renombrada
     }
 
     /**
-     * Inicializa la interfaz gráfica de la ventana. (MÉTODO RESTAURADO)
+     * Inicializa la interfaz gráfica de la ventana.
      */
     private void initializeUI() {
         if (initialized) {
@@ -89,14 +89,14 @@ public class VentanaPrincipalCentro { // CORRECCIÓN 2: Clase renombrada
     }
 
     /**
-     * Establece el controlador para esta ventana. (MÉTODO CORREGIDO)
+     * Establece el controlador para esta ventana.
      */
     public void setControlLoginPrincipal(ControlPrincipalCentro control) {
         this.control = control;
     }
 
     /**
-     * Muestra la ventana de login. (MÉTODO RESTAURADO)
+     * Muestra la ventana de login.
      */
     public void muestra() {
         if (!Platform.isFxApplicationThread()) {
@@ -140,7 +140,7 @@ public class VentanaPrincipalCentro { // CORRECCIÓN 2: Clase renombrada
      */
     public void cerrarLogin() {
         if (stage != null) {
-            stage.close();
+            stage.hide();
         }
     }
 }

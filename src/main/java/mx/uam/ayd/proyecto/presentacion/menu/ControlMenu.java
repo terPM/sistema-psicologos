@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import javafx.application.Platform;
 import mx.uam.ayd.proyecto.negocio.ServicioAviso;
 import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
 import mx.uam.ayd.proyecto.presentacion.agregarPaciente.ControlAgregarPaciente;
@@ -14,6 +15,7 @@ import mx.uam.ayd.proyecto.presentacion.publicarAviso.ControlPublicarAviso;
 import mx.uam.ayd.proyecto.presentacion.listaAvisos.ControlListaAvisos;
 import mx.uam.ayd.proyecto.presentacion.registrarNotas.ControlRegistrarNotas;
 import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
+import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
 
 
 
@@ -40,6 +42,7 @@ import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
 public class ControlMenu {
 
     private final VentanaMenu ventana;
+    private ControlPrincipalCentro controlPrincipal;
     
     private final ControlListarPacientes controlListarPacientes;
     private final ControlAgregarPaciente controlAgregarPaciente;
@@ -50,7 +53,6 @@ public class ControlMenu {
     private final ServicioAviso servicioAviso;
     private final ControlRegistrarNotas controlRegistrarNotas;
     private final ControlCrearCita controlCrearCita;
-
     /**
      * Constructor que inyecta todas las dependencias necesarias para gestionar las opciones del menú.
      * 
@@ -98,7 +100,9 @@ public class ControlMenu {
     /**
      * Inicia la visualización del menú principal.
      */
-    public void inicia() {
+    public void inicia(ControlPrincipalCentro controlPrincipal) {
+        this.controlPrincipal = controlPrincipal;
+        ventana.setControlMenu(this); 
         ventana.muestra();
     }
     
@@ -172,6 +176,11 @@ public class ControlMenu {
      * Finaliza la ejecución de la aplicación.
      */
     public void salir() {
-        System.exit(0);
+        ventana.oculta(); // <--- Llamar al método oculta() de la ventana
+        if (controlPrincipal != null) {
+            controlPrincipal.regresaAlLogin(); // <-- Regresar al login principal
+        } else {
+            Platform.exit();
+        }
     }
 }

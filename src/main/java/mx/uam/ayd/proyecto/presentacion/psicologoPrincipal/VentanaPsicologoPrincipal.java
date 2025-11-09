@@ -37,7 +37,7 @@ public class VentanaPsicologoPrincipal {
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
 
-            stage.setOnCloseRequest(e -> Platform.exit());
+            stage.setOnCloseRequest(e -> handleSalir());
 
             initialized = true;
         } catch (IOException e) {
@@ -54,11 +54,24 @@ public class VentanaPsicologoPrincipal {
             Platform.runLater(this::muestra);
             return;
         }
-
+        oculta();
         initializeUI();
         stage.show();
     }
 
+    /**
+     * Método para ocultar la ventana sin cerrar la aplicación.
+     */
+    public void oculta() {
+        if (!Platform.isFxApplicationThread()) {
+            Platform.runLater(this::oculta);
+            return;
+        }
+        if (stage != null) {
+            stage.hide(); 
+        }
+    }
+    
     @FXML
     private void handleSalir() {
         if (controlador != null) {
