@@ -7,6 +7,7 @@ import mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ControlPsicologo;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ControlPaciente;
 import mx.uam.ayd.proyecto.datos.PsicologoRepository;
 import mx.uam.ayd.proyecto.datos.PacienteRepository;
+import mx.uam.ayd.proyecto.negocio.ServicioSesion;
 
 import jakarta.annotation.PostConstruct;
 
@@ -33,6 +34,7 @@ public class ControlPrincipalCentro {
 
     private final PsicologoRepository psicologoRepository;
     private final PacienteRepository pacienteRepository;
+    private final ServicioSesion servicioSesion;
 
     @Autowired
     public ControlPrincipalCentro(
@@ -41,7 +43,8 @@ public class ControlPrincipalCentro {
             ControlPsicologo controlPsicologo,
             ControlPaciente controlPaciente,
             PsicologoRepository psicologoRepository,
-            PacienteRepository pacienteRepository
+            PacienteRepository pacienteRepository,
+            ServicioSesion servicioSesion
     ) {
         this.ventanaLogin = ventanaLogin;
         this.controlMenuAdmin = controlMenuAdmin;
@@ -49,6 +52,7 @@ public class ControlPrincipalCentro {
         this.controlPaciente = controlPaciente;
         this.pacienteRepository = pacienteRepository;
         this.psicologoRepository = psicologoRepository;
+        this.servicioSesion = servicioSesion;
     }
 
     @PostConstruct
@@ -61,6 +65,8 @@ public class ControlPrincipalCentro {
     }
 
     public void regresaAlLogin() {
+        servicioSesion.limpiarSesion();
+        ventanaLogin.limpiarCampos();
         ventanaLogin.muestra();
     }
 
@@ -81,12 +87,14 @@ public class ControlPrincipalCentro {
             if (psicologo != null) { 
                 autenticado = true;
                 mostrarSistemaPrincipalPsicologo(usuario);
+                servicioSesion.setUsuarioActual(usuario);
             }
             break;
             case "Administrador":
                 if (USER_ADMIN.equals(usuario) && PASS_ADMIN.equals(contrasena)) {
                     autenticado = true;
                     mostrarSistemaPrincipalAdministrativo();
+                    servicioSesion.setUsuarioActual(usuario);
                 }
                 break;
             case "Paciente":
@@ -94,6 +102,7 @@ public class ControlPrincipalCentro {
                 if (paciente != null && paciente.getContrasena().equals(contrasena)) {
                     autenticado = true;
                     mostrarSistemaPrincipalPaciente(usuario);
+                    servicioSesion.setUsuarioActual(usuario);
                 }
                 break;
             default:

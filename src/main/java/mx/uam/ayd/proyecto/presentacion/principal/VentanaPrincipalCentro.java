@@ -143,4 +143,8 @@ public class VentanaPrincipalCentro {
             stage.hide();
         }
     }
+    public void limpiarCampos() {
+        textFieldUsuario.clear();
+        passwordFieldOculto.clear();
+    }
 }
