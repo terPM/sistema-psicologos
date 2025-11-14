@@ -109,13 +109,14 @@ public class VentanaPacientePrincipal {
     @FXML
     private void handleCrearCita() {
         if (controlador != null) {
-            controlador.iniciarCrearCita(controlador.getNombreUsuarioActivo());
+            controlador.iniciarCrearCita();
         }
     }
     @FXML
     private void handleProximasCitas() {
-        if (controlador != null) {
-            controlador.iniciarProximasCitas(controlador.getNombreUsuarioActivo());
-        }
+        /*if (controlador != null) {
+            controlador.iniciarProximasCitas();
+        }*/
+        System.out.println("Función pendiente");
     }
 }

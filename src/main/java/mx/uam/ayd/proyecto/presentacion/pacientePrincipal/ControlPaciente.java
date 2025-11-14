@@ -86,17 +86,12 @@ public class ControlPaciente {
     /**
      * Inicia el sub-flujo de Crear Cita.
      */
-    public void iniciarCrearCita(String nombreUsuarioActivo){
-        if (nombreUsuarioActivo != null)
+    public void iniciarCrearCita(){
             controlCrearCita.inicia(nombreUsuarioActivo);
     }
 
-    public void iniciarProximasCitas(String nombreUsuarioActivo) {
-        if( nombreUsuarioActivo != null) {
-            System.out.println("Funcion pendiente");
-            //controlCrearCita.mostrarProximasCitas(nombreUsuarioActivo);
-        }
-        
+    public void iniciarProximasCitas() {
+        System.out.println("Funcion pendiente");
     }
 
 }
