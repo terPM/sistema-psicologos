@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.*;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -24,10 +25,10 @@ import java.util.List;
 public class VentanaCrearCita {
     @FXML 
     private TextField idPaciente;
+    @FXML
+    private TextField nombrePaciente;
     @FXML 
     private TextField idPsicologo;
-    @FXML
-    private ComboBox<Paciente> seleccionPaciente;
     @FXML
     private TextField nombrePsicologo;
     @FXML
@@ -61,9 +62,6 @@ public class VentanaCrearCita {
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
-
-            // Configuración de la ventana al inicializar
-            setupPacienteComboBox();
             
             // Hacer campos no editables, ya que se auto-rellenarán
             idPaciente.setEditable(false);
@@ -94,13 +92,13 @@ public class VentanaCrearCita {
 
     public void limpiarCampos() {
         idPaciente.setText("");
+        nombrePaciente.setText("");
         idPsicologo.setText("");
         nombrePsicologo.setText("");
         fechaCita.setValue(null);
         seleccionHorario.getSelectionModel().clearSelection();
         seleccionHorario.getItems().clear();
         seleccionHorario.setPromptText("Seleccione una fecha primero");
-        seleccionPaciente.getSelectionModel().clearSelection();
     }
 
     public void cerrar() {
@@ -119,57 +117,6 @@ public class VentanaCrearCita {
             // Pedir al control los nuevos horarios
             controlCrearCita.onFechaSeleccionada(fechaCita.getValue());
         }
-    }
-
-    @FXML
-    private void onPacienteSeleccionado(ActionEvent event) {
-        Paciente pacienteSeleccionado = seleccionPaciente.getValue();
-        
-        if (pacienteSeleccionado != null) {
-            // Auto-rellenar campos
-            idPaciente.setText(String.valueOf(pacienteSeleccionado.getId()));
-            
-            Psicologo psicologo = pacienteSeleccionado.getPsicologo();
-            if (psicologo != null) {
-                idPsicologo.setText(String.valueOf(psicologo.getId()));
-                nombrePsicologo.setText(psicologo.getNombre());
-            } else {
-                idPsicologo.setText("N/A");
-                nombrePsicologo.setText("Sin psicólogo asignado");
-            }
-        } else {
-            // Limpiar si no hay selección
-            idPaciente.setText("");
-            idPsicologo.setText("");
-            nombrePsicologo.setText("");
-        }
-    }
-
-    /**
-     * Carga la lista de pacientes en el ComboBox
-     */
-    public void setPacientes(List<Paciente> pacientes) {
-        seleccionPaciente.getItems().clear();
-        seleccionPaciente.getItems().addAll(pacientes);
-    }
-
-    /**
-     * Configura el ComboBox de pacientes para que muestre el nombre
-     * pero mantenga el objeto Paciente internamente.
-     */
-    private void setupPacienteComboBox() {
-        seleccionPaciente.setConverter(new StringConverter<Paciente>() {
-            @Override
-            public String toString(Paciente paciente) {
-                return (paciente == null) ? "Seleccione un paciente" : paciente.getNombre();
-            }
-
-            @Override
-            public Paciente fromString(String string) {
-                // No lo usamos para selección, solo para mostrar
-                return null;
-            }
-        });
     }
     
     /**
@@ -203,15 +150,9 @@ public class VentanaCrearCita {
 
     @FXML
     private void Guardar(ActionEvent event) {
-        Paciente paciente = seleccionPaciente.getValue();
         LocalDate fecha = fechaCita.getValue();
         String horario = seleccionHorario.getValue();
-        
-        // 2. El nombre del psicólogo lo tomamos del campo de texto (que se auto-rellenó)
-        String psicologoNombre = nombrePsicologo.getText();
-        
-        // 3. Pasamos al control para guardar
-        controlCrearCita.guardarCita(paciente, psicologoNombre, fecha, horario);
+        controlCrearCita.guardarCita(fecha, horario);
     }
 
     //@FXML

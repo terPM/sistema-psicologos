@@ -30,9 +30,6 @@ public class Cita {
     private TipoConfirmacionCita estadoCita;
     
     private String motivo;
-    private String detallesAdicionalesPsicologo;
-    private String detallesAdicionalesPaciente;
-    private String notaPostSesion;
     private String motivoCancelacion;
 
     // Relación con Paciente

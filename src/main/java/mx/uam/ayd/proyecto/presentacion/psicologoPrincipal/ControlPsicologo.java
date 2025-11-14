@@ -20,7 +20,7 @@ public class ControlPsicologo {
     /**
      * Inicia el flujo principal del psicólogo
      */
-    public void inicia(ControlPrincipalCentro controlPrincipal) {
+    public void inicia(String usuario, ControlPrincipalCentro controlPrincipal) {
         this.controlPrincipal = controlPrincipal; // Almacenar la referencia
         ventana.setControlador(this);
         ventana.muestra();

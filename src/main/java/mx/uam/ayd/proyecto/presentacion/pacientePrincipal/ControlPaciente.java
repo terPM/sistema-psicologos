@@ -9,6 +9,7 @@ import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.Contr
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
+import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
 
 @Component
 public class ControlPaciente {
@@ -22,9 +23,11 @@ public class ControlPaciente {
     @Autowired
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
+    @Autowired
+    private ControlCrearCita controlCrearCita;
 
     private ControlPrincipalCentro controlPrincipal;    
-    private String nombreUsuarioActivo;
+    private String nombreUsuarioActivo = "";
 
     /**
      * Inicia el flujo principal del paciente, 
@@ -80,4 +83,20 @@ public class ControlPaciente {
             controlLineaCaptura.inicia(); 
         }
     }
+    /**
+     * Inicia el sub-flujo de Crear Cita.
+     */
+    public void iniciarCrearCita(String nombreUsuarioActivo){
+        if (nombreUsuarioActivo != null)
+            controlCrearCita.inicia(nombreUsuarioActivo);
+    }
+
+    public void iniciarProximasCitas(String nombreUsuarioActivo) {
+        if( nombreUsuarioActivo != null) {
+            System.out.println("Funcion pendiente");
+            //controlCrearCita.mostrarProximasCitas(nombreUsuarioActivo);
+        }
+        
+    }
+
 }

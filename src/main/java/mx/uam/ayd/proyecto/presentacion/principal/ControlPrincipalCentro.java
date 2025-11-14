@@ -80,7 +80,7 @@ public class ControlPrincipalCentro {
                 Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
             if (psicologo != null) { 
                 autenticado = true;
-                mostrarSistemaPrincipalPsicologo();
+                mostrarSistemaPrincipalPsicologo(usuario);
             }
             break;
             case "Administrador":
@@ -106,9 +106,9 @@ public class ControlPrincipalCentro {
         }
     }
 
-    public void mostrarSistemaPrincipalPsicologo() {
+    public void mostrarSistemaPrincipalPsicologo(String nombreDeUsuario) {
         ventanaLogin.cerrarLogin();
-        controlPsicologo.inicia(this);
+        controlPsicologo.inicia(nombreDeUsuario, this);
     }
 
     public void mostrarSistemaPrincipalAdministrativo() {

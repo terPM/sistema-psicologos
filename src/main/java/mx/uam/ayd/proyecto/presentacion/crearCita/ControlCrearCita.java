@@ -8,10 +8,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import mx.uam.ayd.proyecto.datos.PacienteRepository;
 import mx.uam.ayd.proyecto.negocio.ServicioCita;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ControlPaciente;
 
 @Component
 public class ControlCrearCita {
@@ -20,24 +19,19 @@ public class ControlCrearCita {
 	private VentanaCrearCita ventanaCrearCita;
 
 	@Autowired
-	private PacienteRepository pacienteRepository;
-
-	@Autowired
 	private ServicioCita servicioCita;
+	
+	String nombreUsuarioActivo;//almacena el nombre del usuario logeado
 
 	/**
-	 * Inicia la ventana para crear citas. Carga los pacientes disponibles.
+	 * Inicia la ventana para crear citas
 	 */
-	public void inicia() {
+	public void inicia(String nombreUsuarioActivo) {
+		this.nombreUsuarioActivo = nombreUsuarioActivo;
 		ventanaCrearCita.setControlCrearCita(this);
-        ventanaCrearCita.muestra();
-		// Cargar pacientes desde el repositorio
-		List<Paciente> pacientes = new ArrayList<>();
-		pacienteRepository.findAll().forEach(pacientes::add);
-		ventanaCrearCita.setPacientes(pacientes);
-		
+    	ventanaCrearCita.muestra(); //Aqui iba datos(?)
 	}
-
+	
 	/**
 	 * Calcula y devuelve los horarios disponibles según el día seleccionado.
 	 * L - V : 8:00 - 17:00
@@ -77,11 +71,7 @@ public class ControlCrearCita {
 	/**
 	 * Guarda la cita usando el servicio. Convierte la fecha + hora a LocalDateTime.
 	 */
-	public void guardarCita(Paciente pacienteSeleccionado, String psicologoNombre, LocalDate fechaSeleccionada, String horarioSeleccionado) {
-		if (pacienteSeleccionado == null) {
-			ventanaCrearCita.muestraDialogoError("Error", "Debe seleccionar un paciente");
-			return;
-		}
+	public void guardarCita(LocalDate fechaSeleccionada, String horarioSeleccionado) {
 		if (fechaSeleccionada == null) {
 			ventanaCrearCita.muestraDialogoError("Error", "Debe seleccionar una fecha");
 			return;
@@ -98,12 +88,7 @@ public class ControlCrearCita {
 		try {
 			int hora = Integer.parseInt(horarioSeleccionado.split(":")[0]); 
 			LocalDateTime fechaHora = fechaSeleccionada.atTime(hora, 0);
-
-			// Usamos el servicio para crear la cita.
-			String motivo = (psicologoNombre == null) ? "Cita agendada" : "Cita con: " + psicologoNombre;
-
-			servicioCita.crearCita(pacienteSeleccionado, fechaHora, motivo);
-
+			servicioCita.crearCita(nombreUsuarioActivo, fechaHora);
 			ventanaCrearCita.muestraDialogoExito("Cita creada", "La cita se creó correctamente.");
 			ventanaCrearCita.cerrar();
 		} catch (NumberFormatException e) {
@@ -115,5 +100,10 @@ public class ControlCrearCita {
 			ventanaCrearCita.muestraDialogoError("Error desconocido", e.getMessage());
 		}
 	}
+
+	//public Object obtenerDatosPersonas() {
+	//	Paciente paciente = (nombreUsuarioActivo);
+	//	return paciente;
+	//}
 
 }

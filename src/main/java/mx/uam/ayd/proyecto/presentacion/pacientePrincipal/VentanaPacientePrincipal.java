@@ -105,4 +105,17 @@ public class VentanaPacientePrincipal {
             controlador.iniciarLineaCaptura();
         }
     }
+
+    @FXML
+    private void handleCrearCita() {
+        if (controlador != null) {
+            controlador.iniciarCrearCita(controlador.getNombreUsuarioActivo());
+        }
+    }
+    @FXML
+    private void handleProximasCitas() {
+        if (controlador != null) {
+            controlador.iniciarProximasCitas(controlador.getNombreUsuarioActivo());
+        }
+    }
 }

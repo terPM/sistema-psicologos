@@ -206,20 +206,6 @@ public class VentanaMenu {
         }
     }
 
-    @FXML
-    private void handleCrearCita(ActionEvent event) {
-        if (control != null) {
-            control.crearCita();
-        }
-    }
-
-    @FXML
-    private void handleListarCita(ActionEvent event) {
-        if (control != null) {
-            control.listarCita();
-        }
-    }
-
     /**
      * Acción del botón "Salir".
      * Llama al controlador para cerrar la aplicación.

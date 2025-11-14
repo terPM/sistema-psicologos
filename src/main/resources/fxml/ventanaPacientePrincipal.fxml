@@ -19,6 +19,14 @@
                             <children>
                                 <VBox alignment="CENTER_LEFT" layoutX="9.0" layoutY="14.0" prefHeight="350.0" prefWidth="171.0" spacing="5.0">
                                     <children>
+                              <Label text="Citas">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Button mnemonicParsing="false" onAction="#handleCrearCita" prefHeight="25.0" prefWidth="150.0" text="Agendar cita" />
+                              <Button mnemonicParsing="false" onAction="#handleProximasCitas" prefHeight="25.0" prefWidth="150.0" text="Proximas citas" />
+                              <Button mnemonicParsing="false" onAction="#handleLineaCaptura" prefHeight="25.0" prefWidth="150.0" text="Línea de Captura" />
                                         <Label text="Registro Emocional">
                                             <font>
                                                 <Font name="System Bold" size="12.0" />
@@ -26,7 +34,6 @@
                                         </Label>
                                         <Button mnemonicParsing="false" onAction="#handleRegistroEmocional" prefHeight="25.0" prefWidth="150.0" text="Registro emocional" />
                                         <Button mnemonicParsing="false" onAction="#handleListaRegistros" prefHeight="25.0" prefWidth="150.0" text="Lista de registros" />
-                              <Button mnemonicParsing="false" onAction="#handleLineaCaptura" prefHeight="25.0" prefWidth="150.0" text="Línea de Captura" />
                                     </children>
                                     <padding>
                                         <Insets left="5.0" top="5.0" />

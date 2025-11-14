@@ -2,6 +2,7 @@ package mx.uam.ayd.proyecto.datos;
 
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
+import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.negocio.modelo.TipoConfirmacionCita;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
@@ -44,6 +45,8 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
      * @return una lista de citas en la fecha especificada; si no hay coincidencias, la lista estará vacía.
      */
     Cita findByFechaCita(LocalDateTime fechaCita);
+
+    Cita findByPsicologoAndFechaCita(Psicologo psicologo, LocalDateTime fechaCita);
 
     /**
      * Busca citas por paciente y estado.
