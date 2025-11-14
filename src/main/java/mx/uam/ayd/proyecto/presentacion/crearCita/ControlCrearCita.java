@@ -9,9 +9,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import mx.uam.ayd.proyecto.negocio.ServicioCita;
+import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
+import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
+import mx.uam.ayd.proyecto.negocio.ServicioPaciente;
 
 @Component
 public class ControlCrearCita {
+
+	@Autowired
+	private ServicioPaciente servicioPaciente;
 
 	@Autowired
 	private VentanaCrearCita ventanaCrearCita;
@@ -19,15 +25,20 @@ public class ControlCrearCita {
 	@Autowired
 	private ServicioCita servicioCita;
 	
-	String nombreUsuarioActivo;//almacena el nombre del usuario logeado
-
+	String nombreUsuarioActivo;//almacena el nombre del usuario logeado 
 	/**
 	 * Inicia la ventana para crear citas
 	 */
 	public void inicia(String nombreUsuarioActivo) {
 		this.nombreUsuarioActivo = nombreUsuarioActivo;
+		Paciente pacienteActivo = servicioPaciente.obtenerPacientePorUsuario(nombreUsuarioActivo);
+		Psicologo psicologoAsignado = pacienteActivo.getPsicologo();
 		ventanaCrearCita.setControlCrearCita(this);
-    	ventanaCrearCita.muestra(); //Aqui iba datos(?)
+    	ventanaCrearCita.muestra(); 
+		ventanaCrearCita.setDatosPacienteYPsicologo(pacienteActivo.getId(), 
+													pacienteActivo.getNombre(), 
+													psicologoAsignado.getId(), 
+													psicologoAsignado.getNombre());
 	}
 	
 	/**

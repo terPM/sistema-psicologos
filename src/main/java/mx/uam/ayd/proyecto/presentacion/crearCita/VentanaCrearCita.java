@@ -6,15 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Alert;
-import javafx.scene.*;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
-import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -67,7 +62,7 @@ public class VentanaCrearCita {
             idPaciente.setEditable(false);
             idPsicologo.setEditable(false);
             nombrePsicologo.setEditable(false);
-
+            nombrePaciente.setEditable(false);
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,6 +94,13 @@ public class VentanaCrearCita {
         seleccionHorario.getSelectionModel().clearSelection();
         seleccionHorario.getItems().clear();
         seleccionHorario.setPromptText("Seleccione una fecha primero");
+    }
+
+    public void setDatosPacienteYPsicologo(Long idPaciente, String nombrePaciente, int idPsicologo, String nombrePsicologo) {
+        this.idPaciente.setText(idPaciente.toString());
+        this.nombrePaciente.setText(nombrePaciente);
+        this.idPsicologo.setText(Integer.toString(idPsicologo));
+        this.nombrePsicologo.setText(nombrePsicologo);
     }
 
     public void cerrar() {
