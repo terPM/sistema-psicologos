@@ -105,4 +105,11 @@ public class VentanaPacientePrincipal {
             controlador.iniciarLineaCaptura();
         }
     }
+
+    @FXML
+    private void handlePerfilPaciente() {
+        if (controlador != null) {
+            controlador.iniciarPerfilPaciente();
+        }
+    }
 }

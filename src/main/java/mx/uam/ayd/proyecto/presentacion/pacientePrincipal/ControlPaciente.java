@@ -9,6 +9,7 @@ import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.Contr
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.perfilPaciente.ControlPerfilPaciente; 
 
 @Component
 public class ControlPaciente {
@@ -22,6 +23,8 @@ public class ControlPaciente {
     @Autowired
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
+    @Autowired
+    private ControlPerfilPaciente controlPerfilPaciente;
 
     private ControlPrincipalCentro controlPrincipal;    
     private String nombreUsuarioActivo;
@@ -50,9 +53,16 @@ public class ControlPaciente {
      * Cierra la aplicación
      */
     public void salir() {
-        ventana.oculta(); // Oculta la ventana actual del paciente
+        if (controlPerfilPaciente != null) {
+            controlPerfilPaciente.ocultaVentana();
+        }
+
+
+        ventana.oculta(); 
+        
+        // 3. Regresa al flujo principal (Login)
         if (controlPrincipal != null) {
-            controlPrincipal.regresaAlLogin(); // Llama al método de ControlPrincipalCentro
+            controlPrincipal.regresaAlLogin(); 
         } else {
             Platform.exit(); // Fallback por si la referencia es nula
         }
@@ -78,6 +88,15 @@ public class ControlPaciente {
     public void iniciarLineaCaptura() { 
         if (nombreUsuarioActivo != null) {
             controlLineaCaptura.inicia(); 
+        }
+    }
+
+    /**
+     * Inicia el sub-flujo de Perfil del Paciente.
+     */
+    public void iniciarPerfilPaciente() {
+        if (nombreUsuarioActivo != null) {
+            controlPerfilPaciente.inicia(nombreUsuarioActivo, this); 
         }
     }
 }

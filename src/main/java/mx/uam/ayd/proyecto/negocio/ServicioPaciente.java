@@ -112,4 +112,12 @@ public class ServicioPaciente {
         return recuperarTodosLosPacientes();
     }
 
+    /**
+     * Recupera un Paciente completo a partir de su nombre de usuario.
+     * @param usuario El nombre de usuario del paciente.
+     * @return El objeto Paciente o null si no se encuentra.
+     */
+    public Paciente obtenerPacientePorUsuario(String usuario) {
+        return pacienteRepository.findByUsuario(usuario);
+    }
 }
