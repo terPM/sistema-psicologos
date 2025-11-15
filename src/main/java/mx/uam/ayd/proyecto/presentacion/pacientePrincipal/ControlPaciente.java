@@ -5,6 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
 
+import mx.uam.ayd.proyecto.negocio.ServicioAviso;
+import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.ControlRegistroEmocinal;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
@@ -23,6 +29,9 @@ public class ControlPaciente {
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
 
+    @Autowired
+    private ServicioAviso servicioAviso;
+
     private ControlPrincipalCentro controlPrincipal;    
     private String nombreUsuarioActivo;
 
@@ -37,6 +46,32 @@ public class ControlPaciente {
         this.controlPrincipal = controlPrincipal; 
         ventana.setControlador(this);
         ventana.muestra();
+        cargarAvisos();
+    }
+
+    private void cargarAvisos() {
+        try {
+            Aviso ultimoAviso = servicioAviso.obtenerUltimoAviso();
+            String textoParaMostrar;
+
+            if (ultimoAviso != null) {
+
+                LocalDate fecha = ultimoAviso.getFecha(); 
+                String contenido = ultimoAviso.getContenido();
+
+                String fechaFormateada = "Publicado el: " + fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                textoParaMostrar = fechaFormateada + "\n\n" + contenido;
+
+            } else {
+                textoParaMostrar = "No hay avisos nuevos por el momento.";
+            }
+
+            ventana.setAvisos(textoParaMostrar);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ventana.setAvisos("No se pudieron cargar los avisos en este momento.");
+        }
     }
 
     /**
