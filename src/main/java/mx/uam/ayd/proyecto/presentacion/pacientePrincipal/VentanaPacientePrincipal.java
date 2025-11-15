@@ -114,9 +114,8 @@ public class VentanaPacientePrincipal {
     }
     @FXML
     private void handleProximasCitas() {
-        /*if (controlador != null) {
-            controlador.iniciarProximasCitas();
-        }*/
-        System.out.println("Función pendiente");
+        if (controlador != null) {
+            controlador.iniciarListarCitas();
+        }
     }
 }

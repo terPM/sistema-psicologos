@@ -38,7 +38,7 @@ public class Cita {
     private Paciente paciente;
 
     // Relación con Psicologo
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
 }

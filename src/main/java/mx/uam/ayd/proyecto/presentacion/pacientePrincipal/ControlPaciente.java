@@ -10,6 +10,7 @@ import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLi
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
 import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListarCitas.ControlListarCitas;
 
 @Component
 public class ControlPaciente {
@@ -25,6 +26,8 @@ public class ControlPaciente {
     private ControlLineaCaptura controlLineaCaptura;
     @Autowired
     private ControlCrearCita controlCrearCita;
+    @Autowired
+    private ControlListarCitas controlListarCitas;
 
     private ControlPrincipalCentro controlPrincipal;    
     private String nombreUsuarioActivo = "";
@@ -90,8 +93,9 @@ public class ControlPaciente {
             controlCrearCita.inicia(nombreUsuarioActivo);
     }
 
-    public void iniciarProximasCitas() {
-        System.out.println("Funcion pendiente");
+    public void iniciarListarCitas() {
+        controlListarCitas.inicia();
+        System.out.println("Función de listar citas iniciada");
     }
 
 }
