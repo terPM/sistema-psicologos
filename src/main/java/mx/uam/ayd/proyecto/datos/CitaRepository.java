@@ -29,7 +29,7 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
      * @param paciente el paciente del cual se quieren obtener las citas; no debe ser {@code null}.
      * @return una lista de citas del paciente; si no tiene citas registradas, la lista estará vacía.
      */
-    List<Cita> findByPaciente(Paciente paciente);
+    List<Cita> findByPacienteAndEstadoCitaNot(Paciente paciente, TipoConfirmacionCita estadoCita);
 
     /**
      * Busca una cita por su identificador único.

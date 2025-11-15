@@ -65,7 +65,7 @@ public class ServicioCita {
      */
     public List<Cita> listarCitas(String nombreUsuarioActivo) {
         Paciente paciente = pacienteRepository.findByUsuario(nombreUsuarioActivo);
-        List<Cita> citas = citaRepository.findByPaciente(paciente);
+        List<Cita> citas = citaRepository.findByPacienteAndEstadoCitaNot(paciente, TipoConfirmacionCita.CANCELADA);
         return citas;
     }
     
