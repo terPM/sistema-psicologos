@@ -86,7 +86,7 @@ public class ControlPrincipalCentro {
                 Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
             if (psicologo != null) { 
                 autenticado = true;
-                mostrarSistemaPrincipalPsicologo(usuario);
+                mostrarSistemaPrincipalPsicologo();
                 servicioSesion.setUsuarioActual(usuario);
             }
             break;
@@ -115,9 +115,9 @@ public class ControlPrincipalCentro {
         }
     }
 
-    public void mostrarSistemaPrincipalPsicologo(String nombreDeUsuario) {
+    public void mostrarSistemaPrincipalPsicologo() {
         ventanaLogin.cerrarLogin();
-        controlPsicologo.inicia(nombreDeUsuario, this);
+        controlPsicologo.inicia(this);
     }
 
     public void mostrarSistemaPrincipalAdministrativo() {

@@ -29,6 +29,14 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
      * @param paciente el paciente del cual se quieren obtener las citas; no debe ser {@code null}.
      * @return una lista de citas del paciente; si no tiene citas registradas, la lista estará vacía.
      */
+    List<Cita> findByPaciente(Paciente paciente);
+
+    /**
+     * Recupera todas las citas asociadas a un paciente.
+     *
+     * @param paciente el paciente del cual se quieren obtener las citas; no debe ser {@code null}.
+     * @return una lista de citas del paciente; si no tiene citas registradas, la lista estará vacía.
+     */
     List<Cita> findByPacienteAndEstadoCitaNot(Paciente paciente, TipoConfirmacionCita estadoCita);
 
     /**
@@ -46,6 +54,14 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
      * @return una lista de citas con el estado especificado; si no hay coincidencias, la lista estará vacía.
      */
     List<Cita> findByEstadoCita(TipoConfirmacionCita estadoCita);
+
+    /**
+     * Busca citas por fecha exacta.
+     *
+     * @param fechaCita la fecha de la cita; no debe ser {@code null}.
+     * @return una lista de citas en la fecha especificada; si no hay coincidencias, la lista estará vacía.
+     */
+    Cita findByFechaCita(LocalDateTime fechaCita);
 
     /**
      * Busca una cita por psicólogo y fecha específica, excluyendo aquellas cuyo estado no sea cancelado.

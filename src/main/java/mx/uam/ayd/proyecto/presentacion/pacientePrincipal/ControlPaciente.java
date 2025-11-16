@@ -30,7 +30,7 @@ public class ControlPaciente {
     private ControlListarCitas controlListarCitas;
 
     private ControlPrincipalCentro controlPrincipal;    
-    private String nombreUsuarioActivo = "";
+    private String nombreUsuarioActivo;
 
     /**
      * Inicia el flujo principal del paciente, 
@@ -95,7 +95,6 @@ public class ControlPaciente {
 
     public void iniciarListarCitas() {
         controlListarCitas.inicia();
-        System.out.println("Función de listar citas iniciada");
     }
 
 }
