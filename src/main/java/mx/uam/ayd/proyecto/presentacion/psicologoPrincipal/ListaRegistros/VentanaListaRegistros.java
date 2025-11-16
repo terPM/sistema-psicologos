@@ -1,4 +1,4 @@
-package mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros;
+package mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ListaRegistros;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +24,7 @@ public class VentanaListaRegistros {
     private Stage stage;
 
     @FXML
-    private ListView<String> listViewRegistros; // Asegúrate que el fx:id coincida
+    private ListView<String> listViewRegistros;
 
     @FXML
     private Button btnCerrar;
@@ -42,7 +42,7 @@ public class VentanaListaRegistros {
 
                 stage = new Stage();
                 stage.setTitle("Historial de Registros");
-                stage.setResizable(false);//TAMAÑO ESTATICO 
+                stage.setResizable(false);
                 stage.setScene(new Scene(root));
                 stage.initModality(Modality.APPLICATION_MODAL);
             }
@@ -83,13 +83,20 @@ public class VentanaListaRegistros {
             items.add("No hay registros emocionales.");
         } else {
             for (RegistroEmocional registro : registros) {
-                // Formateamos el texto a mostrar
-                String texto = String.format("%s - Emoción: %s",
+
+                String nombrePaciente = "Paciente Desconocido";
+
+                if (registro.getPaciente() != null) {
+                    nombrePaciente = registro.getPaciente().getNombre();
+                }
+
+                String texto = String.format("PACIENTE: %s (%s)\nEMOCIÓN: %s",
+                        nombrePaciente,
                         registro.getFecha().toString(),
                         registro.getEmocion());
 
                 if (registro.getNota() != null && !registro.getNota().isEmpty()) {
-                    texto += "\nNota: " + registro.getNota();
+                    texto += "\nNOTA: " + registro.getNota();
                 }
                 items.add(texto);
             }
@@ -106,7 +113,7 @@ public class VentanaListaRegistros {
                     setText(null);
                 } else {
                     setText(item);
-                    setWrapText(true); // Habilita el ajuste de línea
+                    setWrapText(true);
                 }
             }
         });

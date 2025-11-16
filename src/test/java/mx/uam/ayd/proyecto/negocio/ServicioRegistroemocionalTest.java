@@ -1,6 +1,7 @@
 package mx.uam.ayd.proyecto.negocio;
 
 import mx.uam.ayd.proyecto.datos.RegistroEmocionalRepository;
+import mx.uam.ayd.proyecto.negocio.modelo.Paciente; // <-- 1. Importar Paciente
 import mx.uam.ayd.proyecto.negocio.modelo.RegistroEmocional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,32 +39,34 @@ public class ServicioRegistroemocionalTest {
         String emocion = "Feliz";
         String nota = "Prueba de nota";
 
+        // --- CAMBIO: Crear un paciente simulado ---
+        Paciente mockPaciente = new Paciente();
+        mockPaciente.setId(1L);
+        mockPaciente.setNombre("Paciente de Prueba");
+
         // Creamos un objeto de retorno simulado
         RegistroEmocional registroSimulado = new RegistroEmocional();
         registroSimulado.setEmocion(emocion);
         registroSimulado.setNota(nota);
         registroSimulado.setFecha(LocalDate.now());
         registroSimulado.setId(1L);
+        registroSimulado.setPaciente(mockPaciente); // Asignamos el paciente
 
         // Le decimos al simulador qué hacer:
-        // "Cuando llamen al método 'save' con cualquier objeto 'RegistroEmocional',
-        // entonces retorna nuestro 'registroSimulado'"
         when(registroEmocionalRepository.save(any(RegistroEmocional.class))).thenReturn(registroSimulado);
 
         // --- ACT (Actuar) ---
-        // Llamamos al método que queremos probar
-        RegistroEmocional resultado = servicioRegistroemocional.guardarRegistro(emocion, nota);
+        // --- CAMBIO: Añadir el paciente a la llamada ---
+        RegistroEmocional resultado = servicioRegistroemocional.guardarRegistro(emocion, nota, mockPaciente);
 
         // --- ASSERT (Afirmar) ---
-        // 1. Verificar que el resultado no sea nulo
         assertNotNull(resultado, "El registro guardado no debe ser nulo.");
-
-        // 2. Verificar que los datos se asignaron correctamente
         assertEquals(emocion, resultado.getEmocion(), "La emoción debe ser la que se guardó.");
         assertEquals(nota, resultado.getNota(), "La nota debe ser la que se guardó.");
         assertNotNull(resultado.getFecha(), "La fecha debe haberse asignado.");
+        assertEquals(mockPaciente, resultado.getPaciente(), "El paciente debe ser el que se guardó."); // <-- 3. Verificar paciente
 
-        // 3. Verificar que el repositorio SÍ fue llamado para guardar
+        // 4. Verificar que el repositorio SÍ fue llamado para guardar
         verify(registroEmocionalRepository, times(1)).save(any(RegistroEmocional.class));
     }
 
@@ -74,17 +77,15 @@ public class ServicioRegistroemocionalTest {
         // --- ARRANGE (Preparar) ---
         String emocionVacia = "  ";
         String nota = "Esta prueba no debe guardar";
+        Paciente mockPaciente = new Paciente(); // Paciente simulado
 
         // --- ACT & ASSERT (Actuar y Afirmar) ---
-        // Verificamos que el método lance la excepción esperada (IllegalArgumentException)
         Exception excepcion = assertThrows(IllegalArgumentException.class, () -> {
-            servicioRegistroemocional.guardarRegistro(emocionVacia, nota);
+            // --- CAMBIO: Añadir el paciente a la llamada ---
+            servicioRegistroemocional.guardarRegistro(emocionVacia, nota, mockPaciente);
         });
 
-        // Verificamos el mensaje de error
         assertEquals("La emoción no puede estar vacía", excepcion.getMessage());
-
-        // MUY IMPORTANTE: Verificamos que el repositorio NUNCA fue llamado
         verify(registroEmocionalRepository, never()).save(any());
     }
 
@@ -95,42 +96,57 @@ public class ServicioRegistroemocionalTest {
         // --- ARRANGE (Preparar) ---
         String emocionNula = null;
         String nota = "Esta prueba tampoco debe guardar";
+        Paciente mockPaciente = new Paciente(); // Paciente simulado
 
         // --- ACT & ASSERT (Actuar y Afirmar) ---
-        // Verificamos que el método lance la excepción esperada
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioRegistroemocional.guardarRegistro(emocionNula, nota);
+            // --- CAMBIO: Añadir el paciente a la llamada ---
+            servicioRegistroemocional.guardarRegistro(emocionNula, nota, mockPaciente);
         });
 
-        // Verificamos que el repositorio NUNCA fue llamado
         verify(registroEmocionalRepository, never()).save(any());
     }
+
+    // --- PRUEBA NUEVA: Para la lógica que añadimos ---
+    @Test
+    void testGuardarRegistroConPacienteNulo() {
+        System.out.println("TEST: Probando guardar un registro con paciente nulo");
+
+        // --- ARRANGE (Preparar) ---
+        String emocion = "Feliz";
+        String nota = "No importa";
+        Paciente pacienteNulo = null;
+
+        // --- ACT & ASSERT (Actuar y Afirmar) ---
+        Exception excepcion = assertThrows(IllegalArgumentException.class, () -> {
+            servicioRegistroemocional.guardarRegistro(emocion, nota, pacienteNulo);
+        });
+
+        assertEquals("El paciente no puede ser nulo", excepcion.getMessage());
+        verify(registroEmocionalRepository, never()).save(any());
+    }
+    // --- FIN DE PRUEBA NUEVA ---
+
 
     @Test
     void testListarRegistros() {
         System.out.println("TEST: Probando listar registros existentes");
 
+        // (Esta prueba no necesita cambios ya que no llama a guardarRegistro)
+
         // --- ARRANGE (Preparar) ---
-        // Creamos una lista falsa que simulará la respuesta de la BD
         RegistroEmocional r1 = new RegistroEmocional();
         r1.setEmocion("Triste");
         List<RegistroEmocional> listaSimulada = List.of(r1);
 
-        // Le decimos al simulador qué hacer:
-        // "Cuando llamen al método 'findAll', entonces retorna nuestra 'listaSimulada'"
         when(registroEmocionalRepository.findAll()).thenReturn(listaSimulada);
 
         // --- ACT (Actuar) ---
         List<RegistroEmocional> resultado = servicioRegistroemocional.listarRegistros();
 
         // --- ASSERT (Afirmar) ---
-        // 1. Verificar que la lista no sea nula
         assertNotNull(resultado, "La lista no debe ser nula.");
-
-        // 2. Verificar que la lista tenga el tamaño esperado
         assertEquals(1, resultado.size(), "La lista debe contener 1 elemento.");
-
-        // 3. Verificar que el contenido sea el correcto
         assertEquals("Triste", resultado.get(0).getEmocion());
     }
 
@@ -138,18 +154,16 @@ public class ServicioRegistroemocionalTest {
     void testListarRegistrosCuandoNoHay() {
         System.out.println("TEST: Probando listar registros cuando la base está vacía");
 
+        // (Esta prueba no necesita cambios)
+
         // --- ARRANGE (Preparar) ---
-        // Le decimos al simulador que retorne una lista vacía
         when(registroEmocionalRepository.findAll()).thenReturn(Collections.emptyList());
 
         // --- ACT (Actuar) ---
         List<RegistroEmocional> resultado = servicioRegistroemocional.listarRegistros();
 
         // --- ASSERT (Afirmar) ---
-        // 1. Verificar que la lista no sea nula
         assertNotNull(resultado, "La lista no debe ser nula.");
-
-        // 2. Verificar que la lista esté vacía
         assertTrue(resultado.isEmpty(), "La lista debe estar vacía.");
     }
 }

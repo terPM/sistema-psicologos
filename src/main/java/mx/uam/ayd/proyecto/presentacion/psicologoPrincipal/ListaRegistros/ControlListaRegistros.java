@@ -1,15 +1,13 @@
-package mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros;
+package mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ListaRegistros;
 
 import jakarta.annotation.PostConstruct;
 import mx.uam.ayd.proyecto.negocio.ServicioRegistroemocional;
 import mx.uam.ayd.proyecto.negocio.modelo.RegistroEmocional;
+import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
-/**
- * Controlador para la ventana de Lista de Registros.
- */
 @Component
 public class ControlListaRegistros {
 
@@ -17,7 +15,7 @@ public class ControlListaRegistros {
     private VentanaListaRegistros ventanaListaRegistros;
 
     @Autowired
-    private ServicioRegistroemocional servicioRegistroEmocional;
+    private ServicioRegistroemocional servicioRegistroemocional;
 
     @PostConstruct
     public void init() {
@@ -25,11 +23,10 @@ public class ControlListaRegistros {
     }
 
     /**
-     * Inicia el flujo pidiendo los registros al servicio
-     * y mostrándolos en la ventana.
+     * Inicia el flujo pidiendo los registros del psicólogo
      */
-    public void inicia() {
-        List<RegistroEmocional> registros = servicioRegistroEmocional.listarRegistros();
+    public void inicia(Psicologo psicologo) {
+        List<RegistroEmocional> registros = servicioRegistroemocional.listarRegistrosPorPsicologo(psicologo);
         ventanaListaRegistros.muestra(registros);
     }
 

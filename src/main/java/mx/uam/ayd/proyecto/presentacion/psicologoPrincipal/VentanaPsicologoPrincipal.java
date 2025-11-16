@@ -15,9 +15,6 @@ public class VentanaPsicologoPrincipal {
     private ControlPsicologo controlador;
     private boolean initialized = false;
 
-    /**
-     * Inicializa la interfaz de usuario
-     */
     private void initializeUI() {
         if (initialized) {
             return;
@@ -59,19 +56,16 @@ public class VentanaPsicologoPrincipal {
         stage.show();
     }
 
-    /**
-     * Método para ocultar la ventana sin cerrar la aplicación.
-     */
     public void oculta() {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::oculta);
             return;
         }
         if (stage != null) {
-            stage.hide(); 
+            stage.hide();
         }
     }
-    
+
     @FXML
     private void handleSalir() {
         if (controlador != null) {
@@ -85,4 +79,10 @@ public class VentanaPsicologoPrincipal {
         }
     }
 
+    @FXML
+    private void handleListaRegistros() {
+        if (controlador != null) {
+            controlador.iniciarListaRegistros();
+        }
+    }
 }

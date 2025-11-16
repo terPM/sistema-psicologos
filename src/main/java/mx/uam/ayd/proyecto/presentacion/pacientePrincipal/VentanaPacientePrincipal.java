@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -15,9 +16,6 @@ public class VentanaPacientePrincipal {
     private ControlPaciente controlador;
     private boolean initialized = false;
 
-    /**
-     * Inicializa la interfaz de usuario
-     */
     private void initializeUI() {
         if (initialized) {
             return;
@@ -58,20 +56,17 @@ public class VentanaPacientePrincipal {
     }
 
 
-    /**
-     * Método para ocultar la ventana sin cerrar la aplicación.
-     */
     public void oculta() {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::oculta);
             return;
         }
         if (stage != null) {
-            stage.hide(); 
+            stage.hide();
         }
     }
 
-    
+
     @FXML
     private void handleSalir() {
         if (controlador != null) {
@@ -79,9 +74,6 @@ public class VentanaPacientePrincipal {
         }
     }
 
-    /**
-     * Manejador para el botón "Registro emocional"
-     */
     @FXML
     private void handleRegistroEmocional() {
         if (controlador != null) {
@@ -89,20 +81,25 @@ public class VentanaPacientePrincipal {
         }
     }
 
-    /**
-     * Manejador para el botón "Lista de registros"
-     */
-    @FXML
-    private void handleListaRegistros() {
-        if (controlador != null) {
-            controlador.iniciarListaRegistros();
-        }
-    }
-
     @FXML
     private void handleLineaCaptura() {
         if (controlador != null) {
             controlador.iniciarLineaCaptura();
+        }
+    }
+
+    public void muestraAviso(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void handleHistorialPagos() {
+        if (controlador != null) {
+            controlador.iniciarHistorialPagos();
         }
     }
 }

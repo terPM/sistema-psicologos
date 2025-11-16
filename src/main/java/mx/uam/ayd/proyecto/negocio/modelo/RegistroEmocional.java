@@ -4,11 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
 
-/**
- * Entidad que representa un registro emocional de un paciente.
- *
- * Contiene la emoción seleccionada, una nota opcional y la fecha del registro.
- */
 @Entity
 @Data
 public class RegistroEmocional {
@@ -20,11 +15,13 @@ public class RegistroEmocional {
     private LocalDate fecha;
     private String emocion;
 
-    /**
-     * Nota opcional del paciente.
-     * Se mapea como tipo TEXT para permitir contenido extenso.
-     */
     @Column(columnDefinition="TEXT")
     private String nota;
 
+    /**
+     * Relación: Muchos Registros Emocionales pertenecen a Un Paciente.
+     */
+    @ManyToOne
+    @JoinColumn(name = "paciente_id") // Así se llamará la columna en la BD
+    private Paciente paciente;
 }

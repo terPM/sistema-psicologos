@@ -30,7 +30,6 @@ public class VentanaRegistroEmocional {
     @FXML
     private TextArea textAreaNota;
 
-    // Botones de emoción
     @FXML
     private Button btnfeliz;
     @FXML
@@ -56,7 +55,7 @@ public class VentanaRegistroEmocional {
 
                 stage = new Stage();
                 stage.setTitle("Registro Emocional");
-                stage.setResizable(false); //TAMAÑO ESTATICO 
+                stage.setResizable(false);
                 stage.setScene(new Scene(root));
                 stage.initModality(Modality.APPLICATION_MODAL);
             }
@@ -66,7 +65,8 @@ public class VentanaRegistroEmocional {
             resetearEstiloBotones();
 
             LocalDate fechaHoy = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy");
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             lblFechaActual.setText("Fecha: " + fechaHoy.format(formatter));
 
             stage.showAndWait();
@@ -84,18 +84,11 @@ public class VentanaRegistroEmocional {
         }
     }
 
-    /**
-     * Manejador para TODOS los botones de emoción.
-     */
     @FXML
     public void handleEmocionButton(ActionEvent event) {
         Button botonPresionado = (Button) event.getSource();
         emocionSeleccionada = botonPresionado.getText();
-
-
         resetearEstiloBotones();
-
-
         botonPresionado.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
     }
 
@@ -107,9 +100,6 @@ public class VentanaRegistroEmocional {
         btnneutral.setStyle(null);
     }
 
-    /**
-     * Manejador para el botón "Guardar".
-     */
     @FXML
     public void handleGuardar(ActionEvent event) {
         String nota = textAreaNota.getText();

@@ -1,4 +1,4 @@
-package mx.uam.ayd.proyecto.presentacion.principal; // Paquete correcto
+package mx.uam.ayd.proyecto.presentacion.principal;
 
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
@@ -16,18 +16,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ControlPrincipalCentro {
 
-    // --- Credenciales de prueba ---
     private static final String USER_ADMIN = "admin";
     private static final String PASS_ADMIN = "admin1234";
-    // ----------------------------
 
-    // Usa la clase de Ventana renombrada
     private final VentanaPrincipalCentro ventanaLogin;
-
-    // ControlMenu (el menú completo) ahora es solo para el Administrador
     private final ControlMenu controlMenuAdmin;
-
-    // Controladores de flujos únicos
     private final ControlPsicologo controlPsicologo;
     private final ControlPaciente controlPaciente;
 
@@ -36,7 +29,7 @@ public class ControlPrincipalCentro {
 
     @Autowired
     public ControlPrincipalCentro(
-            VentanaPrincipalCentro ventanaLogin, // Constructor usa clase renombrada
+            VentanaPrincipalCentro ventanaLogin,
             ControlMenu controlMenuAdmin,
             ControlPsicologo controlPsicologo,
             ControlPaciente controlPaciente,
@@ -78,11 +71,11 @@ public class ControlPrincipalCentro {
         switch (rol) {
             case "Psicólogo":
                 Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
-            if (psicologo != null) { 
-                autenticado = true;
-                mostrarSistemaPrincipalPsicologo();
-            }
-            break;
+                if (psicologo != null) {
+                    autenticado = true;
+                    mostrarSistemaPrincipalPsicologo(psicologo);
+                }
+                break;
             case "Administrador":
                 if (USER_ADMIN.equals(usuario) && PASS_ADMIN.equals(contrasena)) {
                     autenticado = true;
@@ -93,7 +86,7 @@ public class ControlPrincipalCentro {
                 Paciente paciente = pacienteRepository.findByUsuario(usuario);
                 if (paciente != null && paciente.getContrasena().equals(contrasena)) {
                     autenticado = true;
-                    mostrarSistemaPrincipalPaciente(usuario);
+                    mostrarSistemaPrincipalPaciente(paciente);
                 }
                 break;
             default:
@@ -106,9 +99,9 @@ public class ControlPrincipalCentro {
         }
     }
 
-    public void mostrarSistemaPrincipalPsicologo() {
+    public void mostrarSistemaPrincipalPsicologo(Psicologo psicologo) {
         ventanaLogin.cerrarLogin();
-        controlPsicologo.inicia(this);
+        controlPsicologo.inicia(this, psicologo);
     }
 
     public void mostrarSistemaPrincipalAdministrativo() {
@@ -116,8 +109,8 @@ public class ControlPrincipalCentro {
         controlMenuAdmin.inicia(this);
     }
 
-    public void mostrarSistemaPrincipalPaciente(String nombreDeUsuario) {
+    public void mostrarSistemaPrincipalPaciente(Paciente paciente) {
         ventanaLogin.cerrarLogin();
-        controlPaciente.inicia(nombreDeUsuario, this);
+        controlPaciente.inicia(paciente, this);
     }
 }

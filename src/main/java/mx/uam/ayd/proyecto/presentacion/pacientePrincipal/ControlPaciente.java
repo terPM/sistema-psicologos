@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
 
+import mx.uam.ayd.proyecto.negocio.ServicioCita;
+import mx.uam.ayd.proyecto.negocio.modelo.Cita;
+import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.ControlRegistroEmocinal;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
-import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.HistorialPagos.ControlHistorialPagos;
 
 @Component
 public class ControlPaciente {
@@ -18,66 +21,70 @@ public class ControlPaciente {
     @Autowired
     private ControlRegistroEmocinal controlRegistroEmocinal;
     @Autowired
-    private ControlListaRegistros controlListaRegistros;
-    @Autowired
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
+    @Autowired
+    private ServicioCita servicioCita;
 
-    private ControlPrincipalCentro controlPrincipal;    
-    private String nombreUsuarioActivo;
+    @Autowired
+    private ControlHistorialPagos controlHistorialPagos;
 
-    /**
-     * Inicia el flujo principal del paciente, 
-     * recibiendo y guardando el nombre de usuario de la sesión.
-     * @param nombreUsuarioActivo El nombre de usuario que ingresó en el login.
-     * @param controlPrincipal La referencia al controlador principal para la salida.
-     */
-    public void inicia(String nombreUsuarioActivo, ControlPrincipalCentro controlPrincipal) { 
-        this.nombreUsuarioActivo = nombreUsuarioActivo;
-        this.controlPrincipal = controlPrincipal; 
+    private ControlPrincipalCentro controlPrincipal;
+    private Paciente pacienteSesion;
+
+    public void inicia(Paciente paciente, ControlPrincipalCentro controlPrincipal) {
+        this.pacienteSesion = paciente;
+        this.controlPrincipal = controlPrincipal;
         ventana.setControlador(this);
         ventana.muestra();
     }
 
-    /**
-     * Devuelve el nombre del usuario activo (obtenido del login).
-     */
-    public String getNombreUsuarioActivo() { 
-        return nombreUsuarioActivo;
+    public Paciente getPacienteSesion() {
+        return pacienteSesion;
     }
 
-    /**
-     * Cierra la aplicación
-     */
+    public String getNombreUsuarioActivo() {
+        return (pacienteSesion != null) ? pacienteSesion.getUsuario() : null;
+    }
+
     public void salir() {
-        ventana.oculta(); // Oculta la ventana actual del paciente
+        ventana.oculta();
+        this.pacienteSesion = null;
         if (controlPrincipal != null) {
-            controlPrincipal.regresaAlLogin(); // Llama al método de ControlPrincipalCentro
+            controlPrincipal.regresaAlLogin();
         } else {
-            Platform.exit(); // Fallback por si la referencia es nula
+            Platform.exit();
         }
     }
 
-    /**
-     * Inicia el sub-flujo de Registro Emocional
-     */
     public void iniciarRegistroEmocional() {
-        controlRegistroEmocinal.inicia();
-    }
-
-    /**
-     * Inicia el sub-flujo de Lista de Registros
-     */
-    public void iniciarListaRegistros() {
-        controlListaRegistros.inicia();
-    }
-
-    /**
-     * Inicia el sub-flujo de Generar Línea de Captura.
-     */
-    public void iniciarLineaCaptura() { 
-        if (nombreUsuarioActivo != null) {
-            controlLineaCaptura.inicia(); 
+        if(this.pacienteSesion != null) {
+            controlRegistroEmocinal.inicia(this.pacienteSesion);
+        } else {
+            System.err.println("No hay paciente en sesión para el registro emocional");
         }
+    }
+
+    public void iniciarLineaCaptura() {
+        if (pacienteSesion == null) {
+            System.err.println("No hay paciente en sesión");
+            return;
+        }
+
+        Cita citaPendiente = servicioCita.buscarCitaPendienteMasReciente(pacienteSesion);
+
+        if (citaPendiente != null) {
+            controlLineaCaptura.inicia(citaPendiente);
+        } else {
+            ventana.muestraAviso("Sin Pagos Pendientes", "No tienes ninguna cita pendiente de pago.");
+        }
+    }
+
+    public void iniciarHistorialPagos() {
+        if (pacienteSesion == null) {
+            System.err.println("No hay paciente en sesión");
+            return;
+        }
+        controlHistorialPagos.inicia(pacienteSesion);
     }
 }
