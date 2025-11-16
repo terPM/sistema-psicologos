@@ -57,10 +57,8 @@ public class ControlPaciente {
             controlPerfilPaciente.ocultaVentana();
         }
 
-
         ventana.oculta(); 
         
-        // 3. Regresa al flujo principal (Login)
         if (controlPrincipal != null) {
             controlPrincipal.regresaAlLogin(); 
         } else {

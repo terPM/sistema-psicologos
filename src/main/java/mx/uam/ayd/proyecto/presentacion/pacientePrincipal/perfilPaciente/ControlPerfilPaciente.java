@@ -43,7 +43,6 @@ public class ControlPerfilPaciente {
     public void regresa() {
         ventanaPerfilPaciente.oculta();
         if (controlPaciente != null) {
-        // Podrías agregar un log para indicar que se regresa al flujo padre
         System.out.println("Regresando del perfil al controlador: " + controlPaciente.getClass().getSimpleName()); 
         }
     }
