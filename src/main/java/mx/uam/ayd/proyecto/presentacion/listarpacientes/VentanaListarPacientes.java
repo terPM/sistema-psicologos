@@ -56,21 +56,14 @@ public class VentanaListarPacientes {
     @FXML private Label lblHistorialConsumo;
     @FXML private Label lblHistorialDescripcion;
     @FXML private Label lblHistorialConsentimiento;
-
-    // --- CÓDIGO AÑADIDO ---
-    @FXML
-    private Button btnAsignarPsicologo;
-    // --- FIN DEL CÓDIGO AÑADIDO ---
+    @FXML private Button btnAsignarPsicologo;
 
     // Variables de estado y control
     private Stage stage;
     private ControlListarPacientes control;
     private BateriaClinica bateriaSeleccionada;
     private List<BateriaClinica> bateriasDelPaciente;
-
-    // --- CÓDIGO AÑADIDO ---
     private Paciente pacienteSeleccionado;
-    // --- FIN DEL CÓDIGO AÑADIDO ---
 
     /**
      * Muestra la ventana de listado de pacientes.
@@ -115,13 +108,12 @@ public class VentanaListarPacientes {
             // Listener para la selección de un paciente en la tabla
             tablaPacientes.getSelectionModel().selectedItemProperty().addListener(
                     (observable, oldValue, newValue) -> {
-                        // --- CÓDIGO MODIFICADO ---
                         this.pacienteSeleccionado = newValue; // Guarda al paciente
                         btnAsignarPsicologo.setDisable(newValue == null); // Activa/desactiva el botón
 
                         // Notifica al controlador sobre el paciente seleccionado
                         control.seleccionarPaciente(newValue);
-                        // --- FIN DE LA MODIFICACIÓN ---
+
                     }
             );
 
@@ -259,7 +251,6 @@ public class VentanaListarPacientes {
         }
     }
 
-    // --- CÓDIGO AÑADIDO ---
     /**
      * Evento manejador para el botón "Asignar Psicólogo".
      * Llama al controlador para iniciar el flujo de asignación.
@@ -270,5 +261,4 @@ public class VentanaListarPacientes {
             control.asignarPsicologo(pacienteSeleccionado);
         }
     }
-    // --- FIN DEL CÓDIGO AÑADIDO ---
 }

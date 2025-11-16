@@ -50,10 +50,10 @@ public class ServicioCita {
 
         if (cita != null) {
             if (cita.getPaciente() != null) {
-                cita.getPaciente().getNombre(); // "Despierta" al paciente
+                cita.getPaciente().getNombre();
             }
             if (cita.getPsicologo() != null) {
-                cita.getPsicologo().getNombre(); // "Despierta" al psicólogo
+                cita.getPsicologo().getNombre();
             }
         }
 
@@ -64,7 +64,6 @@ public class ServicioCita {
     public List<Cita> listarCitasPorPaciente(Paciente paciente) {
         List<Cita> citas = citaRepository.findByPaciente(paciente);
 
-        // Forzamos la carga de datos para evitar LazyInitializationException
         for (Cita cita : citas) {
             if (cita.getPaciente() != null) cita.getPaciente().getNombre();
             if (cita.getPsicologo() != null) cita.getPsicologo().getNombre();

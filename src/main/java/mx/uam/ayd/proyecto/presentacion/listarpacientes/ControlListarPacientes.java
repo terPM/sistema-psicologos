@@ -27,10 +27,8 @@ public class ControlListarPacientes {
     @Autowired
     private ServicioBateriaClinica servicioBateriaClinica;
 
-    // --- CÓDIGO AÑADIDO ---
     @Autowired
     private ControlAsignarPsicologo controlAsignarPsicologo;
-    // --- FIN DEL CÓDIGO AÑADIDO ---
 
     /**
      * Inicia la vista de listado de pacientes. (Modo Admin)
@@ -110,7 +108,6 @@ public class ControlListarPacientes {
         }
     }
 
-    // --- CÓDIGO AÑADIDO ---
     /**
      * Inicia el flujo para asignar un psicólogo al paciente seleccionado.
      * @param paciente El paciente seleccionado en la tabla.
@@ -118,7 +115,6 @@ public class ControlListarPacientes {
     public void asignarPsicologo(Paciente paciente) {
         controlAsignarPsicologo.inicia(paciente);
     }
-    // --- FIN DEL CÓDIGO AÑADIDO ---
 
     /**
      * Cierra la ventana de listado de pacientes.

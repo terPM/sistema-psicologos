@@ -42,6 +42,6 @@ public class Paciente {
     public Paciente(){
         this.bateriasClinicas = new ArrayList<>();
         this.citas = new ArrayList<>();
-        this.registrosEmocionales = new ArrayList<>(); // Inicializar la nueva lista
+        this.registrosEmocionales = new ArrayList<>();
     }
 }
