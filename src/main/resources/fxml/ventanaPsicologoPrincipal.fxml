@@ -44,9 +44,13 @@
             <children>
                 <SplitPane dividerPositions="0.3" prefHeight="350.0" prefWidth="640.0">
                     <items>
+<<<<<<< HEAD
 
                         <!-- Panel izquierdo -->
                         <AnchorPane minWidth="200.0">
+=======
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+>>>>>>> hu-16-historial-de-pagos
                             <children>
                                 <VBox alignment="CENTER_LEFT" layoutX="9.0" layoutY="14.0"
                                       prefHeight="350.0" prefWidth="171.0" spacing="10.0">
@@ -65,6 +69,7 @@
 
                                         <Separator prefWidth="150.0"/>
 
+<<<<<<< HEAD
                                         <Label text="Citas">
                                             <font>
                                                 <Font name="System Bold" size="13.0"/>
@@ -78,6 +83,18 @@
                                                 prefWidth="150.0"
                                                 mnemonicParsing="false"
                                                 onAction="#handleVerHorario"/>
+=======
+                                        <Label text="Registros del Paciente">
+                                            <font>
+                                                <Font name="System Bold" size="13.0"/>
+                                            </font>
+                                        </Label>
+
+                                        <Button text="Lista de Registros"
+                                                prefWidth="150.0"
+                                                mnemonicParsing="false"
+                                                onAction="#handleListaRegistros"/>
+>>>>>>> hu-16-historial-de-pagos
 
                                         <Separator prefWidth="150.0"/>
 
@@ -94,7 +111,10 @@
                             </children>
                         </AnchorPane>
 
+<<<<<<< HEAD
                         <!-- Panel central -->
+=======
+>>>>>>> hu-16-historial-de-pagos
                         <AnchorPane>
                             <children>
                                 <BorderPane prefHeight="398.0" prefWidth="442.0"

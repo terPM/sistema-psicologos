@@ -2,12 +2,10 @@ package mx.uam.ayd.proyecto.negocio;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import jakarta.transaction.Transactional;
 import mx.uam.ayd.proyecto.datos.PacienteRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
@@ -16,11 +14,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 /**
  * Servicio que gestiona la lógica de negocio relacionada con los pacientes.
  *
- * <p>Permite registrar nuevos pacientes, recuperar la lista de pacientes registrados
- * y asignar psicólogos a pacientes existentes.</p>
- *
- * <p>Utiliza {@link PacienteRepository} para acceder y persistir la información
- * en la base de datos.</p>
+ * (Tu documentación existente...)
  *
  * @author Tech Solutions
  * @version 1.0
@@ -32,17 +26,10 @@ public class ServicioPaciente {
 
     @Autowired
     private PacienteRepository pacienteRepository;
-    
+
     /**
-     * Registra un nuevo paciente en el sistema, validando que los datos sean correctos
-     * y que el correo electrónico no esté previamente registrado.
-     *
-     * @param nombre el nombre del paciente; no debe ser nulo ni vacío.
-     * @param correo el correo electrónico del paciente; no debe ser nulo ni vacío.
-     * @param telefono el número de teléfono del paciente; no debe ser nulo ni vacío.
-     * @param edad la edad del paciente.
-     * @return el paciente registrado.
-     * @throws IllegalArgumentException si alguno de los parámetros es inválido o si el correo ya está registrado.
+     * Registra un nuevo paciente en el sistema...
+     * (Tu documentación existente...)
      */
     public Paciente agregarPaciente(String nombre, String correo, String telefono, int edad, String usuario, String contrasena) {
         if(nombre == null || nombre.trim().isEmpty()) {
@@ -94,6 +81,16 @@ public class ServicioPaciente {
         List<Paciente> pacientes = new ArrayList<>();
         pacienteRepository.findAll().forEach(pacientes::add);
         return pacientes;
+    }
+
+    /**
+     * Recupera solo los pacientes asignados a un psicólogo específico.
+     *
+     * @param psicologo El psicólogo del cual se quieren los pacientes.
+     * @return Una lista de sus pacientes.
+     */
+    public List<Paciente> recuperarPacientesPorPsicologo(Psicologo psicologo) {
+        return pacienteRepository.findByPsicologo(psicologo);
     }
 
     /**

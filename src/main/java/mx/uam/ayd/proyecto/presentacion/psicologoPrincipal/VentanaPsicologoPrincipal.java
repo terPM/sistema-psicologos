@@ -23,6 +23,7 @@ public class VentanaPsicologoPrincipal {
     private ControlPsicologo controlador;
     private boolean initialized = false;
 
+<<<<<<< HEAD
     @FXML
     private TextArea avisoDisplayArea;
     
@@ -35,6 +36,8 @@ public class VentanaPsicologoPrincipal {
     @FXML private ListView<String> listaNotificaciones;
     @FXML private Button btnCampana;
 
+=======
+>>>>>>> hu-16-historial-de-pagos
     private void initializeUI() {
         if (initialized) return;
 
@@ -82,7 +85,13 @@ public class VentanaPsicologoPrincipal {
             Platform.runLater(this::oculta);
             return;
         }
+<<<<<<< HEAD
         if (stage != null) stage.hide();
+=======
+        if (stage != null) {
+            stage.hide();
+        }
+>>>>>>> hu-16-historial-de-pagos
     }
 
     @FXML
@@ -101,6 +110,7 @@ public class VentanaPsicologoPrincipal {
         }
     }
 
+<<<<<<< HEAD
     public void actualizarAviso(String texto) { 
     if (avisoDisplayArea != null) {
             avisoDisplayArea.setText(texto);
@@ -134,3 +144,12 @@ public class VentanaPsicologoPrincipal {
         }
     }
 }
+=======
+    @FXML
+    private void handleListaRegistros() {
+        if (controlador != null) {
+            controlador.iniciarListaRegistros();
+        }
+    }
+}
+>>>>>>> hu-16-historial-de-pagos

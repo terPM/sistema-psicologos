@@ -15,6 +15,7 @@ import java.util.List;
 public interface CitaRepository extends CrudRepository<Cita, Integer> {
 
     List<Cita> findByPaciente(Paciente paciente);
+<<<<<<< HEAD
 
     /**
      * Recupera todas las citas asociadas a un paciente.
@@ -31,13 +32,9 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
      * @return un {@link Optional} que contiene la cita si se encuentra; {@code Optional.empty()} si no existe.
      */
     Optional<Cita> findById(int id);
+=======
+>>>>>>> hu-16-historial-de-pagos
 
-    /**
-     * Busca citas por estado.
-     *
-     * @param estadoCita el estado de la cita; no debe ser {@code null}.
-     * @return una lista de citas con el estado especificado; si no hay coincidencias, la lista estará vacía.
-     */
     List<Cita> findByEstadoCita(TipoConfirmacionCita estadoCita);
 
     Cita findByFechaCita(LocalDateTime fechaCita);
@@ -45,6 +42,7 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
     List<Cita> findByPacienteAndEstadoCita(Paciente paciente, TipoConfirmacionCita estadoCita);
 
     /**
+<<<<<<< HEAD
      * Busca una cita por psicólogo y fecha específica, excluyendo aquellas cuyo estado no sea cancelado.
      *
      * @param psicologo el psicólogo asociado a la cita; no debe ser {@code null}.
@@ -71,3 +69,13 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
             "WHERE c.id = :id")
     Cita findByIdConRelaciones(@Param("id") int id);
 }
+=======
+     * Busca la cita pendiente más próxima (la primera) para un paciente.
+     *
+     * @param paciente El paciente.
+     * @param estadoCita El estado (ej. PENDIENTE).
+     * @return La cita encontrada, o null si no hay.
+     */
+    Cita findTopByPacienteAndEstadoCitaOrderByFechaCitaAsc(Paciente paciente, TipoConfirmacionCita estadoCita);
+}
+>>>>>>> hu-16-historial-de-pagos

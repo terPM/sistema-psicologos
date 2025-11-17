@@ -4,74 +4,48 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.annotation.PostConstruct;
 import javafx.scene.control.Alert;
-import mx.uam.ayd.proyecto.negocio.ServicioLineaCaptura;
-import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ControlPaciente;
+import mx.uam.ayd.proyecto.negocio.modelo.Cita;
+import java.time.format.DateTimeFormatter;
 
-/**
- * Controlador para la Línea de Captura.
- * Es responsable de la generación, el registro del pago 
- * y la presentación del comprobante al paciente.
- */
 @Component
 public class ControlLineaCaptura {
 
     private final VentanaLineaCaptura ventanaLineaCaptura;
-    private final ServicioLineaCaptura servicioLineaCaptura;
-    // Referencia al controlador principal
-    private ControlPaciente controlPaciente;
 
-    /**
-     * Constructor inyectado por Spring para dependencias directas.
-     */
     @Autowired
-    public ControlLineaCaptura(
-        VentanaLineaCaptura ventanaLineaCaptura, 
-        ServicioLineaCaptura servicioLineaCaptura
-    ){
+    public ControlLineaCaptura(VentanaLineaCaptura ventanaLineaCaptura){
         this.ventanaLineaCaptura = ventanaLineaCaptura;
-        this.servicioLineaCaptura = servicioLineaCaptura;
-    }
-    
-    @Autowired 
-    public void setControlPaciente(ControlPaciente controlPaciente) {
-        this.controlPaciente = controlPaciente;
     }
 
-    /**
-     * Método que se ejecuta inmediatamente después de la construcción e inyección de dependencias.
-     * Se usa para enlazar la vista con este controlador.
-     */
     @PostConstruct
     public void inicializa(){
-        ventanaLineaCaptura.setControl(this); 
+        ventanaLineaCaptura.setControl(this);
     }
 
     /**
-     * Inicia la generación y registro de la línea de captura.
-     * Contiene la lógica y el manejo de errores.
+     * Inicia el flujo para MOSTRAR la línea de captura de una cita.
+     * @param cita La cita pendiente de pago.
      */
-    public void inicia(){
+    public void inicia(Cita cita){
         try{
-            String nombre = controlPaciente.getNombreUsuarioActivo();
-            double total = servicioLineaCaptura.asignarPrecioCita();
-            String linea = servicioLineaCaptura.generarLineaCaptura();
-            String fecha = servicioLineaCaptura.fechaActual();
-            
-            servicioLineaCaptura.registrarPago(nombre, total, linea, fecha);
+            String nombre = cita.getPaciente().getNombre();
+            double total = cita.getMonto();
+            String linea = cita.getLineaCaptura();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String fecha = cita.getFechaVencimiento().format(formatter);
 
             ventanaLineaCaptura.setDatosComprobante(nombre, total, linea, fecha);
             ventanaLineaCaptura.muestra();
-            
+
         } catch (Exception e){
-            System.err.println("Error al generar o registrar la línea de captura: " + e.getMessage());
+            System.err.println("Error al mostrar la línea de captura: " + e.getMessage());
+            e.printStackTrace();
             ventanaLineaCaptura.mostrarAlerta(
-                Alert.AlertType.ERROR, 
-                "Error de Transacción", 
-                "No se pudo generar ni registrar la línea de captura. Intente de nuevo o contacte a soporte."
+                    Alert.AlertType.ERROR,
+                    "Error al Cargar",
+                    "No se pudo mostrar la línea de captura."
             );
-            
-            // Si hay un error fatal, cerramos la ventana por seguridad (si no se cerró antes de mostrar la alerta)
-            // Ya que el controlPaciente llama a inicia, lo ideal es no dejar esta ventana colgada.
             ventanaLineaCaptura.cerrar();
         }
     }

@@ -28,6 +28,7 @@
                                                 <Font name="System Bold" size="12.0" />
                                             </font>
                                         </Label>
+<<<<<<< HEAD
 
                                         <Button prefWidth="150" text="Agendar cita" onAction="#handleCrearCita"/>
                                         <Button prefWidth="150" text="Proximas citas" onAction="#handleProximasCitas"/>
@@ -43,6 +44,18 @@
                                         <Button prefWidth="150" text="Lista de registros" onAction="#handleListaRegistros"/>
 
                                         <Button prefWidth="150" text="Reagendar Cita" onAction="#handleReagendarCita"/>
+=======
+                                        <Button mnemonicParsing="false" onAction="#handleRegistroEmocional" prefHeight="25.0" prefWidth="150.0" text="Registro emocional" />
+
+                                        <Separator prefWidth="150.0" />
+                                        <Label text="Pagos y Citas">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Button mnemonicParsing="false" onAction="#handleLineaCaptura" prefHeight="25.0" prefWidth="150.0" text="Línea de Captura" />
+                                        <Button mnemonicParsing="false" onAction="#handleHistorialPagos" prefHeight="25.0" prefWidth="150.0" text="Historial de Pagos" />
+>>>>>>> hu-16-historial-de-pagos
 
                                     </children>
 

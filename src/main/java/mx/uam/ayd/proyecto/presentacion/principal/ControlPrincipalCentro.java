@@ -17,10 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ControlPrincipalCentro {
 
-    // --- Credenciales de prueba ---
     private static final String USER_ADMIN = "admin";
     private static final String PASS_ADMIN = "admin1234";
-    // ----------------------------
 
     private final VentanaPrincipalCentro ventanaLogin;
     private final ControlMenu controlMenuAdmin;
@@ -82,11 +80,17 @@ public class ControlPrincipalCentro {
                 Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
                 if (psicologo != null) {
                     autenticado = true;
+<<<<<<< HEAD
                     servicioSesion.setUsuarioActual(usuario);
                     mostrarSistemaPrincipalPsicologo(psicologo);
                 }
                 break;
 
+=======
+                    mostrarSistemaPrincipalPsicologo(psicologo);
+                }
+                break;
+>>>>>>> hu-16-historial-de-pagos
             case "Administrador":
                 if (USER_ADMIN.equals(usuario) && PASS_ADMIN.equals(contrasena)) {
                     autenticado = true;
@@ -99,8 +103,12 @@ public class ControlPrincipalCentro {
                 Paciente paciente = pacienteRepository.findByUsuario(usuario);
                 if (paciente != null && paciente.getContrasena().equals(contrasena)) {
                     autenticado = true;
+<<<<<<< HEAD
                     servicioSesion.setUsuarioActual(usuario);
                     mostrarSistemaPrincipalPaciente(usuario);
+=======
+                    mostrarSistemaPrincipalPaciente(paciente);
+>>>>>>> hu-16-historial-de-pagos
                 }
                 break;
 
@@ -124,8 +132,8 @@ public class ControlPrincipalCentro {
         controlMenuAdmin.inicia(this);
     }
 
-    public void mostrarSistemaPrincipalPaciente(String nombreDeUsuario) {
+    public void mostrarSistemaPrincipalPaciente(Paciente paciente) {
         ventanaLogin.cerrarLogin();
-        controlPaciente.inicia(nombreDeUsuario, this);
+        controlPaciente.inicia(paciente, this);
     }
 }

@@ -2,26 +2,9 @@ package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entidad que representa a un paciente dentro del sistema.
- *
- * <p>Contiene la información personal del paciente como nombre, teléfono,
- * correo y edad, así como sus relaciones con el psicólogo asignado,
- * su historial clínico, las baterías clínicas que ha respondido
- * y sus citas programadas.</p>
- *
- * <p>Incluye un constructor por defecto que inicializa las listas
- * de baterías clínicas y citas para evitar valores nulos.</p>
- *
- * <p>Esta entidad está mapeada a una tabla en la base de datos
- * mediante anotaciones de JPA.</p>
- *
- * @author Tech Solutions
- * @version 1.0
- */
 @Entity
 @Data
 public class Paciente {
@@ -51,11 +34,14 @@ public class Paciente {
     private List<Cita> citas;
 
     /**
-     * Constructor por defecto que inicializa las listas
-     * de baterías clínicas y citas como listas vacías.
+     * Relación: Un Paciente puede tener muchos Registros Emocionales.
      */
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RegistroEmocional> registrosEmocionales;
+
     public Paciente(){
         this.bateriasClinicas = new ArrayList<>();
         this.citas = new ArrayList<>();
+        this.registrosEmocionales = new ArrayList<>();
     }
 }

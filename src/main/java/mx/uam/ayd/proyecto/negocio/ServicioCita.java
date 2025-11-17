@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mx.uam.ayd.proyecto.datos.PacienteRepository;
 import mx.uam.ayd.proyecto.datos.CitaRepository;
@@ -17,18 +18,26 @@ import mx.uam.ayd.proyecto.negocio.modelo.TipoConfirmacionCita;
 @Service
 public class ServicioCita {
 
+<<<<<<< HEAD
     @Autowired
     private PacienteRepository pacienteRepository;
 
+=======
+>>>>>>> hu-16-historial-de-pagos
     @Autowired
     private CitaRepository citaRepository;
 
     @Autowired
+<<<<<<< HEAD
     private ServicioNotificacion servicioNotificacion;
 
     /**
      * Crea una cita nueva.
      */
+=======
+    private ServicioLineaCaptura servicioLineaCaptura;
+
+>>>>>>> hu-16-historial-de-pagos
     public Cita crearCita(Paciente paciente, LocalDateTime fechaCita, String motivo) {
 
         Psicologo psicologo = paciente.getPsicologo();
@@ -45,10 +54,18 @@ public class ServicioCita {
         cita.setEstadoCita(TipoConfirmacionCita.PENDIENTE);
         cita.setMotivo(motivo);
 
+<<<<<<< HEAD
+=======
+        cita.setLineaCaptura(servicioLineaCaptura.generarLineaCaptura());
+        cita.setMonto(servicioLineaCaptura.asignarPrecioCita());
+        cita.setFechaVencimiento(fechaCita.toLocalDate());
+
+>>>>>>> hu-16-historial-de-pagos
         citaRepository.save(cita);
         return cita;
     }
 
+<<<<<<< HEAD
     /**
      * Lista todas las citas activas del paciente.
      */
@@ -108,3 +125,32 @@ public class ServicioCita {
         servicioNotificacion.crearNotificacion(nuevoPsicologo, mensaje);
     }
 }
+=======
+    @Transactional
+    public Cita buscarCitaPendienteMasReciente(Paciente paciente) {
+        Cita cita = citaRepository.findTopByPacienteAndEstadoCitaOrderByFechaCitaAsc(paciente, TipoConfirmacionCita.PENDIENTE);
+
+        if (cita != null) {
+            if (cita.getPaciente() != null) {
+                cita.getPaciente().getNombre();
+            }
+            if (cita.getPsicologo() != null) {
+                cita.getPsicologo().getNombre();
+            }
+        }
+
+        return cita;
+    }
+
+    @Transactional
+    public List<Cita> listarCitasPorPaciente(Paciente paciente) {
+        List<Cita> citas = citaRepository.findByPaciente(paciente);
+
+        for (Cita cita : citas) {
+            if (cita.getPaciente() != null) cita.getPaciente().getNombre();
+            if (cita.getPsicologo() != null) cita.getPsicologo().getNombre();
+        }
+        return citas;
+    }
+}
+>>>>>>> hu-16-historial-de-pagos

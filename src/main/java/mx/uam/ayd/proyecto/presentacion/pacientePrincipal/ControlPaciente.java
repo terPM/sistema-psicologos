@@ -6,18 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
 
+<<<<<<< HEAD
 import mx.uam.ayd.proyecto.negocio.ServicioAviso;
 import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+=======
+import mx.uam.ayd.proyecto.negocio.ServicioCita;
+import mx.uam.ayd.proyecto.negocio.modelo.Cita;
+import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
+>>>>>>> hu-16-historial-de-pagos
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.ControlRegistroEmocinal;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
-import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
+<<<<<<< HEAD
 import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListarCitas.ControlListarCitas;
+=======
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.HistorialPagos.ControlHistorialPagos;
+>>>>>>> hu-16-historial-de-pagos
 
 @Component
 public class ControlPaciente {
@@ -29,13 +38,19 @@ public class ControlPaciente {
     private ControlRegistroEmocinal controlRegistroEmocinal;
 
     @Autowired
+<<<<<<< HEAD
     private ControlListaRegistros controlListaRegistros;
 
     @Autowired
+=======
+>>>>>>> hu-16-historial-de-pagos
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
+    @Autowired
+    private ServicioCita servicioCita;
 
     @Autowired
+<<<<<<< HEAD
     private ControlCrearCita controlCrearCita;
 
     @Autowired
@@ -60,11 +75,22 @@ public class ControlPaciente {
         this.nombreUsuarioActivo = nombreUsuarioActivo;
         this.controlPrincipal = controlPrincipal;
 
+=======
+    private ControlHistorialPagos controlHistorialPagos;
+
+    private ControlPrincipalCentro controlPrincipal;
+    private Paciente pacienteSesion;
+
+    public void inicia(Paciente paciente, ControlPrincipalCentro controlPrincipal) {
+        this.pacienteSesion = paciente;
+        this.controlPrincipal = controlPrincipal;
+>>>>>>> hu-16-historial-de-pagos
         ventana.setControlador(this);
         ventana.muestra();
         cargarAvisos();
     }
 
+<<<<<<< HEAD
     private void cargarAvisos() {
         try {
             Aviso ultimoAviso = servicioAviso.obtenerUltimoAviso();
@@ -102,6 +128,19 @@ public class ControlPaciente {
 
     public void salir() {
         ventana.oculta();
+=======
+    public Paciente getPacienteSesion() {
+        return pacienteSesion;
+    }
+
+    public String getNombreUsuarioActivo() {
+        return (pacienteSesion != null) ? pacienteSesion.getUsuario() : null;
+    }
+
+    public void salir() {
+        ventana.oculta();
+        this.pacienteSesion = null;
+>>>>>>> hu-16-historial-de-pagos
         if (controlPrincipal != null) {
             controlPrincipal.regresaAlLogin();
         } else {
@@ -110,6 +149,7 @@ public class ControlPaciente {
     }
 
     public void iniciarRegistroEmocional() {
+<<<<<<< HEAD
         controlRegistroEmocinal.inicia();
     }
 
@@ -145,3 +185,35 @@ public class ControlPaciente {
     }
 
 }
+=======
+        if(this.pacienteSesion != null) {
+            controlRegistroEmocinal.inicia(this.pacienteSesion);
+        } else {
+            System.err.println("No hay paciente en sesión para el registro emocional");
+        }
+    }
+
+    public void iniciarLineaCaptura() {
+        if (pacienteSesion == null) {
+            System.err.println("No hay paciente en sesión");
+            return;
+        }
+
+        Cita citaPendiente = servicioCita.buscarCitaPendienteMasReciente(pacienteSesion);
+
+        if (citaPendiente != null) {
+            controlLineaCaptura.inicia(citaPendiente);
+        } else {
+            ventana.muestraAviso("Sin Pagos Pendientes", "No tienes ninguna cita pendiente de pago.");
+        }
+    }
+
+    public void iniciarHistorialPagos() {
+        if (pacienteSesion == null) {
+            System.err.println("No hay paciente en sesión");
+            return;
+        }
+        controlHistorialPagos.inicia(pacienteSesion);
+    }
+}
+>>>>>>> hu-16-historial-de-pagos
