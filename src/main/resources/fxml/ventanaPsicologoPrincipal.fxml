@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
@@ -44,24 +52,44 @@
             <children>
                 <SplitPane dividerPositions="0.3" prefHeight="350.0" prefWidth="640.0">
                     <items>
+          
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
                         <!-- Panel izquierdo -->
                         <AnchorPane minWidth="200.0">
                             <children>
                                 <VBox alignment="CENTER_LEFT" layoutX="9.0" layoutY="14.0"
                                       prefHeight="350.0" prefWidth="171.0" spacing="10.0">
                                     <children>
+                                
                                         <Label text="Opciones del Psicólogo">
                                             <font>
                                                 <Font name="System Bold" size="13.0"/>
                                             </font>
                                         </Label>
+                                        
 
                                         <Button text="Registrar Notas"
                                                 prefWidth="150.0"
                                                 mnemonicParsing="false"
                                                 onAction="#handleRegistrarNotas"/>
-
+                                        
                                         <Separator prefWidth="150.0"/>
+                                        <Label text="Citas">
+                                            <font>
+                                                <Font name="System Bold" size="13.0"/>
+                                            </font>
+                                            <padding>
+                                                <Insets top="5.0" />
+                                            </padding>
+                                        </Label>
+                                        
+                                        <Button text="Agenda" 
+                                                prefWidth="150.0" 
+                                                mnemonicParsing="false" 
+                                                onAction="#handleVerHorario" />
+                                  
+                                        <Separator prefWidth="150.0"/>
+                                        
 
                                         <Button text="Salir"
                                                 prefWidth="150.0"
@@ -75,6 +103,48 @@
                             </children>
                         </AnchorPane>
 
+                        <AnchorPane>
+                            <children>
+                                <BorderPane prefHeight="398.0" prefWidth="442.0" 
+                                            AnchorPane.bottomAnchor="0.0" 
+                                            AnchorPane.leftAnchor="0.0" 
+                                            AnchorPane.rightAnchor="0.0" 
+                                            AnchorPane.topAnchor="0.0">
+                                    
+                                    <center>
+                                        <VBox alignment="TOP_CENTER" spacing="10.0" 
+                                              BorderPane.alignment="CENTER"
+                                              maxWidth="400.0">
+                                            <children>
+                                                
+                                                <Label text="Centro de atención psicologica">
+                                                    <font>
+                                                        <Font name="Leelawadee UI" size="21.0" />
+                                                    </font>
+                                                </Label>
+                                                
+                                                <Label text="BIENESTAR EMOCIONAL" textFill="RED">
+                                                    <font>
+                                                        <Font name="Franklin Gothic Medium" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label text="Portal de psicologo" textFill="BLUE">
+                                                    <font>
+                                                        <Font name="Franklin Gothic Medium" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                
+                                                <TextArea fx:id="avisoDisplayArea" editable="false" 
+                                                          prefHeight="100.0" 
+                                                          wrapText="true" />
+                                            
+                                            </children>
+                                            <BorderPane.margin>
+                                                <Insets top="40.0" />
+                                            </BorderPane.margin>
+                                        </VBox>
+                                    </center>
+                                </BorderPane>
                         <!-- Panel derecho (contenido) -->
                         <AnchorPane>
                             <children>

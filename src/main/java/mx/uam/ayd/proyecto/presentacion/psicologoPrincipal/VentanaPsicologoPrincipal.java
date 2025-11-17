@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -22,6 +23,13 @@ public class VentanaPsicologoPrincipal {
     private ControlPsicologo controlador;
     private boolean initialized = false;
 
+    @FXML
+    private TextArea avisoDisplayArea;
+    
+
+    /**
+     * Inicializa la interfaz de usuario
+     */
     /* ids alineados con el FXML */
     @FXML private Circle burbujaNotificacion;          // <- OJO: Circle (no Label)
     @FXML private ListView<String> listaNotificaciones;
@@ -63,6 +71,10 @@ public class VentanaPsicologoPrincipal {
         oculta();
         initializeUI();
         stage.show();
+
+        if (controlador != null) {
+            controlador.actualizarDisplayAviso();
+        }
     }
 
     public void oculta() {
@@ -81,6 +93,18 @@ public class VentanaPsicologoPrincipal {
     @FXML
     private void handleRegistrarNotas() {
         if (controlador != null) controlador.registrarNotas();
+    }
+    @FXML
+    private void handleVerHorario() {
+        if (controlador != null) {
+            controlador.verHorario();
+        }
+    }
+
+    public void actualizarAviso(String texto) { 
+    if (avisoDisplayArea != null) {
+            avisoDisplayArea.setText(texto);
+        }
     }
 
     /* ====== Notificaciones ====== */
