@@ -118,4 +118,47 @@ class ServicioPacienteTest {
         assertEquals(psicologo, paciente.getPsicologo());
         verify(pacienteRepository).save(paciente);
     }
+
+    @Test
+    void testObtenerPacientePorUsuario() {
+        // Valores de prueba
+        final String USUARIO_EXISTENTE = "pa_user_test";
+        final String USUARIO_NO_EXISTENTE = "usuario_fantasma";
+        
+        // Configuración de un paciente de prueba
+        Paciente pacienteEsperado = new Paciente();
+        pacienteEsperado.setUsuario(USUARIO_EXISTENTE);
+        pacienteEsperado.setNombre("Test Nombre");
+        // Establecer otros campos si es necesario para una verificación más completa
+        pacienteEsperado.setCorreo("test@correo.com");
+        pacienteEsperado.setEdad(35);
+        pacienteEsperado.setContrasena(CONTRASENA_VALIDA);
+
+        // Caso 1: Usuario existente
+        // Simular que el repositorio encuentra al paciente
+        when(pacienteRepository.findByUsuario(USUARIO_EXISTENTE)).thenReturn(pacienteEsperado);
+
+        Paciente result = servicioPaciente.obtenerPacientePorUsuario(USUARIO_EXISTENTE);
+
+        // Verificaciones
+        assertNotNull(result, "Debe retornar un Paciente cuando el usuario existe.");
+        assertEquals(USUARIO_EXISTENTE, result.getUsuario(), "El usuario del paciente debe coincidir.");
+        assertEquals("Test Nombre", result.getNombre(), "El nombre del paciente debe ser correcto.");
+        
+        // Verificar que el método del repositorio fue llamado
+        verify(pacienteRepository).findByUsuario(USUARIO_EXISTENTE);
+
+
+        // Caso 2: Usuario no existente
+        // Simular que el repositorio no encuentra al paciente (retorna null)
+        when(pacienteRepository.findByUsuario(USUARIO_NO_EXISTENTE)).thenReturn(null);
+
+        result = servicioPaciente.obtenerPacientePorUsuario(USUARIO_NO_EXISTENTE);
+
+        // Verificaciones
+        assertNull(result, "Debe retornar null cuando el usuario no existe.");
+        
+        // Verificar que el método del repositorio también fue llamado para este caso
+        verify(pacienteRepository).findByUsuario(USUARIO_NO_EXISTENTE);
+    }
 }

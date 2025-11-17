@@ -22,11 +22,15 @@ import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.Contr
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListarCitas.ControlListarCitas;
 =======
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.HistorialPagos.ControlHistorialPagos;
 >>>>>>> hu-16-historial-de-pagos
+=======
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.perfilPaciente.ControlPerfilPaciente; 
+>>>>>>> hu-13
 
 @Component
 public class ControlPaciente {
@@ -47,7 +51,11 @@ public class ControlPaciente {
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
     @Autowired
+<<<<<<< HEAD
     private ServicioCita servicioCita;
+=======
+    private ControlPerfilPaciente controlPerfilPaciente;
+>>>>>>> hu-13
 
     @Autowired
 <<<<<<< HEAD
@@ -96,6 +104,7 @@ public class ControlPaciente {
             Aviso ultimoAviso = servicioAviso.obtenerUltimoAviso();
             String textoParaMostrar;
 
+<<<<<<< HEAD
             if (ultimoAviso != null) {
 
                 LocalDate fecha = ultimoAviso.getFecha();
@@ -145,6 +154,22 @@ public class ControlPaciente {
             controlPrincipal.regresaAlLogin();
         } else {
             Platform.exit();
+=======
+    /**
+     * Cierra la aplicación
+     */
+    public void salir() {
+        if (controlPerfilPaciente != null) {
+            controlPerfilPaciente.ocultaVentana();
+        }
+
+        ventana.oculta(); 
+        
+        if (controlPrincipal != null) {
+            controlPrincipal.regresaAlLogin(); 
+        } else {
+            Platform.exit(); // Fallback por si la referencia es nula
+>>>>>>> hu-13
         }
     }
 
@@ -163,6 +188,7 @@ public class ControlPaciente {
         }
     }
 
+<<<<<<< HEAD
     public void iniciarCrearCita() {
         controlCrearCita.inicia(nombreUsuarioActivo);
     }
@@ -217,3 +243,14 @@ public class ControlPaciente {
     }
 }
 >>>>>>> hu-16-historial-de-pagos
+=======
+    /**
+     * Inicia el sub-flujo de Perfil del Paciente.
+     */
+    public void iniciarPerfilPaciente() {
+        if (nombreUsuarioActivo != null) {
+            controlPerfilPaciente.inicia(nombreUsuarioActivo, this); 
+        }
+    }
+}
+>>>>>>> hu-13

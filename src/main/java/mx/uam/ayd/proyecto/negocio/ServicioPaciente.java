@@ -110,13 +110,22 @@ public class ServicioPaciente {
     }
 
     /**
+<<<<<<< HEAD
      * Obtiene un paciente por su nombre de usuario.
      *
      * @param usuario el nombre de usuario del paciente.
      * @return el paciente correspondiente al nombre de usuario; {@code null} si no se encuentra.
+=======
+     * Recupera un Paciente completo a partir de su nombre de usuario.
+     * @param usuario El nombre de usuario del paciente.
+     * @return El objeto Paciente o null si no se encuentra.
+>>>>>>> hu-13
      */
     public Paciente obtenerPacientePorUsuario(String usuario) {
         return pacienteRepository.findByUsuario(usuario);
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> hu-13
 }

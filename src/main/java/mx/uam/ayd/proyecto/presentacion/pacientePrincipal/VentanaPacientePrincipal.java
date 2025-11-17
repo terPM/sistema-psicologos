@@ -140,5 +140,16 @@ public class VentanaPacientePrincipal {
             controlador.iniciarHistorialPagos();
         }
     }
+<<<<<<< HEAD
 }
 >>>>>>> hu-16-historial-de-pagos
+=======
+
+    @FXML
+    private void handlePerfilPaciente() {
+        if (controlador != null) {
+            controlador.iniciarPerfilPaciente();
+        }
+    }
+}
+>>>>>>> hu-13
