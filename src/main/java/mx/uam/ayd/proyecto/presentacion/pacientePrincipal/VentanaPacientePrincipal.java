@@ -125,4 +125,10 @@ public class VentanaPacientePrincipal {
             controlador.iniciarLineaCaptura();
         }
     }
+
+    @FXML
+    private void handleReagendarCita() {
+        controlador.iniciarReagendarCita();
+    }
+
 }
