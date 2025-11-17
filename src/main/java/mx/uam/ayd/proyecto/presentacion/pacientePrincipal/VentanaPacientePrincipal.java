@@ -19,28 +19,21 @@ public class VentanaPacientePrincipal {
     @FXML
     private TextArea avisoDisplayArea;
 
-    /**
-     * Inicializa la interfaz de usuario
-     */
     private void initializeUI() {
-        if (initialized) {
-            return;
-        }
-
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::initializeUI);
-            return;
-        }
+        if (initialized) return;
 
         try {
             stage = new Stage();
             stage.setTitle("Menú Principal - Paciente");
             stage.setResizable(false);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventanaPacientePrincipal.fxml"));
             loader.setController(this);
+
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
             stage.setOnCloseRequest(e -> handleSalir());
+
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,94 +45,53 @@ public class VentanaPacientePrincipal {
     }
 
     public void muestra() {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::muestra);
-            return;
-        }
         oculta();
         initializeUI();
         stage.show();
     }
 
-
-    /**
-     * Método para ocultar la ventana sin cerrar la aplicación.
-     */
     public void oculta() {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::oculta);
-            return;
-        }
-        if (stage != null) {
-            stage.hide(); 
-        }
+        if (stage != null) stage.hide();
     }
 
-    /**
-     * Muestra los avisos en el TextArea.
-     * @param texto El texto de los avisos.
-     */
     public void setAvisos(String texto) {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> setAvisos(texto));
-            return;
-        }
-        // Asegurarse de que el área de texto no sea nula
         if (avisoDisplayArea != null) {
             avisoDisplayArea.setText(texto);
-        } else {
-            System.err.println("avisoDisplayArea es nulo. ¿Está bien conectado el FXML?");
         }
     }
-    
+
     @FXML
     private void handleSalir() {
-        if (controlador != null) {
-            controlador.salir();
-        }
+        controlador.salir();
     }
 
-    /**
-     * Manejador para el botón "Registro emocional"
-     */
     @FXML
     private void handleRegistroEmocional() {
-        if (controlador != null) {
-            controlador.iniciarRegistroEmocional();
-        }
+        controlador.iniciarRegistroEmocional();
     }
 
-    /**
-     * Manejador para el botón "Lista de registros"
-     */
     @FXML
     private void handleListaRegistros() {
-        if (controlador != null) {
-            controlador.iniciarListaRegistros();
-        }
+        controlador.iniciarListaRegistros();
     }
 
     @FXML
     private void handleLineaCaptura() {
-        if (controlador != null) {
-            controlador.iniciarLineaCaptura();
-        }
+        controlador.iniciarLineaCaptura();
     }
 
     @FXML
     private void handleCrearCita() {
-        if (controlador != null) {
-            controlador.iniciarCrearCita();
-        }
+        controlador.iniciarCrearCita();
     }
+
     @FXML
     private void handleProximasCitas() {
-        if (controlador != null) {
-            controlador.iniciarListarCitas();
-        }
+        controlador.iniciarListarCitas();
     }
+
+    @FXML
     private void handleReagendarCita() {
         controlador.iniciarReagendarCita();
     }
-
 }

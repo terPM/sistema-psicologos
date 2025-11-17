@@ -19,8 +19,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 
@@ -50,49 +48,50 @@ public class VentanaListarCitas {
 
     public void muestra(ControlListarCitas control, List<Cita> citas) {
         this.controlador = control;
-        
-        // Asegura que el código de la UI se ejecute en el hilo de aplicación de JavaFX
+
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> muestra(control, citas));
             return;
         }
 
         try {
-            // Carga el archivo FXML y establece esta clase como su controlador
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventanaListarCitas.fxml"));
             loader.setController(this);
 
             Parent root = loader.load();
 
-            // Configura las celdas de la tabla para que muestren las propiedades del objeto Paciente
             mostrarCitas(citas);
 
-            // Crea y muestra la ventana
             stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("Listado de Pacientes");
+            stage.setTitle("Próximas Citas");
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
-            muestraError("No se pudo cargar la ventana de pacientes");
+            muestraError("No se pudo cargar la ventana de listado de citas.");
         }
     }
 
-    public void mostrarCitas(List<Cita> citas) {
+    public void cargarCitas(List<Cita> citas) {
+        mostrarCitas(citas);
+    }
 
-        // Ordenar por fecha y hora (LocalDateTime)
+    private void mostrarCitas(List<Cita> citas) {
+
         citas.sort(Comparator.comparing(Cita::getFechaCita));
 
         ObservableList<Cita> datos = FXCollections.observableArrayList(citas);
         tablaCitasProximas.setItems(datos);
 
-        columnaIdCita.setCellValueFactory(c -> new SimpleStringProperty("" + c.getValue().getId()));
-        columnaIdCita.setVisible(false); // oculto para el usuario
+        // Configurar columnas
+        columnaIdCita.setCellValueFactory(c ->
+                new SimpleStringProperty("" + c.getValue().getId()));
+        columnaIdCita.setVisible(false);
 
         columnaNombrePsicologo.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().getPsicologo().getNombre())
-        );
+                new SimpleStringProperty(c.getValue().getPsicologo().getNombre()));
 
         columnaFechaYHoraCita.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().getFechaCita().format(formato))

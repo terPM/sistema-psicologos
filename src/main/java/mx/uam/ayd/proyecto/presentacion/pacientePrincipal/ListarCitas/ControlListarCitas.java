@@ -1,14 +1,12 @@
 package mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListarCitas;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioCita;
-import mx.uam.ayd.proyecto.negocio.ServicioPaciente;
-import mx.uam.ayd.proyecto.negocio.ServicioSesion;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
+
+import java.util.List;
 
 @Component
 public class ControlListarCitas {
@@ -19,48 +17,51 @@ public class ControlListarCitas {
     @Autowired
     private ServicioCita servicioCita;
 
-    @Autowired
-    private ServicioSesion servicioSesion;
+    private String nombreUsuarioActivo;
 
-    @Autowired
-    private ServicioPaciente servicioPaciente;
+    /**
+     * Inicia la ventana de listar citas del paciente
+     */
+    public void inicia(String nombreUsuarioActivo) {
+        this.nombreUsuarioActivo = nombreUsuarioActivo;
 
-    private String usuarioActivo;
-
-    public void inicia() {
-
-        usuarioActivo = servicioSesion.getUsuarioActual();
-
-        List<Cita> citas = servicioCita.listarCitas(usuarioActivo);
+        List<Cita> citas = servicioCita.listarCitas(nombreUsuarioActivo);
 
         ventana.setControlador(this);
         ventana.muestra(this, citas);
     }
 
+    /**
+     * Cancela la cita seleccionada desde la ventana
+     */
     public void cancelarCita() {
 
-        Integer id = ventana.getIdCitaSeleccionada();
+        Integer idCita = ventana.getIdCitaSeleccionada();
 
-        if (id == null) {
-            ventana.muestraError("Por favor selecciona una cita para cancelar.");
+        if (idCita == null) {
+            ventana.muestraError("Debe seleccionar una cita para cancelar.");
             return;
         }
 
-        boolean confirmar = ventana.muestraConfirmacion(
-                "Cancelar cita",
-                "¿Seguro que deseas cancelar esta cita?\nEsta acción no se puede deshacer."
+        boolean confirmado = ventana.muestraConfirmacion(
+                "Confirmar cancelación",
+                "¿Está seguro de cancelar la cita seleccionada?"
         );
 
-        if (!confirmar) {
+        if (!confirmado) {
             return;
         }
 
-        servicioCita.cancelarCita(id);
+        try {
+            servicioCita.cancelarCita(idCita);
+            ventana.muestraExito("La cita fue cancelada correctamente.");
 
-        ventana.muestraExito("La cita ha sido cancelada correctamente.");
+            // Recargar tabla con citas actualizadas
+            List<Cita> citas = servicioCita.listarCitas(nombreUsuarioActivo);
+            ventana.cargarCitas(citas);
 
-        // refrescar lista
-        List<Cita> nuevas = servicioCita.listarCitas(usuarioActivo);
-        ventana.mostrarCitas(nuevas);
+        } catch (Exception e) {
+            ventana.muestraError("Error al cancelar cita: " + e.getMessage());
+        }
     }
 }

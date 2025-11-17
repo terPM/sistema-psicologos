@@ -1,4 +1,4 @@
-package mx.uam.ayd.proyecto.presentacion.principal; // Paquete correcto
+package mx.uam.ayd.proyecto.presentacion.principal;
 
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
@@ -22,13 +22,8 @@ public class ControlPrincipalCentro {
     private static final String PASS_ADMIN = "admin1234";
     // ----------------------------
 
-    // Usa la clase de Ventana renombrada
     private final VentanaPrincipalCentro ventanaLogin;
-
-    // ControlMenu (el menú completo) ahora es solo para el Administrador
     private final ControlMenu controlMenuAdmin;
-
-    // Controladores de flujos únicos
     private final ControlPsicologo controlPsicologo;
     private final ControlPaciente controlPaciente;
 
@@ -38,7 +33,7 @@ public class ControlPrincipalCentro {
 
     @Autowired
     public ControlPrincipalCentro(
-            VentanaPrincipalCentro ventanaLogin, // Constructor usa clase renombrada
+            VentanaPrincipalCentro ventanaLogin,
             ControlMenu controlMenuAdmin,
             ControlPsicologo controlPsicologo,
             ControlPaciente controlPaciente,
@@ -82,30 +77,33 @@ public class ControlPrincipalCentro {
         boolean autenticado = false;
 
         switch (rol) {
+
             case "Psicólogo":
                 Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
-            if (psicologo != null) { 
-                autenticado = true;
-                mostrarSistemaPrincipalPsicologo();
-                servicioSesion.setUsuarioActual(usuario);
-                mostrarSistemaPrincipalPsicologo(psicologo);
-            }
-            break;
+                if (psicologo != null) {
+                    autenticado = true;
+                    servicioSesion.setUsuarioActual(usuario);
+                    mostrarSistemaPrincipalPsicologo(psicologo);
+                }
+                break;
+
             case "Administrador":
                 if (USER_ADMIN.equals(usuario) && PASS_ADMIN.equals(contrasena)) {
                     autenticado = true;
-                    mostrarSistemaPrincipalAdministrativo();
                     servicioSesion.setUsuarioActual(usuario);
+                    mostrarSistemaPrincipalAdministrativo();
                 }
                 break;
+
             case "Paciente":
                 Paciente paciente = pacienteRepository.findByUsuario(usuario);
                 if (paciente != null && paciente.getContrasena().equals(contrasena)) {
                     autenticado = true;
-                    mostrarSistemaPrincipalPaciente(usuario);
                     servicioSesion.setUsuarioActual(usuario);
+                    mostrarSistemaPrincipalPaciente(usuario);
                 }
                 break;
+
             default:
                 ventanaLogin.mostrarError("Rol seleccionado no válido.");
                 return;
@@ -116,9 +114,9 @@ public class ControlPrincipalCentro {
         }
     }
 
-    public void mostrarSistemaPrincipalPsicologo(Psicologo psicologo) { 
+    public void mostrarSistemaPrincipalPsicologo(Psicologo psicologo) {
         ventanaLogin.cerrarLogin();
-        controlPsicologo.inicia(this, psicologo); 
+        controlPsicologo.inicia(this, psicologo);
     }
 
     public void mostrarSistemaPrincipalAdministrativo() {

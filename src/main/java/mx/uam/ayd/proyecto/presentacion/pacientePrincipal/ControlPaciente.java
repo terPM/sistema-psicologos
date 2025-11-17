@@ -2,7 +2,6 @@ package mx.uam.ayd.proyecto.presentacion.pacientePrincipal;
 
 import javafx.application.Platform;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.reagendarCita.ControlReagendarCita;
-import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.reagendarCita.VentanaReagendarCita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
@@ -25,34 +24,42 @@ public class ControlPaciente {
 
     @Autowired
     private VentanaPacientePrincipal ventana;
+
     @Autowired
     private ControlRegistroEmocinal controlRegistroEmocinal;
+
     @Autowired
     private ControlListaRegistros controlListaRegistros;
+
     @Autowired
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
+
     @Autowired
     private ControlCrearCita controlCrearCita;
+
     @Autowired
     private ControlListarCitas controlListarCitas;
+
+    @Autowired
     private ControlReagendarCita controlReagendarCita;
 
     @Autowired
     private ServicioAviso servicioAviso;
 
-    private ControlPrincipalCentro controlPrincipal;    
+    private ControlPrincipalCentro controlPrincipal;
     private String nombreUsuarioActivo;
 
-    /**
-     * Inicia el flujo principal del paciente, 
-     * recibiendo y guardando el nombre de usuario de la sesión.
-     * @param nombreUsuarioActivo El nombre de usuario que ingresó en el login.
-     * @param controlPrincipal La referencia al controlador principal para la salida.
-     */
-    public void inicia(String nombreUsuarioActivo, ControlPrincipalCentro controlPrincipal) { 
+
+
+    // =============================================================
+    //    INICIO DEL PACIENTE
+    // =============================================================
+
+    public void inicia(String nombreUsuarioActivo, ControlPrincipalCentro controlPrincipal) {
         this.nombreUsuarioActivo = nombreUsuarioActivo;
-        this.controlPrincipal = controlPrincipal; 
+        this.controlPrincipal = controlPrincipal;
+
         ventana.setControlador(this);
         ventana.muestra();
         cargarAvisos();
@@ -65,7 +72,7 @@ public class ControlPaciente {
 
             if (ultimoAviso != null) {
 
-                LocalDate fecha = ultimoAviso.getFecha(); 
+                LocalDate fecha = ultimoAviso.getFecha();
                 String contenido = ultimoAviso.getContenido();
 
                 String fechaFormateada = "Publicado el: " + fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -83,64 +90,58 @@ public class ControlPaciente {
         }
     }
 
-    /**
-     * Devuelve el nombre del usuario activo (obtenido del login).
-     */
-    public String getNombreUsuarioActivo() { 
+
+    public String getNombreUsuarioActivo() {
         return nombreUsuarioActivo;
     }
 
-    /**
-     * Cierra la aplicación
-     */
+
+    // =============================================================
+    //                    ACCIONES DEL MENÚ
+    // =============================================================
+
     public void salir() {
-        ventana.oculta(); // Oculta la ventana actual del paciente
+        ventana.oculta();
         if (controlPrincipal != null) {
-            controlPrincipal.regresaAlLogin(); // Llama al método de ControlPrincipalCentro
+            controlPrincipal.regresaAlLogin();
         } else {
-            Platform.exit(); // Fallback por si la referencia es nula
+            Platform.exit();
         }
     }
 
-    /**
-     * Inicia el sub-flujo de Registro Emocional
-     */
     public void iniciarRegistroEmocional() {
         controlRegistroEmocinal.inicia();
     }
 
-    /**
-     * Inicia el sub-flujo de Lista de Registros
-     */
     public void iniciarListaRegistros() {
         controlListaRegistros.inicia();
     }
 
-    /**
-     * Inicia el sub-flujo de Generar Línea de Captura.
-     */
-    public void iniciarLineaCaptura() { 
+    public void iniciarLineaCaptura() {
         if (nombreUsuarioActivo != null) {
-            controlLineaCaptura.inicia(); 
+            controlLineaCaptura.inicia();
         }
     }
-    /**
-     * Inicia el sub-flujo de Crear Cita.
-     */
-    public void iniciarCrearCita(){
-            controlCrearCita.inicia(nombreUsuarioActivo);
+
+    public void iniciarCrearCita() {
+        controlCrearCita.inicia(nombreUsuarioActivo);
     }
 
     public void iniciarListarCitas() {
-        controlListarCitas.inicia();
+        controlListarCitas.inicia(nombreUsuarioActivo);  // ← CORREGIDO
     }
 
+
+    // =============================================================
+    //             *** REAGENDAR CITA (CORRECTO) ***
+    // =============================================================
 
     public void iniciarReagendarCita() {
-        controlReagendarCita.inicia();
+        if (nombreUsuarioActivo != null) {
+            controlReagendarCita.inicia(nombreUsuarioActivo);
+        } else {
+            System.err.println("Error: nombreUsuarioActivo es null en iniciarReagendarCita()");
+        }
     }
-
-
-
 
 }
