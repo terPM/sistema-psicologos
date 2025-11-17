@@ -26,7 +26,8 @@
                                         </Label>
                                         <Button mnemonicParsing="false" onAction="#handleRegistroEmocional" prefHeight="25.0" prefWidth="150.0" text="Registro emocional" />
                                         <Button mnemonicParsing="false" onAction="#handleListaRegistros" prefHeight="25.0" prefWidth="150.0" text="Lista de registros" />
-                              <Button mnemonicParsing="false" onAction="#handleLineaCaptura" prefHeight="25.0" prefWidth="150.0" text="Línea de Captura" />
+                                        <Button mnemonicParsing="false" onAction="#handleLineaCaptura" prefHeight="25.0" prefWidth="150.0" text="Línea de Captura" />
+                                        <Button mnemonicParsing="false" onAction="#handleReagendarCita" prefHeight="25.0" prefWidth="150.0" text="Reagendar Cita" />
                                     </children>
                                     <padding>
                                         <Insets left="5.0" top="5.0" />

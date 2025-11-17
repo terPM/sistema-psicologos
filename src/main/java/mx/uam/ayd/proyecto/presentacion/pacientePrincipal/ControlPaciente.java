@@ -1,6 +1,8 @@
 package mx.uam.ayd.proyecto.presentacion.pacientePrincipal;
 
 import javafx.application.Platform;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.reagendarCita.ControlReagendarCita;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.reagendarCita.VentanaReagendarCita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
@@ -22,6 +24,8 @@ public class ControlPaciente {
     @Autowired
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
+    @Autowired
+    private ControlReagendarCita controlReagendarCita;
 
     private ControlPrincipalCentro controlPrincipal;    
     private String nombreUsuarioActivo;
@@ -80,4 +84,12 @@ public class ControlPaciente {
             controlLineaCaptura.inicia(); 
         }
     }
+
+    public void iniciarReagendarCita() {
+        controlReagendarCita.inicia();
+    }
+
+
+
+
 }
