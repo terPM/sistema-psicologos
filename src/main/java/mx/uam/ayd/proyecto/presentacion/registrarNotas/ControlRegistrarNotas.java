@@ -33,6 +33,8 @@ public class ControlRegistrarNotas {
         ventana.muestra(this, pacientes);
     }
 
+    
+
     /**
      * Guarda una nueva nota asociada a un paciente.
      */

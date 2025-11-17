@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -14,6 +15,9 @@ public class VentanaPacientePrincipal {
     private Stage stage;
     private ControlPaciente controlador;
     private boolean initialized = false;
+
+    @FXML
+    private TextArea avisoDisplayArea;
 
     /**
      * Inicializa la interfaz de usuario
@@ -71,6 +75,22 @@ public class VentanaPacientePrincipal {
         }
     }
 
+    /**
+     * Muestra los avisos en el TextArea.
+     * @param texto El texto de los avisos.
+     */
+    public void setAvisos(String texto) {
+        if (!Platform.isFxApplicationThread()) {
+            Platform.runLater(() -> setAvisos(texto));
+            return;
+        }
+        // Asegurarse de que el área de texto no sea nula
+        if (avisoDisplayArea != null) {
+            avisoDisplayArea.setText(texto);
+        } else {
+            System.err.println("avisoDisplayArea es nulo. ¿Está bien conectado el FXML?");
+        }
+    }
     
     @FXML
     private void handleSalir() {
@@ -118,4 +138,8 @@ public class VentanaPacientePrincipal {
             controlador.iniciarListarCitas();
         }
     }
+    private void handleReagendarCita() {
+        controlador.iniciarReagendarCita();
+    }
+
 }

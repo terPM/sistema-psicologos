@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -34,6 +35,8 @@
                                         </Label>
                                         <Button mnemonicParsing="false" onAction="#handleRegistroEmocional" prefHeight="25.0" prefWidth="150.0" text="Registro emocional" />
                                         <Button mnemonicParsing="false" onAction="#handleListaRegistros" prefHeight="25.0" prefWidth="150.0" text="Lista de registros" />
+                                        <Button mnemonicParsing="false" onAction="#handleLineaCaptura" prefHeight="25.0" prefWidth="150.0" text="Línea de Captura" />
+                                        <Button mnemonicParsing="false" onAction="#handleReagendarCita" prefHeight="25.0" prefWidth="150.0" text="Reagendar Cita" />
                                     </children>
                                     <padding>
                                         <Insets left="5.0" top="5.0" />
@@ -43,16 +46,42 @@
                                 <Separator layoutX="-5.0" layoutY="356.0" prefWidth="200.0" />
                             </children>
                         </AnchorPane>
+                    
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                             <children>
-                                <Label layoutX="14.0" layoutY="14.0" text="Portal del Paciente">
-                                    <font>
-                                        <Font name="Leelawadee UI" size="21.0" />
-                                    </font>
-                                </Label>
+                                <VBox alignment="TOP_CENTER" spacing="10.0" 
+                                      AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" 
+                                      AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                    
+                                    <padding>
+                                        <Insets top="40.0" />
+                                    </padding>
+                                    
+                                    <children>
+                                        <Label text="Centro de atención psicologica">
+                                            <font>
+                                                <Font name="Leelawadee UI" size="21.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="BIENESTAR EMOCIONAL" textFill="RED">
+                                            <font>
+                                                <Font name="Franklin Gothic Medium" size="18.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Portal de paciente" textFill="BLUE">
+                                                    <font>
+                                                        <Font name="Franklin Gothic Medium" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                        
+                                        <TextArea fx:id="avisoDisplayArea" editable="false" 
+                                                  prefHeight="100.0" prefWidth="200.0" 
+                                                  wrapText="true" />
+                                    </children>
+                                </VBox>
                             </children>
                         </AnchorPane>
-                    </items>
+                        </items>
                 </SplitPane>
             </children>
         </AnchorPane>
