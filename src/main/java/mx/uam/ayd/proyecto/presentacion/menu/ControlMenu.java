@@ -14,7 +14,6 @@ import mx.uam.ayd.proyecto.presentacion.listarpacientes.ControlListarPacientes;
 import mx.uam.ayd.proyecto.presentacion.publicarAviso.ControlPublicarAviso;
 import mx.uam.ayd.proyecto.presentacion.listaAvisos.ControlListaAvisos;
 import mx.uam.ayd.proyecto.presentacion.registrarNotas.ControlRegistrarNotas;
-import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
 
 
@@ -52,7 +51,6 @@ public class ControlMenu {
     private final ControlListaAvisos controlListaAvisos;
     private final ServicioAviso servicioAviso;
     private final ControlRegistrarNotas controlRegistrarNotas;
-    private final ControlCrearCita controlCrearCita;
     /**
      * Constructor que inyecta todas las dependencias necesarias para gestionar las opciones del menú.
      * 
@@ -73,8 +71,7 @@ public class ControlMenu {
             ControlPublicarAviso controlPublicarAviso,
             ServicioAviso servicioAviso,
             ControlListaAvisos controlListaAvisos,
-            ControlRegistrarNotas controlRegistrarNotas,
-            ControlCrearCita controlCrearCita
+            ControlRegistrarNotas controlRegistrarNotas
         ) {
         this.ventana = ventana;
         this.controlListarPacientes = controlListarPacientes;
@@ -85,7 +82,6 @@ public class ControlMenu {
         this.servicioAviso = servicioAviso;
         this.controlListaAvisos = controlListaAvisos;
         this.controlRegistrarNotas = controlRegistrarNotas;
-        this.controlCrearCita = controlCrearCita;
     }
     
     /**
@@ -162,14 +158,6 @@ public class ControlMenu {
 
     public void listaAvisos() {
         controlListaAvisos.inicia();
-    }
-
-    public void crearCita() {
-        controlCrearCita.inicia();
-    }
-
-    public void listarCita() {
-        System.out.println("Listar Citas - Funcionalidad en desarrollo");
     }
 
     /**

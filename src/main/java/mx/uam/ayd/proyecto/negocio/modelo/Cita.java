@@ -30,8 +30,6 @@ public class Cita {
     private TipoConfirmacionCita estadoCita;
     
     private String motivo;
-    private String detallesAdicionalesPsicologo;
-    private String detallesAdicionalesPaciente;
     private String notaPostSesion;
     private String motivoCancelacion;
 
@@ -41,7 +39,7 @@ public class Cita {
     private Paciente paciente;
 
     // Relación con Psicologo
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
 }

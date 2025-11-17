@@ -127,6 +127,17 @@ public class VentanaPacientePrincipal {
     }
 
     @FXML
+    private void handleCrearCita() {
+        if (controlador != null) {
+            controlador.iniciarCrearCita();
+        }
+    }
+    @FXML
+    private void handleProximasCitas() {
+        if (controlador != null) {
+            controlador.iniciarListarCitas();
+        }
+    }
     private void handleReagendarCita() {
         controlador.iniciarReagendarCita();
     }

@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="40.0" VBox.vgrow="NEVER">
@@ -60,14 +59,13 @@
                   <Insets left="9.0" />
                </GridPane.margin>
             </Label>
-            <DatePicker fx:id="fechaCita" onAction="#onFechaSeleccionada" maxHeight="-Infinity" prefHeight="25.0" prefWidth="240.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+            <DatePicker fx:id="fechaCita" maxHeight="-Infinity" onAction="#onFechaSeleccionada" prefHeight="25.0" prefWidth="240.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </DatePicker>
             <Label text="ID" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             <Label text="Nombre" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-            <ComboBox fx:id="seleccionPaciente" onAction="#onPacienteSeleccionado" maxHeight="-Infinity" prefHeight="25.0" prefWidth="240.0" promptText="Seleccione un paciente" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
             <ComboBox fx:id="seleccionHorario" maxHeight="-Infinity" prefHeight="25.0" prefWidth="240.0" promptText="8:00 - 9:00" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
             <TextField fx:id="nombrePsicologo" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="240.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                <GridPane.margin>
@@ -76,6 +74,11 @@
             </TextField>
             <TextField fx:id="idPaciente" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="idPsicologo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="nombrePaciente" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="240.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="15.0" right="15.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

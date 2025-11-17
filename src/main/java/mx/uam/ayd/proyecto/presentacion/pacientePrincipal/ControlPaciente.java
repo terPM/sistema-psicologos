@@ -17,6 +17,8 @@ import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.Contr
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListaRegistros.ControlListaRegistros;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
+import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListarCitas.ControlListarCitas;
 
 @Component
 public class ControlPaciente {
@@ -31,6 +33,9 @@ public class ControlPaciente {
     @Lazy
     private ControlLineaCaptura controlLineaCaptura;
     @Autowired
+    private ControlCrearCita controlCrearCita;
+    @Autowired
+    private ControlListarCitas controlListarCitas;
     private ControlReagendarCita controlReagendarCita;
 
     @Autowired
@@ -119,6 +124,17 @@ public class ControlPaciente {
             controlLineaCaptura.inicia(); 
         }
     }
+    /**
+     * Inicia el sub-flujo de Crear Cita.
+     */
+    public void iniciarCrearCita(){
+            controlCrearCita.inicia(nombreUsuarioActivo);
+    }
+
+    public void iniciarListarCitas() {
+        controlListarCitas.inicia();
+    }
+
 
     public void iniciarReagendarCita() {
         controlReagendarCita.inicia();
