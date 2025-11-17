@@ -19,12 +19,18 @@ public class Cita {
     private TipoConfirmacionCita estadoCita;
 
     private String motivo;
+    private String detallesAdicionalesPsicologo; // (Viene de la rama HEAD)
+    private String detallesAdicionalesPaciente; // (Viene de la rama HEAD)
     private String notaPostSesion;
     private String motivoCancelacion;
 
-    // Campos para almacenar la información de pago generada
+    // --- CORRECCIÓN CRÍTICA ---
+    // Se cambia de 'double' (primitivo) a 'Double' (objeto)
+    // para permitir valores NULL en la base de datos y evitar el crash al arrancar.
+    private Double monto;
+    // --- FIN DE CORRECCIÓN ---
+
     private String lineaCaptura;
-    private double monto;
     private LocalDate fechaVencimiento;
 
 
@@ -34,7 +40,7 @@ public class Cita {
     private Paciente paciente;
 
     // Relación con Psicologo
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER) // Se mantiene EAGER por compatibilidad
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
 }

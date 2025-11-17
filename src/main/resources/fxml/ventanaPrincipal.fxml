@@ -45,29 +45,6 @@
                                             </font>
                                         </Label>
                                     </top>
-<<<<<<< HEAD
-
-                                    <center>
-                                        <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
-                                            <children>
-                                                <Label text="Centro de atención psicologica">
-                                                    <font>
-                                                        <Font name="Leelawadee UI" size="21.0" />
-                                                    </font>
-                                                </Label>
-                                                <Label text="Avisos Importantes">
-                                                    <font>
-                                                        <Font name="Franklin Gothic Medium" size="18.0" />
-                                                    </font>
-                                                </Label>
-
-                                                <TextArea fx:id="avisoDisplayArea" editable="false" prefHeight="100.0" prefWidth="400.0" wrapText="true" />
-                                            </children>
-                                        </VBox>
-                                    </center>
-
-=======
->>>>>>> hu-16-historial-de-pagos
                                 </BorderPane>
                             </children>
                         </AnchorPane>

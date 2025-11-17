@@ -23,21 +23,16 @@ public class VentanaPsicologoPrincipal {
     private ControlPsicologo controlador;
     private boolean initialized = false;
 
-<<<<<<< HEAD
+    // --- FUSIONADO ---
+    // Campos de la rama de Avisos/Notificaciones
     @FXML
     private TextArea avisoDisplayArea;
-    
 
-    /**
-     * Inicializa la interfaz de usuario
-     */
-    /* ids alineados con el FXML */
-    @FXML private Circle burbujaNotificacion;          // <- OJO: Circle (no Label)
+    @FXML private Circle burbujaNotificacion;
     @FXML private ListView<String> listaNotificaciones;
     @FXML private Button btnCampana;
+    // --- FIN DE FUSION ---
 
-=======
->>>>>>> hu-16-historial-de-pagos
     private void initializeUI() {
         if (initialized) return;
 
@@ -85,13 +80,10 @@ public class VentanaPsicologoPrincipal {
             Platform.runLater(this::oculta);
             return;
         }
-<<<<<<< HEAD
-        if (stage != null) stage.hide();
-=======
+        // Usamos la versión con llaves de hu-16
         if (stage != null) {
             stage.hide();
         }
->>>>>>> hu-16-historial-de-pagos
     }
 
     @FXML
@@ -103,6 +95,9 @@ public class VentanaPsicologoPrincipal {
     private void handleRegistrarNotas() {
         if (controlador != null) controlador.registrarNotas();
     }
+
+    // --- FUSIONADO ---
+    // Método de la rama de Horarios/Avisos
     @FXML
     private void handleVerHorario() {
         if (controlador != null) {
@@ -110,14 +105,21 @@ public class VentanaPsicologoPrincipal {
         }
     }
 
-<<<<<<< HEAD
-    public void actualizarAviso(String texto) { 
-    if (avisoDisplayArea != null) {
+    // Método de la rama hu-16
+    @FXML
+    private void handleListaRegistros() {
+        if (controlador != null) {
+            controlador.iniciarListaRegistros();
+        }
+    }
+
+    // Métodos de la rama de Avisos/Notificaciones
+    public void actualizarAviso(String texto) {
+        if (avisoDisplayArea != null) {
             avisoDisplayArea.setText(texto);
         }
     }
 
-    /* ====== Notificaciones ====== */
     public void setBurbujaVisible(boolean visible) {
         if (burbujaNotificacion != null) burbujaNotificacion.setVisible(visible);
     }
@@ -143,13 +145,5 @@ public class VentanaPsicologoPrincipal {
             listaNotificaciones.getItems().add(linea);
         }
     }
+    // --- FIN DE FUSION ---
 }
-=======
-    @FXML
-    private void handleListaRegistros() {
-        if (controlador != null) {
-            controlador.iniciarListaRegistros();
-        }
-    }
-}
->>>>>>> hu-16-historial-de-pagos

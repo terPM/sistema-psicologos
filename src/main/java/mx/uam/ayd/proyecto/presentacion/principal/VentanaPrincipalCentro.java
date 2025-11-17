@@ -24,8 +24,6 @@ public class VentanaPrincipalCentro {
     private ControlPrincipalCentro control;
     private boolean initialized = false;
 
-    // NOTA: Tu FXML no tenía el initialize, así que lo moví a 'muestra()'
-
     private void initializeUI() {
         if (initialized) {
             return;
@@ -65,8 +63,7 @@ public class VentanaPrincipalCentro {
 
         initializeUI();
 
-        textFieldUsuario.clear();
-        passwordField.clear();
+        limpiarCampos(); // Llama al método corregido
 
         // Llenar ComboBox
         if (miComboBox != null) {
@@ -104,8 +101,20 @@ public class VentanaPrincipalCentro {
             stage.hide();
         }
     }
+
+    /**
+     * CORREGIDO: Limpia los campos de texto y el combobox
+     * Usaba 'passwordFieldOculto' por error.
+     */
     public void limpiarCampos() {
-        textFieldUsuario.clear();
-        passwordFieldOculto.clear();
+        if (textFieldUsuario != null) {
+            textFieldUsuario.clear();
+        }
+        if (passwordField != null) {
+            passwordField.clear();
+        }
+        if (miComboBox != null) {
+            miComboBox.setValue(null);
+        }
     }
 }

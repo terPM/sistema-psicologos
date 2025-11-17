@@ -15,29 +15,30 @@ import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.negocio.modelo.TipoConfirmacionCita;
 
+// Imports de ambas ramas
+import mx.uam.ayd.proyecto.negocio.ServicioNotificacion;
+import mx.uam.ayd.proyecto.negocio.ServicioLineaCaptura;
+
 @Service
 public class ServicioCita {
 
-<<<<<<< HEAD
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private PacienteRepository pacienteRepository; // de HEAD
 
-=======
->>>>>>> hu-16-historial-de-pagos
     @Autowired
     private CitaRepository citaRepository;
 
     @Autowired
-<<<<<<< HEAD
-    private ServicioNotificacion servicioNotificacion;
+    private ServicioNotificacion servicioNotificacion; // de HEAD
+
+    @Autowired
+    private ServicioLineaCaptura servicioLineaCaptura; // de hu-16
 
     /**
-     * Crea una cita nueva.
+     * Crea una cita nueva y le adjunta la info de pago.
+     * (Lógica de 'crearCita' de hu-16 fusionada con la de HEAD)
      */
-=======
-    private ServicioLineaCaptura servicioLineaCaptura;
-
->>>>>>> hu-16-historial-de-pagos
+    @Transactional
     public Cita crearCita(Paciente paciente, LocalDateTime fechaCita, String motivo) {
 
         Psicologo psicologo = paciente.getPsicologo();
@@ -54,21 +55,21 @@ public class ServicioCita {
         cita.setEstadoCita(TipoConfirmacionCita.PENDIENTE);
         cita.setMotivo(motivo);
 
-<<<<<<< HEAD
-=======
+        // Lógica de hu-16 (pago)
         cita.setLineaCaptura(servicioLineaCaptura.generarLineaCaptura());
         cita.setMonto(servicioLineaCaptura.asignarPrecioCita());
         cita.setFechaVencimiento(fechaCita.toLocalDate());
 
->>>>>>> hu-16-historial-de-pagos
         citaRepository.save(cita);
         return cita;
     }
 
-<<<<<<< HEAD
+    // --- MÉTODOS DE LA RAMA HEAD ---
+
     /**
      * Lista todas las citas activas del paciente.
      */
+    @Transactional
     public List<Cita> listarCitas(String nombreUsuarioActivo) {
         Paciente paciente = pacienteRepository.findByUsuario(nombreUsuarioActivo);
         return citaRepository.findByPacienteAndEstadoCitaNot(paciente, TipoConfirmacionCita.CANCELADA);
@@ -77,6 +78,7 @@ public class ServicioCita {
     /**
      * Cancela una cita.
      */
+    @Transactional
     public Cita cancelarCita(int idCita) {
         Cita cita = citaRepository.findById(idCita).orElse(null);
         if (cita == null) {
@@ -91,6 +93,7 @@ public class ServicioCita {
     /**
      * Obtiene citas por psicólogo.
      */
+    @Transactional
     public List<Cita> obtenerCitasPorPsicologo(Psicologo psicologo) {
         if (psicologo == null) {
             throw new IllegalArgumentException("El psicólogo no puede ser nulo");
@@ -101,6 +104,7 @@ public class ServicioCita {
     /**
      * Reagenda una cita y notifica al psicólogo.
      */
+    @Transactional
     public void reagendarCita(int idCita, LocalDate nuevaFecha, String nuevaHora, Psicologo nuevoPsicologo) {
 
         Cita cita = citaRepository.findByIdConRelaciones(idCita);
@@ -124,12 +128,14 @@ public class ServicioCita {
 
         servicioNotificacion.crearNotificacion(nuevoPsicologo, mensaje);
     }
-}
-=======
+
+    // --- MÉTODOS DE LA RAMA hu-16-historial-de-pagos ---
+
     @Transactional
     public Cita buscarCitaPendienteMasReciente(Paciente paciente) {
         Cita cita = citaRepository.findTopByPacienteAndEstadoCitaOrderByFechaCitaAsc(paciente, TipoConfirmacionCita.PENDIENTE);
 
+        // Arregla LazyInitializationException
         if (cita != null) {
             if (cita.getPaciente() != null) {
                 cita.getPaciente().getNombre();
@@ -146,6 +152,7 @@ public class ServicioCita {
     public List<Cita> listarCitasPorPaciente(Paciente paciente) {
         List<Cita> citas = citaRepository.findByPaciente(paciente);
 
+        // Arregla LazyInitializationException
         for (Cita cita : citas) {
             if (cita.getPaciente() != null) cita.getPaciente().getNombre();
             if (cita.getPsicologo() != null) cita.getPsicologo().getNombre();
@@ -153,4 +160,3 @@ public class ServicioCita {
         return citas;
     }
 }
->>>>>>> hu-16-historial-de-pagos

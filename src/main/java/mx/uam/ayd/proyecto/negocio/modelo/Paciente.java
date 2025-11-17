@@ -33,15 +33,12 @@ public class Paciente {
     @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Cita> citas;
 
-    /**
-     * Relación: Un Paciente puede tener muchos Registros Emocionales.
-     */
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RegistroEmocional> registrosEmocionales;
 
     public Paciente(){
         this.bateriasClinicas = new ArrayList<>();
         this.citas = new ArrayList<>();
-        this.registrosEmocionales = new ArrayList<>();
+        this.registrosEmocionales = new ArrayList<>(); // Inicializar la nueva lista
     }
 }

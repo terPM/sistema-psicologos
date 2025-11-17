@@ -9,7 +9,6 @@
       xmlns="http://javafx.com/javafx/24.0.1"
       xmlns:fx="http://javafx.com/fxml/1">
 
-    <!-- Barra superior -->
     <children>
         <AnchorPane prefHeight="50" style="-fx-background-color: #EAEAEA;">
             <children>
@@ -19,7 +18,6 @@
                     </font>
                 </Label>
 
-                <!-- Campana -->
                 <Button fx:id="btnCampana"
                         layoutX="580" layoutY="10"
                         mnemonicParsing="false"
@@ -30,7 +28,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Burbuja roja -->
                 <Circle fx:id="burbujaNotificacion"
                         radius="6"
                         layoutX="600" layoutY="10"
@@ -39,18 +36,12 @@
             </children>
         </AnchorPane>
 
-        <!-- Cuerpo -->
         <AnchorPane VBox.vgrow="ALWAYS">
             <children>
                 <SplitPane dividerPositions="0.3" prefHeight="350.0" prefWidth="640.0">
                     <items>
-<<<<<<< HEAD
 
-                        <!-- Panel izquierdo -->
                         <AnchorPane minWidth="200.0">
-=======
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
->>>>>>> hu-16-historial-de-pagos
                             <children>
                                 <VBox alignment="CENTER_LEFT" layoutX="9.0" layoutY="14.0"
                                       prefHeight="350.0" prefWidth="171.0" spacing="10.0">
@@ -69,7 +60,6 @@
 
                                         <Separator prefWidth="150.0"/>
 
-<<<<<<< HEAD
                                         <Label text="Citas">
                                             <font>
                                                 <Font name="System Bold" size="13.0"/>
@@ -83,7 +73,9 @@
                                                 prefWidth="150.0"
                                                 mnemonicParsing="false"
                                                 onAction="#handleVerHorario"/>
-=======
+
+                                        <Separator prefWidth="150.0"/>
+
                                         <Label text="Registros del Paciente">
                                             <font>
                                                 <Font name="System Bold" size="13.0"/>
@@ -94,7 +86,6 @@
                                                 prefWidth="150.0"
                                                 mnemonicParsing="false"
                                                 onAction="#handleListaRegistros"/>
->>>>>>> hu-16-historial-de-pagos
 
                                         <Separator prefWidth="150.0"/>
 
@@ -111,10 +102,6 @@
                             </children>
                         </AnchorPane>
 
-<<<<<<< HEAD
-                        <!-- Panel central -->
-=======
->>>>>>> hu-16-historial-de-pagos
                         <AnchorPane>
                             <children>
                                 <BorderPane prefHeight="398.0" prefWidth="442.0"
@@ -161,7 +148,6 @@
                             </children>
                         </AnchorPane>
 
-                        <!-- Panel derecho (notificaciones) -->
                         <AnchorPane minWidth="250.0" maxWidth="250.0">
                             <children>
                                 <ListView fx:id="listaNotificaciones"

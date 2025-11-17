@@ -14,8 +14,6 @@ import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 /**
  * Servicio que gestiona la lógica de negocio relacionada con los pacientes.
  *
- * (Tu documentación existente...)
- *
  * @author Tech Solutions
  * @version 1.0
  */
@@ -29,7 +27,6 @@ public class ServicioPaciente {
 
     /**
      * Registra un nuevo paciente en el sistema...
-     * (Tu documentación existente...)
      */
     public Paciente agregarPaciente(String nombre, String correo, String telefono, int edad, String usuario, String contrasena) {
         if(nombre == null || nombre.trim().isEmpty()) {
@@ -74,8 +71,6 @@ public class ServicioPaciente {
 
     /**
      * Recupera todos los pacientes registrados en el sistema.
-     *
-     * @return una lista con todos los pacientes; si no hay pacientes registrados, la lista estará vacía.
      */
     public List<Paciente> recuperarTodosLosPacientes() {
         List<Paciente> pacientes = new ArrayList<>();
@@ -85,9 +80,6 @@ public class ServicioPaciente {
 
     /**
      * Recupera solo los pacientes asignados a un psicólogo específico.
-     *
-     * @param psicologo El psicólogo del cual se quieren los pacientes.
-     * @return Una lista de sus pacientes.
      */
     public List<Paciente> recuperarPacientesPorPsicologo(Psicologo psicologo) {
         return pacienteRepository.findByPsicologo(psicologo);
@@ -95,9 +87,6 @@ public class ServicioPaciente {
 
     /**
      * Asigna un psicólogo a un paciente existente.
-     *
-     * @param paciente el paciente al que se le asignará el psicólogo.
-     * @param psicologo el psicólogo a asignar.
      */
     @Transactional
     public void asignarPsicologo(Paciente paciente, Psicologo psicologo) {
@@ -110,22 +99,10 @@ public class ServicioPaciente {
     }
 
     /**
-<<<<<<< HEAD
      * Obtiene un paciente por su nombre de usuario.
-     *
-     * @param usuario el nombre de usuario del paciente.
-     * @return el paciente correspondiente al nombre de usuario; {@code null} si no se encuentra.
-=======
-     * Recupera un Paciente completo a partir de su nombre de usuario.
-     * @param usuario El nombre de usuario del paciente.
-     * @return El objeto Paciente o null si no se encuentra.
->>>>>>> hu-13
+     * (Método fusionado de ambas ramas)
      */
     public Paciente obtenerPacientePorUsuario(String usuario) {
         return pacienteRepository.findByUsuario(usuario);
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> hu-13
 }

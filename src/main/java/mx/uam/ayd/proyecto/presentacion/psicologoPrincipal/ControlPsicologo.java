@@ -5,16 +5,12 @@ import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.presentacion.registrarNotas.ControlRegistrarNotas;
 import mx.uam.ayd.proyecto.negocio.ServicioAviso;
 import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
-import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.presentacion.mostrarCitasPsic.ControlMostrarCitasPsic;
 import mx.uam.ayd.proyecto.negocio.ServicioNotificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Notificacion;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
-<<<<<<< HEAD
-=======
 import mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ListaRegistros.ControlListaRegistros;
 
->>>>>>> hu-16-historial-de-pagos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,103 +19,102 @@ import java.util.List;
 @Component
 public class ControlPsicologo {
 
+    // --- Campos de Ambas Ramas ---
     @Autowired
     private VentanaPsicologoPrincipal ventana;
-
     @Autowired
     private ControlRegistrarNotas controlRegistrarNotas;
-
-<<<<<<< HEAD
     @Autowired
-    private ControlMostrarCitasPsic controlMostrarCitasPsic;
-
+    private ControlMostrarCitasPsic controlMostrarCitasPsic; // de HEAD
     @Autowired
-    private ServicioAviso servicioAviso;
-
+    private ServicioAviso servicioAviso; // de HEAD
     @Autowired
-    private ServicioNotificacion servicioNotificacion;
+    private ServicioNotificacion servicioNotificacion; // de HEAD
+    @Autowired
+    private ControlListaRegistros controlListaRegistros; // de hu-16
+    // --- Fin de Campos ---
 
-=======
->>>>>>> hu-16-historial-de-pagos
     private ControlPrincipalCentro controlPrincipal;
-    private Psicologo psicologoActual;
-    private Psicologo psicologoLogueado;
 
-    @Autowired
-    private ControlListaRegistros controlListaRegistros;
-
+    // --- Lógica de Sesión de hu-16 (La correcta) ---
     private Psicologo psicologoSesion;
 
     /**
-     * Método usado cuando ya tienes al psicólogo logueado.
+     * Método 'inicia' fusionado. Usa la firma de hu-16 y añade la lógica de HEAD.
      */
     public void inicia(ControlPrincipalCentro controlPrincipal, Psicologo psicologo) {
         this.controlPrincipal = controlPrincipal;
-<<<<<<< HEAD
-        this.psicologoLogueado = psicologo;
-        this.psicologoActual = psicologo;
+        this.psicologoSesion = psicologo; // Lógica de hu-16
 
-=======
-        this.psicologoSesion = psicologo;
->>>>>>> hu-16-historial-de-pagos
         ventana.setControlador(this);
         ventana.muestra();
 
-        cargarIndicadorNotificaciones();
+        cargarIndicadorNotificaciones(); // Lógica de HEAD
     }
 
     /**
-     * Método alterno por compatibilidad.
+     * Método alterno por compatibilidad (de HEAD).
+     * NOTA: Este método puede fallar si 'psicologoActual' no se inicializa.
      */
     public void inicia(ControlPrincipalCentro controlPrincipal) {
         this.controlPrincipal = controlPrincipal;
-
         ventana.setControlador(this);
         ventana.muestra();
-
         cargarIndicadorNotificaciones();
     }
 
+    // --- Métodos de Notificaciones (de HEAD, adaptados a psicologoSesion) ---
     public void setPsicologoActual(Psicologo psicologo) {
-        this.psicologoActual = psicologo;
+        this.psicologoActual = psicologo; // Método de HEAD
+        if(this.psicologoSesion == null) {
+            this.psicologoSesion = psicologo; // Asegura compatibilidad
+        }
         cargarIndicadorNotificaciones();
     }
 
     public void cargarIndicadorNotificaciones() {
-        if (psicologoActual == null) {
+        // Usa la sesión de hu-16 si existe, si no, usa la de HEAD
+        Psicologo psicologoACargar = (psicologoSesion != null) ? psicologoSesion : psicologoActual;
+
+        if (psicologoACargar == null) {
             return;
         }
-        List<Notificacion> noLeidas = servicioNotificacion.obtenerNoLeidas(psicologoActual);
+        List<Notificacion> noLeidas = servicioNotificacion.obtenerNoLeidas(psicologoACargar);
         ventana.setBurbujaVisible(!noLeidas.isEmpty());
     }
 
     public void mostrarNotificaciones() {
-        if (psicologoActual == null) {
+        Psicologo psicologoACargar = (psicologoSesion != null) ? psicologoSesion : psicologoActual;
+
+        if (psicologoACargar == null) {
             return;
         }
 
-        List<Notificacion> noLeidas = servicioNotificacion.obtenerNoLeidas(psicologoActual);
+        List<Notificacion> noLeidas = servicioNotificacion.obtenerNoLeidas(psicologoACargar);
         ventana.mostrarListViewNotificaciones(noLeidas);
 
-        servicioNotificacion.marcarTodasComoLeidas(psicologoActual);
+        servicioNotificacion.marcarTodasComoLeidas(psicologoACargar);
         cargarIndicadorNotificaciones();
     }
+    // --- Fin Métodos Notificaciones ---
 
     public void registrarNotas() {
         controlRegistrarNotas.inicia();
     }
 
-<<<<<<< HEAD
+    // --- Método de HEAD (adaptado a psicologoSesion) ---
     public void verHorario() {
-        if (psicologoLogueado != null) {
+        Psicologo psicologoACargar = (psicologoSesion != null) ? psicologoSesion : psicologoLogueado;
+
+        if (psicologoACargar != null) {
             ventana.oculta();
-            controlMostrarCitasPsic.inicia(this, this.psicologoLogueado);
+            controlMostrarCitasPsic.inicia(this, psicologoACargar);
         } else {
             System.err.println("Error: No se ha identificado al psicólogo.");
-=======
-    /**
-     * Inicia el flujo para ver la lista de registros
-     */
+        }
+    }
+
+    // --- Método de hu-16 ---
     public void iniciarListaRegistros() {
         if (this.psicologoSesion != null) {
             controlListaRegistros.inicia(this.psicologoSesion);
@@ -128,17 +123,7 @@ public class ControlPsicologo {
         }
     }
 
-    public void salir() {
-        ventana.oculta();
-        this.psicologoSesion = null;
-        if (controlPrincipal != null) {
-            controlPrincipal.regresaAlLogin();
-        } else {
-            Platform.exit();
->>>>>>> hu-16-historial-de-pagos
-        }
-    }
-
+    // --- Método de HEAD ---
     public void actualizarDisplayAviso() {
         Aviso ultimoAviso = servicioAviso.obtenerUltimoAviso();
 
@@ -151,16 +136,25 @@ public class ControlPsicologo {
         ventana.actualizarAviso(textoAviso);
     }
 
+    // --- Método de HEAD ---
     public void mostrarVentana() {
         ventana.muestra();
     }
 
+    // --- Método Salir (Fusionado, usando la lógica de hu-16) ---
     public void salir() {
         ventana.oculta();
+        this.psicologoSesion = null; // Limpiar sesión
+        this.psicologoActual = null;
+        this.psicologoLogueado = null;
         if (controlPrincipal != null) {
             controlPrincipal.regresaAlLogin();
         } else {
             Platform.exit();
         }
     }
+
+    // --- Campos de compatibilidad de HEAD (se pueden borrar si 'psicologoSesion' se usa en todos lados) ---
+    private Psicologo psicologoActual;
+    private Psicologo psicologoLogueado;
 }

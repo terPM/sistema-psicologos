@@ -18,10 +18,7 @@ public class RegistroEmocional {
     @Column(columnDefinition="TEXT")
     private String nota;
 
-    /**
-     * Relación: Muchos Registros Emocionales pertenecen a Un Paciente.
-     */
     @ManyToOne
-    @JoinColumn(name = "paciente_id") // Así se llamará la columna en la BD
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 }

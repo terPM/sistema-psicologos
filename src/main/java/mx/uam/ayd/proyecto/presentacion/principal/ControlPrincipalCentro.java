@@ -7,7 +7,7 @@ import mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.ControlPsicologo;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ControlPaciente;
 import mx.uam.ayd.proyecto.datos.PsicologoRepository;
 import mx.uam.ayd.proyecto.datos.PacienteRepository;
-import mx.uam.ayd.proyecto.negocio.ServicioSesion;
+import mx.uam.ayd.proyecto.negocio.ServicioSesion; // Import de HEAD
 
 import jakarta.annotation.PostConstruct;
 
@@ -27,7 +27,7 @@ public class ControlPrincipalCentro {
 
     private final PsicologoRepository psicologoRepository;
     private final PacienteRepository pacienteRepository;
-    private final ServicioSesion servicioSesion;
+    private final ServicioSesion servicioSesion; // Campo de HEAD
 
     @Autowired
     public ControlPrincipalCentro(
@@ -37,7 +37,7 @@ public class ControlPrincipalCentro {
             ControlPaciente controlPaciente,
             PsicologoRepository psicologoRepository,
             PacienteRepository pacienteRepository,
-            ServicioSesion servicioSesion
+            ServicioSesion servicioSesion // Parámetro de HEAD
     ) {
         this.ventanaLogin = ventanaLogin;
         this.controlMenuAdmin = controlMenuAdmin;
@@ -45,7 +45,7 @@ public class ControlPrincipalCentro {
         this.controlPaciente = controlPaciente;
         this.pacienteRepository = pacienteRepository;
         this.psicologoRepository = psicologoRepository;
-        this.servicioSesion = servicioSesion;
+        this.servicioSesion = servicioSesion; // Asignación de HEAD
     }
 
     @PostConstruct
@@ -57,6 +57,7 @@ public class ControlPrincipalCentro {
         ventanaLogin.muestra();
     }
 
+    // Método de HEAD
     public void regresaAlLogin() {
         servicioSesion.limpiarSesion();
         ventanaLogin.limpiarCampos();
@@ -80,21 +81,15 @@ public class ControlPrincipalCentro {
                 Psicologo psicologo = psicologoRepository.findByUsuarioAndContrasena(usuario, contrasena);
                 if (psicologo != null) {
                     autenticado = true;
-<<<<<<< HEAD
-                    servicioSesion.setUsuarioActual(usuario);
-                    mostrarSistemaPrincipalPsicologo(psicologo);
+                    servicioSesion.setUsuarioActual(usuario); // Lógica de HEAD
+                    mostrarSistemaPrincipalPsicologo(psicologo); // Lógica de hu-16
                 }
                 break;
 
-=======
-                    mostrarSistemaPrincipalPsicologo(psicologo);
-                }
-                break;
->>>>>>> hu-16-historial-de-pagos
             case "Administrador":
                 if (USER_ADMIN.equals(usuario) && PASS_ADMIN.equals(contrasena)) {
                     autenticado = true;
-                    servicioSesion.setUsuarioActual(usuario);
+                    servicioSesion.setUsuarioActual(usuario); // Lógica de HEAD
                     mostrarSistemaPrincipalAdministrativo();
                 }
                 break;
@@ -103,12 +98,8 @@ public class ControlPrincipalCentro {
                 Paciente paciente = pacienteRepository.findByUsuario(usuario);
                 if (paciente != null && paciente.getContrasena().equals(contrasena)) {
                     autenticado = true;
-<<<<<<< HEAD
-                    servicioSesion.setUsuarioActual(usuario);
-                    mostrarSistemaPrincipalPaciente(usuario);
-=======
-                    mostrarSistemaPrincipalPaciente(paciente);
->>>>>>> hu-16-historial-de-pagos
+                    servicioSesion.setUsuarioActual(usuario); // Lógica de HEAD
+                    mostrarSistemaPrincipalPaciente(paciente); // Lógica de hu-16
                 }
                 break;
 
@@ -132,6 +123,7 @@ public class ControlPrincipalCentro {
         controlMenuAdmin.inicia(this);
     }
 
+    // Método de hu-16 (el correcto)
     public void mostrarSistemaPrincipalPaciente(Paciente paciente) {
         ventanaLogin.cerrarLogin();
         controlPaciente.inicia(paciente, this);

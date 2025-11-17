@@ -4,11 +4,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-<<<<<<< HEAD
-import javafx.scene.control.TextArea;
-=======
 import javafx.scene.control.Alert;
->>>>>>> hu-16-historial-de-pagos
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -20,18 +17,16 @@ public class VentanaPacientePrincipal {
     private ControlPaciente controlador;
     private boolean initialized = false;
 
-<<<<<<< HEAD
     @FXML
     private TextArea avisoDisplayArea;
-=======
-    private void initializeUI() {
-        if (initialized) {
-            return;
-        }
->>>>>>> hu-16-historial-de-pagos
 
     private void initializeUI() {
         if (initialized) return;
+
+        if (!Platform.isFxApplicationThread()) {
+            Platform.runLater(this::initializeUI);
+            return;
+        }
 
         try {
             stage = new Stage();
@@ -56,23 +51,14 @@ public class VentanaPacientePrincipal {
     }
 
     public void muestra() {
+        if (!Platform.isFxApplicationThread()) {
+            Platform.runLater(this::muestra);
+            return;
+        }
         oculta();
         initializeUI();
         stage.show();
     }
-
-<<<<<<< HEAD
-    public void oculta() {
-        if (stage != null) stage.hide();
-    }
-
-    public void setAvisos(String texto) {
-        if (avisoDisplayArea != null) {
-            avisoDisplayArea.setText(texto);
-        }
-    }
-
-=======
 
     public void oculta() {
         if (!Platform.isFxApplicationThread()) {
@@ -84,8 +70,20 @@ public class VentanaPacientePrincipal {
         }
     }
 
+    public void setAvisos(String texto) {
+        if (avisoDisplayArea != null) {
+            avisoDisplayArea.setText(texto);
+        }
+    }
 
->>>>>>> hu-16-historial-de-pagos
+    public void muestraAviso(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
     @FXML
     private void handleSalir() {
         controlador.salir();
@@ -96,20 +94,22 @@ public class VentanaPacientePrincipal {
         controlador.iniciarRegistroEmocional();
     }
 
-<<<<<<< HEAD
-    @FXML
-    private void handleListaRegistros() {
-        controlador.iniciarListaRegistros();
-    }
-
-=======
->>>>>>> hu-16-historial-de-pagos
     @FXML
     private void handleLineaCaptura() {
         controlador.iniciarLineaCaptura();
     }
 
-<<<<<<< HEAD
+    @FXML
+    private void handleHistorialPagos() {
+        if (controlador != null) {
+            controlador.iniciarHistorialPagos();
+        }
+    }
+
+    // --- MÉTODO ELIMINADO ---
+    // Se eliminó @FXML private void handleListaRegistros()
+    // --- FIN DE LA ELIMINACIÓN ---
+
     @FXML
     private void handleCrearCita() {
         controlador.iniciarCrearCita();
@@ -124,26 +124,6 @@ public class VentanaPacientePrincipal {
     private void handleReagendarCita() {
         controlador.iniciarReagendarCita();
     }
-}
-=======
-    public void muestraAviso(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
-
-    @FXML
-    private void handleHistorialPagos() {
-        if (controlador != null) {
-            controlador.iniciarHistorialPagos();
-        }
-    }
-<<<<<<< HEAD
-}
->>>>>>> hu-16-historial-de-pagos
-=======
 
     @FXML
     private void handlePerfilPaciente() {
@@ -152,4 +132,3 @@ public class VentanaPacientePrincipal {
         }
     }
 }
->>>>>>> hu-13
