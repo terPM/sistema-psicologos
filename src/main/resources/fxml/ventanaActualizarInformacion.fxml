@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane prefHeight="60.0" prefWidth="640.0">
+            <children>
+                <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleCancelar" text="Volver al Menú" />
+                <Label layoutX="190.0" layoutY="14.0" text="Actualizar Información">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+
+        <Label text="Editar Datos Personales" textFill="#666666">
+            <font><Font name="System Bold" size="14.0" /></font>
+        </Label>
+
+        <GridPane hgap="10.0" maxWidth="500.0" vgap="10.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="120.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="350.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label style="-fx-font-weight: bold;" text="Nombre:" />
+                <TextField fx:id="txtNombre" editable="false" style="-fx-background-color: #f0f0f0;" GridPane.columnIndex="1" />
+
+                <Label style="-fx-font-weight: bold;" text="Usuario:" GridPane.rowIndex="1" />
+                <TextField fx:id="txtUsuario" promptText="Nuevo nombre de usuario" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label style="-fx-font-weight: bold;" text="Edad:" GridPane.rowIndex="2" />
+                <TextField fx:id="txtEdad" promptText="Edad" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label style="-fx-font-weight: bold;" text="Teléfono:" GridPane.rowIndex="3" />
+                <TextField fx:id="txtTelefono" promptText="Solo números" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label style="-fx-font-weight: bold;" text="Correo:" GridPane.rowIndex="4" />
+                <TextField fx:id="txtCorreo" promptText="correo@ejemplo.com" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            </children>
+        </GridPane>
+
+        <Separator maxWidth="550.0"><VBox.margin><Insets bottom="5.0" top="5.0" /></VBox.margin></Separator>
+
+        <Label text="Cambiar Contraseña (Opcional)">
+            <font><Font name="System Bold" size="14.0" /></font>
+        </Label>
+        <Label text="Deje estos campos vacíos si no desea cambiar su contraseña." textFill="#888888">
+            <font><Font size="11.0" /></font>
+        </Label>
+
+        <GridPane hgap="10.0" maxWidth="500.0" vgap="10.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="140.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="330.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Contraseña Actual:" />
+                <PasswordField fx:id="pfActual" promptText="Requerida para guardar cambios" GridPane.columnIndex="1" />
+                <Label text="Nueva Contraseña:" GridPane.rowIndex="1" />
+                <PasswordField fx:id="pfNueva" promptText="Mínimo 4 caracteres" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Confirmar Nueva:" GridPane.rowIndex="2" />
+                <PasswordField fx:id="pfConfirmar" promptText="Repita la nueva contraseña" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            </children>
+        </GridPane>
+
+        <Button mnemonicParsing="false" onAction="#handleActualizarDatos" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar Cambios">
+            <VBox.margin><Insets top="10.0" /></VBox.margin>
+        </Button>
+    </children>
+    <padding><Insets bottom="20.0" /></padding>
+</VBox>

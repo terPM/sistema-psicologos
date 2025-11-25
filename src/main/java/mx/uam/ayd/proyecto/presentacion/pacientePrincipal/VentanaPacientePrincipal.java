@@ -17,38 +17,28 @@ public class VentanaPacientePrincipal {
     private ControlPaciente controlador;
     private boolean initialized = false;
 
-    @FXML
-    private TextArea avisoDisplayArea;
+    @FXML private TextArea avisoDisplayArea;
 
     private void initializeUI() {
         if (initialized) return;
-
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::initializeUI);
             return;
         }
-
         try {
             stage = new Stage();
             stage.setTitle("Menú Principal - Paciente");
             stage.setResizable(false);
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventanaPacientePrincipal.fxml"));
             loader.setController(this);
-
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
             stage.setOnCloseRequest(e -> handleSalir());
-
             initialized = true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
-    public void setControlador(ControlPaciente controlador) {
-        this.controlador = controlador;
-    }
+    public void setControlador(ControlPaciente controlador) { this.controlador = controlador; }
 
     public void muestra() {
         if (!Platform.isFxApplicationThread()) {
@@ -65,16 +55,10 @@ public class VentanaPacientePrincipal {
             Platform.runLater(this::oculta);
             return;
         }
-        if (stage != null) {
-            stage.hide();
-        }
+        if (stage != null) stage.hide();
     }
 
-    public void setAvisos(String texto) {
-        if (avisoDisplayArea != null) {
-            avisoDisplayArea.setText(texto);
-        }
-    }
+    public void setAvisos(String texto) { if (avisoDisplayArea != null) avisoDisplayArea.setText(texto); }
 
     public void muestraAviso(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -84,51 +68,15 @@ public class VentanaPacientePrincipal {
         alert.showAndWait();
     }
 
-    @FXML
-    private void handleSalir() {
-        controlador.salir();
-    }
+    @FXML private void handleSalir() { controlador.salir(); }
+    @FXML private void handleRegistroEmocional() { controlador.iniciarRegistroEmocional(); }
+    @FXML private void handleLineaCaptura() { controlador.iniciarLineaCaptura(); }
+    @FXML private void handleHistorialPagos() { controlador.iniciarHistorialPagos(); }
+    @FXML private void handleCrearCita() { controlador.iniciarCrearCita(); }
+    @FXML private void handleProximasCitas() { controlador.iniciarListarCitas(); }
+    @FXML private void handleReagendarCita() { controlador.iniciarReagendarCita(); }
+    @FXML private void handlePerfilPaciente() { controlador.iniciarPerfilPaciente(); }
 
-    @FXML
-    private void handleRegistroEmocional() {
-        controlador.iniciarRegistroEmocional();
-    }
-
-    @FXML
-    private void handleLineaCaptura() {
-        controlador.iniciarLineaCaptura();
-    }
-
-    @FXML
-    private void handleHistorialPagos() {
-        if (controlador != null) {
-            controlador.iniciarHistorialPagos();
-        }
-    }
-
-    // --- MÉTODO ELIMINADO ---
-    // Se eliminó @FXML private void handleListaRegistros()
-    // --- FIN DE LA ELIMINACIÓN ---
-
-    @FXML
-    private void handleCrearCita() {
-        controlador.iniciarCrearCita();
-    }
-
-    @FXML
-    private void handleProximasCitas() {
-        controlador.iniciarListarCitas();
-    }
-
-    @FXML
-    private void handleReagendarCita() {
-        controlador.iniciarReagendarCita();
-    }
-
-    @FXML
-    private void handlePerfilPaciente() {
-        if (controlador != null) {
-            controlador.iniciarPerfilPaciente();
-        }
-    }
+    // NUEVO HANDLER
+    @FXML private void handleActualizarInformacion() { controlador.iniciarActualizarInformacion(); }
 }

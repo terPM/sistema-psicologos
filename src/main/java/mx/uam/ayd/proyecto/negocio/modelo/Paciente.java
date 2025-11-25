@@ -2,6 +2,7 @@ package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime; // Importante
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Paciente {
     private int edad;
     private String usuario;
     private String contrasena;
+
+    // NUEVO CAMPO para la regla de negocio de 72 horas
+    private LocalDateTime fechaUltimaActualizacion;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "psicologo_id")
@@ -39,6 +43,6 @@ public class Paciente {
     public Paciente(){
         this.bateriasClinicas = new ArrayList<>();
         this.citas = new ArrayList<>();
-        this.registrosEmocionales = new ArrayList<>(); // Inicializar la nueva lista
+        this.registrosEmocionales = new ArrayList<>();
     }
 }
