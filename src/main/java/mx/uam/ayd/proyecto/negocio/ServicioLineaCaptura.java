@@ -86,4 +86,8 @@ public class ServicioLineaCaptura {
             Desktop.getDesktop().open(file);
         }
     }
+    public void registrarPago(String nombre, double total, String linea, String fecha) {
+        // Método stub
+    }
+
 }
