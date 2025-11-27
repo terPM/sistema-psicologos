@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.layout.StackPane?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -99,6 +101,25 @@
                                         <Font name="Leelawadee UI" size="21.0" />
                                     </font>
                                 </Label>
+                                <StackPane AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="10.0">
+                                    <children>
+                                        <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" onAction="#handleVerNotificaciones">
+                                            <graphic>
+                                                <ImageView fitHeight="25.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../Image/Campana.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
+        
+                                        <javafx.scene.shape.Circle fx:id="notificacionBadge" fill="RED" radius="5.0" visible="false" StackPane.alignment="TOP_RIGHT">
+                                            <StackPane.margin>
+                                                <Insets top="2.0" right="2.0" />
+                                            </StackPane.margin>
+                                        </javafx.scene.shape.Circle>
+                                    </children>
+                                </StackPane>
                                 <MenuButton layoutX="375.0" layoutY="13.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="51.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                     <items>
                                         <MenuItem mnemonicParsing="false" onAction="#handlePerfilPaciente" text="Información Personal" />

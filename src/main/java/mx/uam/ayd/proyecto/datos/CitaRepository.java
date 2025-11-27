@@ -58,4 +58,10 @@ public interface CitaRepository extends CrudRepository<Cita, Integer> {
      * (de hu-16-historial-de-pagos)
      */
     Cita findTopByPacienteAndEstadoCitaOrderByFechaCitaAsc(Paciente paciente, TipoConfirmacionCita estadoCita);
+
+    /**
+     * HU-03: Busca todas las citas de un paciente que sean posteriores a una fecha dada
+     * (usualmente "ahora") y que NO estén en un estado específico (ej. CANCELADA).
+     */
+    List<Cita> findByPacienteAndFechaCitaAfterAndEstadoCitaNot(Paciente paciente, LocalDateTime fecha, TipoConfirmacionCita estadoCita);
 }
