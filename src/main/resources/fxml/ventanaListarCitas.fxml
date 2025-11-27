@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="51.0" prefWidth="650.0">
@@ -34,6 +33,11 @@
       <AnchorPane prefHeight="63.0" prefWidth="650.0">
          <children>
             <Button layoutX="544.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleCancelarCita" style="-fx-background-color: #FF0000;" text="Cancelar cita" textFill="WHITE" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+               <font>
+                  <Font name="Calibri Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="387.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleExportarPDF" style="-fx-background-color: #00c331;" text="Exportar PDF" textFill="WHITE" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="10.0">
                <font>
                   <Font name="Calibri Bold" size="14.0" />
                </font>

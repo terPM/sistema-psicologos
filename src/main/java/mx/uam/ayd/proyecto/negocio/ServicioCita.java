@@ -159,4 +159,11 @@ public class ServicioCita {
         }
         return citas;
     }
+
+    /**
+     * Obtiene una cita por su ID.
+     */
+    public Cita obtenerCitaPorId(int id) {
+    return citaRepository.findById(id).orElse(null);
+    }
 }
