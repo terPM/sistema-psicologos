@@ -1,7 +1,13 @@
 package mx.uam.ayd.proyecto.presentacion.psicologoPrincipal;
 
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
+import mx.uam.ayd.proyecto.presentacion.psicologoPrincipal.Notificaciones.NotificacionesPopupControl;
 import mx.uam.ayd.proyecto.presentacion.registrarNotas.ControlRegistrarNotas;
 import mx.uam.ayd.proyecto.negocio.ServicioAviso;
 import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
@@ -153,6 +159,40 @@ public class ControlPsicologo {
             Platform.exit();
         }
     }
+
+    public void mostrarNotificacionesPopup() {
+        Psicologo psic = (psicologoSesion != null) ? psicologoSesion : psicologoActual;
+        if (psic == null) return;
+
+        List<Notificacion> noLeidas = servicioNotificacion.obtenerNoLeidas(psic);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/notificacionesPopup.fxml"));
+            Parent root = loader.load();
+
+            NotificacionesPopupControl control = loader.getController();
+            control.cargar(noLeidas);
+
+            Stage popup = new Stage();
+            popup.initStyle(StageStyle.UTILITY);
+            popup.setAlwaysOnTop(true);
+            popup.setTitle("Notificaciones");
+            popup.setScene(new Scene(root));
+            popup.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        servicioNotificacion.marcarTodasComoLeidas(psic);
+        cargarIndicadorNotificaciones();
+    }
+
+
+
+
+
+
 
     // --- Campos de compatibilidad de HEAD (se pueden borrar si 'psicologoSesion' se usa en todos lados) ---
     private Psicologo psicologoActual;

@@ -43,4 +43,10 @@ public class Cita {
     @ManyToOne(fetch = FetchType.EAGER) // Se mantiene EAGER por compatibilidad
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
+
+    @Override
+    public String toString() {
+        return "Cita " + id + " (" + fechaCita.toString() + ")";
+    }
+
 }
