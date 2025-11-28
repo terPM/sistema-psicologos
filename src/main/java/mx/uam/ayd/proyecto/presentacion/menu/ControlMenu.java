@@ -15,8 +15,8 @@ import mx.uam.ayd.proyecto.presentacion.publicarAviso.ControlPublicarAviso;
 import mx.uam.ayd.proyecto.presentacion.listaAvisos.ControlListaAvisos;
 import mx.uam.ayd.proyecto.presentacion.registrarNotas.ControlRegistrarNotas;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
-
-
+import mx.uam.ayd.proyecto.negocio.ServicioEncuestaSatisfaccion;
+import mx.uam.ayd.proyecto.presentacion.reporteEncuesta.ControlReporteEncuesta;
 
 /**
  * Controlador principal del menú de la aplicación.
@@ -35,7 +35,7 @@ import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
  * Es un bean administrado por Spring y se instancia una sola vez durante el ciclo de vida
  * de la aplicación.
  * 
- * @author 
+ * @author  CODEX
  */
 @Component
 public class ControlMenu {
@@ -51,6 +51,8 @@ public class ControlMenu {
     private final ControlListaAvisos controlListaAvisos;
     private final ServicioAviso servicioAviso;
     private final ControlRegistrarNotas controlRegistrarNotas;
+    private final ServicioEncuestaSatisfaccion servicioEncuestaSatisfaccion;
+    private final ControlReporteEncuesta controlReporteEncuesta;
     /**
      * Constructor que inyecta todas las dependencias necesarias para gestionar las opciones del menú.
      * 
@@ -60,6 +62,7 @@ public class ControlMenu {
      * @param controlListarPsicologo controlador para la funcionalidad de listar psicólogos
      * @param controlAgregarPaciente controlador para la funcionalidad de agregar pacientes
      * @param controlPublicarAviso controlador para la funcionalidad de publicar avisos
+     * @param servicioAviso servicio de negocio para manejar avisos
      */
     @Autowired
     public ControlMenu(
@@ -71,7 +74,9 @@ public class ControlMenu {
             ControlPublicarAviso controlPublicarAviso,
             ServicioAviso servicioAviso,
             ControlListaAvisos controlListaAvisos,
-            ControlRegistrarNotas controlRegistrarNotas
+            ControlRegistrarNotas controlRegistrarNotas,
+            ServicioEncuestaSatisfaccion servicioEncuestaSatisfaccion,
+            ControlReporteEncuesta controlReporteEncuesta
         ) {
         this.ventana = ventana;
         this.controlListarPacientes = controlListarPacientes;
@@ -82,6 +87,8 @@ public class ControlMenu {
         this.servicioAviso = servicioAviso;
         this.controlListaAvisos = controlListaAvisos;
         this.controlRegistrarNotas = controlRegistrarNotas;
+        this.servicioEncuestaSatisfaccion = servicioEncuestaSatisfaccion;
+        this.controlReporteEncuesta = controlReporteEncuesta;
     }
     
     /**
@@ -160,13 +167,22 @@ public class ControlMenu {
         controlListaAvisos.inicia();
     }
 
+    public void habilitarEncuesta() {
+        servicioEncuestaSatisfaccion.habilitarEncuesta();        
+        System.out.println("El administrador ha habilitado la encuesta de satisfacción.");
+    }
+
+    public void reporteEncuestaSatisfaccion() {
+        controlReporteEncuesta.inicia();
+    }
+
     /**
      * Finaliza la ejecución de la aplicación.
      */
     public void salir() {
-        ventana.oculta(); // <--- Llamar al método oculta() de la ventana
+        ventana.oculta(); 
         if (controlPrincipal != null) {
-            controlPrincipal.regresaAlLogin(); // <-- Regresar al login principal
+            controlPrincipal.regresaAlLogin();
         } else {
             Platform.exit();
         }

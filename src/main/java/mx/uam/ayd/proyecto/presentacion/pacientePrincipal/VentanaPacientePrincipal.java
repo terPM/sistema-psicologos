@@ -9,6 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import javafx.scene.control.Button;
 
 @Component
 public class VentanaPacientePrincipal {
@@ -19,6 +20,8 @@ public class VentanaPacientePrincipal {
 
     @FXML
     private TextArea avisoDisplayArea;
+    @FXML
+    private Button btnEncuestaSatisfaccion;
 
     private void initializeUI() {
         if (initialized) return;
@@ -106,10 +109,6 @@ public class VentanaPacientePrincipal {
         }
     }
 
-    // --- MÉTODO ELIMINADO ---
-    // Se eliminó @FXML private void handleListaRegistros()
-    // --- FIN DE LA ELIMINACIÓN ---
-
     @FXML
     private void handleCrearCita() {
         controlador.iniciarCrearCita();
@@ -129,6 +128,23 @@ public class VentanaPacientePrincipal {
     private void handlePerfilPaciente() {
         if (controlador != null) {
             controlador.iniciarPerfilPaciente();
+        }
+    }
+
+    @FXML
+    private void handleAbrirEncuesta() {
+        if (controlador != null) {
+            controlador.handleAbrirEncuesta();
+        }
+    }
+
+    @FXML
+    public void setEncuestaHabilitada(boolean habilitada) {
+        if (!Platform.isFxApplicationThread()) {
+                Platform.runLater(() -> setEncuestaHabilitada(habilitada));
+                return;
+        } if (btnEncuestaSatisfaccion != null) {
+                btnEncuestaSatisfaccion.setDisable(!habilitada);
         }
     }
 }
