@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Control que gestiona el flujo de actualización de datos personales del paciente.
+ * Se encarga de la comunicación entre la vista y el servicio de negocio.
+ */
 @Component
 public class ControlActualizarInformacion {
 
@@ -21,6 +25,11 @@ public class ControlActualizarInformacion {
     private ControlPaciente controlPaciente;
     private Paciente pacienteActual;
 
+    /**
+     * Inicializa el control, carga los datos frescos del paciente y muestra la ventana.
+     * * @param paciente El paciente que ha iniciado sesión.
+     * @param controlPaciente Referencia al control principal para actualizar la sesión si es necesario.
+     */
     public void inicia(Paciente paciente, ControlPaciente controlPaciente) {
         this.controlPaciente = controlPaciente;
         // Recargar paciente de la BD para asegurar datos frescos
@@ -34,6 +43,17 @@ public class ControlActualizarInformacion {
         }
     }
 
+    /**
+     * Válida las reglas de negocio (tiempo, campos vacíos, contraseñas) y solicita
+     * al servicio la actualización de los datos del paciente.
+     * * @param nuevoUsuario El nuevo nombre de usuario.
+     * @param edadStr La edad en formato texto.
+     * @param telefono El número de teléfono.
+     * @param correo El correo electrónico.
+     * @param passActual La contraseña actual para verificación.
+     * @param passNueva La nueva contraseña (opcional).
+     * @param passConfirmar La confirmación de la nueva contraseña.
+     */
     public void actualizarDatos(String nuevoUsuario, String edadStr, String telefono, String correo,
                                 String passActual, String passNueva, String passConfirmar) {
 
@@ -60,6 +80,7 @@ public class ControlActualizarInformacion {
             ventana.muestraMensaje("Seguridad", "Ingrese su contraseña actual para confirmar los cambios.", Alert.AlertType.WARNING);
             return;
         }
+
         if (!pacienteActual.getContrasena().equals(passActual)) {
             ventana.muestraMensaje("Error", "La contraseña actual es incorrecta.", Alert.AlertType.ERROR);
             return;
@@ -86,7 +107,10 @@ public class ControlActualizarInformacion {
             pacienteActual.setEdad(edad);
             pacienteActual.setTelefono(telefono);
             pacienteActual.setCorreo(correo);
-            if (cambiarPass) pacienteActual.setContrasena(passNueva);
+
+            if (cambiarPass) {
+                pacienteActual.setContrasena(passNueva);
+            }
 
             pacienteActual.setFechaUltimaActualizacion(LocalDateTime.now());
 
@@ -110,6 +134,9 @@ public class ControlActualizarInformacion {
         }
     }
 
+    /**
+     * Cierra la ventana y termina el flujo de actualización.
+     */
     public void regresa() {
         ventana.oculta();
     }

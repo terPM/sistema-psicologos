@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 import java.io.IOException;
 
+/**
+ * Clase que gestiona la interfaz gráfica para la actualización de datos.
+ * Carga el FXML y maneja los eventos de la vista.
+ */
 @Component
 public class VentanaActualizarInformacion {
 
@@ -28,16 +32,28 @@ public class VentanaActualizarInformacion {
     @FXML private PasswordField pfNueva;
     @FXML private PasswordField pfConfirmar;
 
+    /**
+     * Asocia el controlador lógico a esta vista.
+     * @param controlador El controlador encargado de la lógica.
+     */
     public void setControlador(ControlActualizarInformacion controlador) {
         this.controlador = controlador;
     }
 
+    /**
+     * Método privado para cargar el archivo FXML y configurar el Stage.
+     * Se asegura de ejecutarse en el hilo de JavaFX.
+     */
     private void initializeUI() {
-        if (initialized) return;
+        if (initialized) {
+            return;
+        }
+
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::initializeUI);
             return;
         }
+
         try {
             stage = new Stage();
             stage.setTitle("Actualizar Información");
@@ -49,48 +65,95 @@ public class VentanaActualizarInformacion {
             stage.setScene(scene);
             stage.setOnCloseRequest(e -> handleCancelar());
             initialized = true;
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Muestra la ventana y precarga la información del paciente en los campos de texto.
+     * @param paciente Objeto con los datos a mostrar.
+     */
     public void muestra(Paciente paciente) {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> this.muestra(paciente));
             return;
         }
-        initializeUI();
-        if (txtUsuario != null) txtUsuario.setText(paciente.getUsuario());
-        if (txtNombre != null) txtNombre.setText(paciente.getNombre());
-        if (txtEdad != null) txtEdad.setText(String.valueOf(paciente.getEdad()));
-        if (txtTelefono != null) txtTelefono.setText(paciente.getTelefono());
-        if (txtCorreo != null) txtCorreo.setText(paciente.getCorreo());
 
-        if(pfActual != null) pfActual.clear();
-        if(pfNueva != null) pfNueva.clear();
-        if(pfConfirmar != null) pfConfirmar.clear();
+        initializeUI();
+
+        if (txtUsuario != null) {
+            txtUsuario.setText(paciente.getUsuario());
+        }
+        if (txtNombre != null) {
+            txtNombre.setText(paciente.getNombre());
+        }
+        if (txtEdad != null) {
+            txtEdad.setText(String.valueOf(paciente.getEdad()));
+        }
+        if (txtTelefono != null) {
+            txtTelefono.setText(paciente.getTelefono());
+        }
+        if (txtCorreo != null) {
+            txtCorreo.setText(paciente.getCorreo());
+        }
+
+        if (pfActual != null) {
+            pfActual.clear();
+        }
+        if (pfNueva != null) {
+            pfNueva.clear();
+        }
+        if (pfConfirmar != null) {
+            pfConfirmar.clear();
+        }
 
         stage.show();
     }
 
+    /**
+     * Oculta la ventana actual si está visible.
+     */
     public void oculta() {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::oculta);
             return;
         }
-        if (stage != null) stage.hide();
+        if (stage != null) {
+            stage.hide();
+        }
     }
 
-    @FXML private void handleActualizarDatos() {
+    /**
+     * Método invocado por el botón de actualizar en la vista.
+     * Recolecta los datos y llama al controlador.
+     */
+    @FXML
+    private void handleActualizarDatos() {
         controlador.actualizarDatos(
                 txtUsuario.getText(), txtEdad.getText(), txtTelefono.getText(), txtCorreo.getText(),
                 pfActual.getText(), pfNueva.getText(), pfConfirmar.getText()
         );
     }
 
-    @FXML private void handleCancelar() {
+    /**
+     * Método invocado por el botón cancelar o al cerrar la ventana.
+     * Limpia y cierra la vista.
+     */
+    @FXML
+    private void handleCancelar() {
         oculta();
-        if (controlador != null) controlador.regresa();
+        if (controlador != null) {
+            controlador.regresa();
+        }
     }
 
+    /**
+     * Muestra una alerta emergente al usuario.
+     * * @param Título de la ventana de alerta.
+     * @param mensaje Contenido del mensaje.
+     * @param tipo Tipo de alerta (ERROR, WARNING, INFORMATION, etc).
+     */
     public void muestraMensaje(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
