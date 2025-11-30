@@ -1,20 +1,21 @@
 package mx.uam.ayd.proyecto.negocio;
 
+import org.springframework.stereotype.Service;
+
+import java.awt.Desktop;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-import org.springframework.stereotype.Service;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 @Service
 public class ServicioLineaCaptura {
 
-    /**
-     * Genera una cadena numérica aleatoria que simula ser una línea de captura.
-     * Esta línea tiene una longitud fija (10 dígitos).
-     * * @return Una String de 10 dígitos aleatorios.
-     */
     public String generarLineaCaptura() {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
@@ -24,34 +25,69 @@ public class ServicioLineaCaptura {
         return sb.toString();
     }
 
-    /**
-     * Asigna el precio fijo para una cita actualmente de $100.00.
-     * * @return El precio de la cita (double).
-     */
     public double asignarPrecioCita() {
-        return 100.00;         
+        return 100.00;
     }
 
-    /**
-     * Obtiene la fecha actual del sistema y la formatea como "día/mes/año".
-     * * @return La fecha actual en formato dd/MM/yyyy.
-     */
     public String fechaActual() {
         LocalDate fecha = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return fecha.format(formatter);
+        return fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
-    /**
-     * Registra un pago realizado por un paciente. 
-     * Actualmente simula la persistencia mediante una impresión en consola (stub).
-     * * @param nombre El nombre del paciente que realiza el pago.
-     * @param total El monto total pagado.
-     * @param linea La línea de captura utilizada.
-     * @param fecha La fecha en que se registró el pago.
-     */
+    /** Genera PDF en la ruta elegida */
+    public File generarPDFPersonalizado(String ruta, String nombre, double total, String linea, String fecha) throws Exception {
+
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        PDPageContentStream contenido = new PDPageContentStream(document, page);
+
+        // Título
+        contenido.setFont(PDType1Font.HELVETICA_BOLD, 16);
+        contenido.beginText();
+        contenido.newLineAtOffset(100, 700);
+        contenido.showText("Comprobante de Pago");
+        contenido.endText();
+
+        contenido.setFont(PDType1Font.HELVETICA, 12);
+
+        contenido.beginText();
+        contenido.newLineAtOffset(100, 650);
+        contenido.showText("Comprobante para: " + nombre);
+        contenido.endText();
+
+        contenido.beginText();
+        contenido.newLineAtOffset(100, 620);
+        contenido.showText("Total: $" + total);
+        contenido.endText();
+
+        contenido.beginText();
+        contenido.newLineAtOffset(100, 590);
+        contenido.showText("Línea de captura: " + linea);
+        contenido.endText();
+
+        contenido.beginText();
+        contenido.newLineAtOffset(100, 560);
+        contenido.showText("Fecha: " + fecha);
+        contenido.endText();
+
+        contenido.close();
+
+        File file = new File(ruta);
+        document.save(file);
+        document.close();
+
+        return file;
+    }
+
+    public void abrirPDF(File file) throws Exception {
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().open(file);
+        }
+    }
     public void registrarPago(String nombre, double total, String linea, String fecha) {
-        System.out.println("SERVICIO: Pago registrado y persistido para " + nombre);
+        // Método stub
     }
 
 }

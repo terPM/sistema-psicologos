@@ -11,8 +11,12 @@ import mx.uam.ayd.proyecto.negocio.ServicioAviso;
 import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import mx.uam.ayd.proyecto.negocio.ServicioCita;
+import mx.uam.ayd.proyecto.negocio.ServicioNotificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
+import mx.uam.ayd.proyecto.negocio.modelo.Notificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
 // --- Fin de Imports ---
 
@@ -55,6 +59,8 @@ public class ControlPaciente {
     private ServicioAviso servicioAviso; // De HEAD
     @Autowired
     private ControlPerfilPaciente controlPerfilPaciente; // de hu-13
+    @Autowired
+    private ServicioNotificacion servicioNotificacion; //Hu-03
     // --- Fin de Campos ---
 
     private ControlPrincipalCentro controlPrincipal;
@@ -66,7 +72,8 @@ public class ControlPaciente {
         this.controlPrincipal = controlPrincipal;
         ventana.setControlador(this);
         ventana.muestra();
-        cargarAvisos(); // Lógica de HEAD
+        cargarAvisos(); 
+        verificarNotificaciones();
     }
 
     private void cargarAvisos() {
@@ -170,6 +177,42 @@ public class ControlPaciente {
     public void iniciarPerfilPaciente() {
         if (pacienteSesion != null) {
             controlPerfilPaciente.inicia(pacienteSesion.getUsuario(), this);
+        }
+    }
+
+    /**
+     * HU-03: Escenario: Visualización de notificaciones no leídas 
+     * Verifica si existen notificaciones sin leer para activar la burbuja roja.
+     */
+    public void verificarNotificaciones() {
+        if (pacienteSesion != null) {
+            try {
+                servicioCita.verificarCitasProximas(pacienteSesion);
+                long cantidadNoLeidas = servicioNotificacion.contarNoLeidasPaciente(pacienteSesion);
+                
+                // Si existe una notificación sin leer, sale la burbuja 
+                ventana.setNotificacionActiva(cantidadNoLeidas > 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * HU-03: Escenario: Consultar el listado de notificaciones [cite: 25]
+     * Recupera las notificaciones, las muestra en la ventana y limpia la burbuja.
+     */
+    public void iniciarVerNotificaciones() {
+        if (pacienteSesion != null) {
+            // 1. Obtener la lista ordenada (de la más próxima a la última)
+            List<Notificacion> notificaciones = servicioNotificacion.obtenerTodasPorPaciente(pacienteSesion);
+            
+            // 2. Mostrar la lista en la ventana
+            ventana.mostrarPanelNotificaciones(notificaciones);
+
+            // 3. Marcar como leídas y desactivar burbuja 
+            servicioNotificacion.marcarTodasComoLeidasPaciente(pacienteSesion);
+            ventana.setNotificacionActiva(false);
         }
     }
 }

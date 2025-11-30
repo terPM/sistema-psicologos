@@ -2,6 +2,7 @@ package mx.uam.ayd.proyecto.negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,5 +166,44 @@ public class ServicioCita {
      */
     public Cita obtenerCitaPorId(int id) {
     return citaRepository.findById(id).orElse(null);
+     * HU-03: Verifica citas próximas (48 horas) y crea notificaciones si es necesario.
+     */
+    public void verificarCitasProximas(Paciente paciente) {
+        List<Cita> citasFuturas = obtenerCitasFuturas(paciente); 
+
+        LocalDateTime ahora = LocalDateTime.now();
+
+        for (Cita cita : citasFuturas) {
+            // Combinar fecha y hora de la cita para calcular diferencia precisa
+            LocalDateTime fechaHoraCita = LocalDateTime.of(cita.getFecha(), cita.getHora());
+
+            // Calcular horas restantes
+            long horasRestantes = ChronoUnit.HOURS.between(ahora, fechaHoraCita);
+
+            // Criterio de aceptación: Cuando falten 48 horas 
+            if (horasRestantes >= 0 && horasRestantes <= 48) {
+                
+                String mensaje = "Recordatorio: Tienes una cita el " + cita.getFecha() + " a las " + cita.getHora();
+
+                // Evitar duplicados (spam cada vez que entra)
+                // Verificamos si ya existe una notificación con ese mismo mensaje hoy
+                boolean yaNotificado = servicioNotificacion.obtenerTodasPorPaciente(paciente).stream()
+                        .anyMatch(n -> n.getMensaje().equals(mensaje));
+
+                if (!yaNotificado) {
+                    servicioNotificacion.crearNotificacionPaciente(paciente, mensaje);
+                }
+            }
+        }
+    }
+    
+    // Método para obtener citas futuras de un paciente
+    public List<Cita> obtenerCitasFuturas(Paciente paciente) {
+        // Busca citas después de "ahora" que NO estén "CANCELADA"
+        return citaRepository.findByPacienteAndFechaCitaAfterAndEstadoCitaNot(
+            paciente, 
+            LocalDateTime.now(), 
+            TipoConfirmacionCita.CANCELADA
+        );
     }
 }

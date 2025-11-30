@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -43,4 +44,7 @@ public class Cita {
     @ManyToOne(fetch = FetchType.EAGER) // Se mantiene EAGER por compatibilidad
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
+
+    public LocalDate getFecha() {return fechaCita.toLocalDate();}
+    public LocalTime getHora() {return fechaCita.toLocalTime();}
 }
