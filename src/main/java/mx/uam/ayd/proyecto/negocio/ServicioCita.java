@@ -165,7 +165,9 @@ public class ServicioCita {
      * Obtiene una cita por su ID.
      */
     public Cita obtenerCitaPorId(int id) {
-    return citaRepository.findById(id).orElse(null);
+        return citaRepository.findById(id).orElse(null);
+    }
+    /**
      * HU-03: Verifica citas próximas (48 horas) y crea notificaciones si es necesario.
      */
     public void verificarCitasProximas(Paciente paciente) {
