@@ -57,6 +57,7 @@ public class ControlPaciente {
     private ServicioAviso servicioAviso; 
     @Autowired
     private ControlEncuestaSatisfaccion controlEncuestaSatisfaccion;
+    @Autowired
     private ControlPerfilPaciente controlPerfilPaciente; // de hu-13
     @Autowired
     private ServicioNotificacion servicioNotificacion; //Hu-03
