@@ -36,7 +36,7 @@ public class Cita {
 
 
     // Relación con Paciente
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
