@@ -67,7 +67,6 @@ public class ServicioLineaCapturaTest {
         // 3. Verificar la longitud (10 caracteres, ej: 02/11/2025).
         assertEquals(10, fecha.length(), "La longitud de la fecha debe ser 10 caracteres.");
     }
-    
     @Test
     void testRegistrarPago() {
         System.out.println("TEST: Probando el Stub de registrarPago (smoke test)");

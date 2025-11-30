@@ -14,6 +14,10 @@ public class Notificacion {
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
 
+    @ManyToOne
+    @JoinColumn(name = "id_paciente")
+    private Paciente paciente;
+
     @Column(length = 1000)
     private String mensaje;
 
@@ -30,6 +34,13 @@ public class Notificacion {
         this.leida = false;
     }
 
+    public Notificacion(Paciente paciente, String mensaje, LocalDateTime fecha) {
+        this.paciente = paciente;
+        this.mensaje = mensaje;
+        this.fecha = fecha;
+        this.leida = false;
+    }
+
     // getters / setters
     public Long getId() { return id; }
     public Psicologo getPsicologo() { return psicologo; }
@@ -40,4 +51,6 @@ public class Notificacion {
     public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }
     public boolean isLeida() { return leida; }
     public void setLeida(boolean leida) { this.leida = leida; }
+    public Paciente getPaciente() { return paciente; }
+    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
 }
