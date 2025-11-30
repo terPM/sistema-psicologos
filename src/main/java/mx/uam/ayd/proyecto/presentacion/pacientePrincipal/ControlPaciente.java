@@ -16,6 +16,8 @@ import mx.uam.ayd.proyecto.negocio.ServicioNotificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 import mx.uam.ayd.proyecto.negocio.modelo.Notificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
+import mx.uam.ayd.proyecto.negocio.ServicioEncuestaSatisfaccion;
+
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.ControlRegistroEmocinal;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
 import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
@@ -23,6 +25,8 @@ import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListarCitas.ControlListarCitas;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.HistorialPagos.ControlHistorialPagos;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.perfilPaciente.ControlPerfilPaciente;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.EncuestaSatisfaccion.ControlEncuestaSatisfaccion;
+
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ActualizarInformacion.ControlActualizarInformacion;
 
 @Component
@@ -41,13 +45,18 @@ public class ControlPaciente {
     @Autowired
     private ControlHistorialPagos controlHistorialPagos; // De hu-16
     @Autowired
-    private ControlCrearCita controlCrearCita; // De HEAD
+    private ServicioEncuestaSatisfaccion servicioEncuestaSatisfaccion;
+
     @Autowired
-    private ControlListarCitas controlListarCitas; // De HEAD
+    private ControlCrearCita controlCrearCita;
     @Autowired
-    private ControlReagendarCita controlReagendarCita; // De HEAD
+    private ControlListarCitas controlListarCitas;
     @Autowired
-    private ServicioAviso servicioAviso; // De HEAD
+    private ControlReagendarCita controlReagendarCita;
+    @Autowired
+    private ServicioAviso servicioAviso;
+    @Autowired
+    private ControlEncuestaSatisfaccion controlEncuestaSatisfaccion;
     @Autowired
     private ControlPerfilPaciente controlPerfilPaciente; // de hu-13
     @Autowired
@@ -56,14 +65,20 @@ public class ControlPaciente {
     private ControlActualizarInformacion controlActualizarInformacion;
 
     private ControlPrincipalCentro controlPrincipal;
+
     private Paciente pacienteSesion;
 
     public void inicia(Paciente paciente, ControlPrincipalCentro controlPrincipal) {
         this.pacienteSesion = paciente;
         this.controlPrincipal = controlPrincipal;
         ventana.setControlador(this);
+
+        // NUEVO: Registrarse en el servicio para recibir notificaciones
+        servicioEncuestaSatisfaccion.registrarPacienteListener(this);
+
         ventana.muestra();
         cargarAvisos();
+        verificarEstadoEncuesta();
         verificarNotificaciones();
     }
 
@@ -100,6 +115,10 @@ public class ControlPaciente {
         if (controlActualizarInformacion != null) controlActualizarInformacion.regresa();
 
         ventana.oculta();
+
+        // NUEVO: Desregistrarse del servicio al salir
+        servicioEncuestaSatisfaccion.desregistrarPacienteListener();
+
         this.pacienteSesion = null;
         if (controlPrincipal != null) {
             controlPrincipal.regresaAlLogin();
@@ -171,6 +190,40 @@ public class ControlPaciente {
         }
     }
 
+    // NUEVO MÉTODO: Llamado por el Servicio para actualizar la UI
+    /**
+     * Llama al método que verifica el estado actual del servicio y actualiza
+     * la interfaz de usuario.
+     */
+    public void actualizarEstadoEncuesta() {
+        // Como este método es llamado por el Servicio (que no está en el hilo de JavaFX),
+        // es crucial asegurar el cambio en la UI usando Platform.runLater
+        Platform.runLater(this::verificarEstadoEncuesta);
+    }
+
+    private void verificarEstadoEncuesta() {
+        boolean estaHabilitada = servicioEncuestaSatisfaccion.isEncuestaHabilitada();
+        ventana.setEncuestaHabilitada(estaHabilitada);
+        if (estaHabilitada) {
+            System.out.println("ControlPaciente: Encuesta de Satisfacción habilitada.");
+        }
+    }
+
+    /**
+     * Abre la ventana de la encuesta.
+     * Implementa el callback para deshabilitar el botón al finalizar.
+     */
+    public void handleAbrirEncuesta() {
+        if (pacienteSesion != null) {
+            Runnable onCompletion = () -> {
+                ventana.setEncuestaHabilitada(false);
+            };
+
+            controlEncuestaSatisfaccion.iniciaEncuesta(pacienteSesion, onCompletion);
+        } else {
+            System.err.println("Error: No hay paciente en sesión.");
+        }
+    }
     /**
      * HU-03: Escenario: Visualización de notificaciones no leídas
      * Verifica si existen notificaciones sin leer para activar la burbuja roja.
@@ -197,7 +250,7 @@ public class ControlPaciente {
         if (pacienteSesion != null) {
             // 1. Obtener la lista ordenada (de la más próxima a la última)
             List<Notificacion> notificaciones = servicioNotificacion.obtenerTodasPorPaciente(pacienteSesion);
-
+            
             // 2. Mostrar la lista en la ventana
             ventana.mostrarPanelNotificaciones(notificaciones);
 

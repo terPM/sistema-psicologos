@@ -21,6 +21,7 @@ import java.util.List;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import javafx.scene.control.Button;
 import mx.uam.ayd.proyecto.negocio.modelo.Notificacion;
 
 @Component
@@ -32,6 +33,8 @@ public class VentanaPacientePrincipal {
 
     @FXML
     private TextArea avisoDisplayArea;
+    @FXML
+    private Button btnEncuestaSatisfaccion;
 
     @FXML
     private Circle notificacionBadge;
@@ -156,8 +159,24 @@ public class VentanaPacientePrincipal {
         }
     }
 
+    @FXML
+    private void handleAbrirEncuesta() {
+        if (controlador != null) {
+            controlador.handleAbrirEncuesta();
+        }
+    }
+
+    @FXML
+    public void setEncuestaHabilitada(boolean habilitada) {
+        if (!Platform.isFxApplicationThread()) {
+                Platform.runLater(() -> setEncuestaHabilitada(habilitada));
+                return;
+        } if (btnEncuestaSatisfaccion != null) {
+                btnEncuestaSatisfaccion.setDisable(!habilitada);
+        }
+    }
    /**
-     * HU-03: Cuando da clic en el ícono de campanita
+     * HU-03: Cuando da clic en el ícono de campanita 
      * Reemplazamos el Alert simple por la llamada al controlador.
      */
     @FXML
@@ -166,22 +185,22 @@ public class VentanaPacientePrincipal {
     }
 
     /**
-     * Muestra las notificaciones listadas
+     * Muestra las notificaciones listadas 
      */
     public void mostrarPanelNotificaciones(List<Notificacion> notificaciones) {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> mostrarPanelNotificaciones(notificaciones));
             return;
         }
-
+      
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Notificaciones");
         dialog.setHeaderText("Tus avisos y recordatorios");
-
+        
         // Crear la lista visual
         ListView<Notificacion> listView = new ListView<>();
         listView.getItems().addAll(notificaciones);
-
+        
         // Personalizar cómo se ve cada celda (Fila)
         listView.setCellFactory(new Callback<>() {
             @Override
@@ -196,16 +215,16 @@ public class VentanaPacientePrincipal {
                         } else {
                             // Diseño de cada fila: Fecha en negrita, mensaje abajo
                             VBox vbox = new VBox(3); // Espacio de 3px entre elementos
-
+                            
                             // Formato de fecha
                             String fechaStr = item.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
                             Label lblFecha = new Label(fechaStr);
                             lblFecha.setFont(Font.font("System", FontWeight.BOLD, 12));
-
+                            
                             Label lblMensaje = new Label(item.getMensaje());
                             lblMensaje.setWrapText(true); // Permitir que el texto baje de línea
                             lblMensaje.setMaxWidth(350);  // Ancho máximo para el texto
-
+                            
                             vbox.getChildren().addAll(lblFecha, lblMensaje);
                             setGraphic(vbox);
                         }
@@ -221,7 +240,7 @@ public class VentanaPacientePrincipal {
         dialog.getDialogPane().setContent(container);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
         dialog.initOwner(stage); // Vincular a la ventana principal
-        dialog.showAndWait();
+        dialog.showAndWait(); 
     }
-
+    
 }
