@@ -1,8 +1,5 @@
 package mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura;
 
-import java.io.IOException;
-import org.springframework.stereotype.Component;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,136 +7,135 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-/**
- * Clase de Vista (View) para mostrar la línea de captura generada.
- * Utiliza JavaFX y es gestionada por Spring como un componente (@Component).
- * Implementa la inicialización diferida (lazy loading) para la UI de JavaFX.
- */
+import mx.uam.ayd.proyecto.negocio.ServicioLineaCaptura;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+
 @Component
 public class VentanaLineaCaptura {
+
     private Stage stage;
     private boolean initialized = false;
 
-    @FXML
-    private Label nombrePaciente;
+    private String nombre;
+    private double total;
+    private String linea;
+    private String fecha;
 
-    @FXML
-    private Label idTotal;
+    @Autowired
+    private ServicioLineaCaptura servicioLineaCaptura;
 
-    @FXML
-    private Label idLinea;
+    @FXML private Label nombrePaciente;
+    @FXML private Label idTotal;
+    @FXML private Label idLinea;
+    @FXML private Label idFecha;
+    @FXML private Button btnGuardar;
 
-    @FXML
-    private Label idFecha;
+    public VentanaLineaCaptura(){}
 
-    @FXML
-    private Button idCancelar;
-
-    /**
-     * Constructor vacío requerido por Spring y FXMLLoader.
-     */
-    public VentanaLineaCaptura(){
-        //Constructor vacío
-    }
-
-    /**
-     * Inicializa los componentes internos de JavaFX (Stage, Scene, FXMLLoader).
-     * Asegura que la inicialización se ejecute en el hilo de JavaFX (Platform.runLater).
-     */
     private void initializeUI(){
-        if (initialized) {
-            return;
-        }if (!Platform.isFxApplicationThread()) {
+        if (initialized) return;
+
+        if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::initializeUI);
             return;
         }
-        
+
         try {
             stage = new Stage();
-            stage.setTitle("Linea de Captura");
+            stage.setTitle("Línea de Captura");
             stage.setResizable(false);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VentanaLineaCaptura.fxml"));
             loader.setController(this);
-            Scene scene = new Scene(loader.load(), 640, 400);
-            stage.setScene(scene);            
+
+            Scene scene = new Scene(loader.load(), 600, 500);
+            stage.setScene(scene);
+
             initialized = true;
-        } catch (IOException e) {
+
+            btnGuardar.setOnAction(e -> guardarPDF());
+
+        } catch (IOException e){
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "No se pudo cargar la ventana: " + e.getMessage()).showAndWait();
         }
     }
 
-    /**
-     * Establece la referencia al ControlLineaCaptura.
-     * Aunque no se usa internamente, es necesario para el patrón de inyección.
-     */
-    public void setControl(ControlLineaCaptura control) {
-        // En este diseño, el campo no se guarda porque las acciones de la ventana solo son 'cerrar'.
-    }
-
-    /**
-     * Muestra la ventana en pantalla. 
-     * Asegura la inicialización de la UI y la ejecución en el hilo de JavaFX.
-     */
     public void muestra() {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::muestra);
-            return;
-        }if (!initialized) {
-            initializeUI();
-        }
+        if (!initialized) initializeUI();
         stage.show();
     }
 
-    /**
-     * Recibe los datos de la línea de captura desde el controlador y los establece en los Labels FXML.
-     * Se llama desde ControlLineaCaptura antes de mostrar la ventana.
-     * Asegura la inicialización previa de los elementos FXML.
-     */
+    public void cerrar() {
+        if (stage != null) stage.close();
+    }
+
     public void setDatosComprobante(String nombre, double total, String linea, String fecha) {
-        if (!initialized) {
-            initializeUI();
-        }
+        if (!initialized) initializeUI();
+
+        this.nombre = nombre;
+        this.total = total;
+        this.linea = linea;
+        this.fecha = fecha;
+
         nombrePaciente.setText(nombre);
-        idTotal.setText(String.format("$%.2f", total));
+        idTotal.setText("$" + total);
         idLinea.setText(linea);
         idFecha.setText(fecha);
     }
 
-    /**
-     * Manejador de evento FXML para el botón de 'VOlver'.
-     * Simplemente llama al método interno para cerrar la ventana.
-     */
+    private void guardarPDF() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar comprobante");
+
+            fileChooser.setInitialFileName("comprobante_" + linea + ".pdf");
+
+            FileChooser.ExtensionFilter extFilter =
+                    new FileChooser.ExtensionFilter("Archivo PDF (*.pdf)", "*.pdf");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            File file = fileChooser.showSaveDialog(stage);
+
+            if (file != null) {
+
+                File pdf = servicioLineaCaptura.generarPDFPersonalizado(
+                        file.getAbsolutePath(),
+                        nombre,
+                        total,
+                        linea,
+                        fecha
+                );
+
+                servicioLineaCaptura.abrirPDF(pdf);
+
+                mostrarAlerta(Alert.AlertType.INFORMATION,
+                        "Archivo Guardado",
+                        "El comprobante se guardó correctamente:\n" + file.getAbsolutePath()
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR,
+                    "Error al guardar PDF",
+                    "Ocurrió un error al generar el archivo.");
+        }
+    }
+
     @FXML
     private void handleCancelar() {
         cerrar();
     }
 
-    /**
-     * Cierra la ventana. 
-     * Usado por el controlador después de una acción exitosa.
-     */
-    public void cerrar() {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::cerrar);
-            return;
-        }
-        if (stage != null) {
-            stage.close();
-        }
-    }
-
-    /**
-     * Muestra alertas de JavaFX para comunicar errores o feedback al usuario.
-     * Asegura que la alerta se muestre en el hilo de la aplicación.
-     */
     public void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> this.mostrarAlerta(tipo, titulo, mensaje));
-            return;
-        }
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
         alert.setHeaderText(null);

@@ -106,6 +106,13 @@ public class VentanaListarCitas {
         return cita.getId();
     }
 
+    /**
+     * Obtiene la ventana actual
+    */
+    public Stage getStage() {
+        return (Stage) tablaCitasProximas.getScene().getWindow();
+    }
+
     public void muestraError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -141,6 +148,13 @@ public class VentanaListarCitas {
     private void handleCancelarCita() {
         if (controlador != null) {
             controlador.cancelarCita();
+        }
+    }
+
+    @FXML
+    private void handleExportarPDF() {
+        if (controlador != null) {
+            controlador.generarPDFCita();
         }
     }
 }

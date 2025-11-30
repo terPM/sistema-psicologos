@@ -26,7 +26,7 @@ public class ServicioPaciente {
     private PacienteRepository pacienteRepository;
 
     /**
-     * Registra un nuevo paciente en el sistema...
+     * Registra un nuevo paciente en el sistema.
      */
     public Paciente agregarPaciente(String nombre, String correo, String telefono, int edad, String usuario, String contrasena) {
         if(nombre == null || nombre.trim().isEmpty()) {
@@ -62,7 +62,6 @@ public class ServicioPaciente {
         paciente.setEdad(edad);
         paciente.setUsuario(usuario);
         paciente.setContrasena(contrasena);
-
 
         pacienteRepository.save(paciente);
 
@@ -100,9 +99,25 @@ public class ServicioPaciente {
 
     /**
      * Obtiene un paciente por su nombre de usuario.
-     * (Método fusionado de ambas ramas)
      */
     public Paciente obtenerPacientePorUsuario(String usuario) {
         return pacienteRepository.findByUsuario(usuario);
+    }
+
+    /**
+     * Actualiza solo la contraseña del paciente.
+     */
+    public void actualizarContrasena(Paciente paciente, String nuevaContrasena) {
+        paciente.setContrasena(nuevaContrasena);
+        pacienteRepository.save(paciente);
+    }
+
+    /**
+     * Guarda cualquier cambio hecho al objeto paciente (Nombre, Edad, Teléfono, etc.).
+     * Este método es esencial para el módulo de actualización de información.
+     */
+    @Transactional
+    public void actualizarPaciente(Paciente paciente) {
+        pacienteRepository.save(paciente);
     }
 }

@@ -199,10 +199,33 @@ public class VentanaMenu {
             avisoDisplayArea.setText(texto);
         }
     }
+
     @FXML
     private void handleRegistrarNotas(ActionEvent event) {
         if (control != null) {
             control.registrarNotas();
+        }
+    }
+    
+    /**
+     * Acción del botón "Habilitar Encuesta".
+     * Llama al controlador para iniciar el flujo de habilitación de la encuesta.
+     */
+    @FXML
+    private void handleHabilitarEncuesta() {
+        if (control != null) {
+            control.habilitarEncuesta();
+        }
+    }
+
+    /**
+     * Acción del botón "Reporte Encuesta Satisfacción".
+     * Llama al controlador para iniciar el flujo del reporte.
+     */
+    @FXML
+    private void handleReporteEncuesta() {
+        if (control != null) {
+            control.reporteEncuestaSatisfaccion();
         }
     }
 
