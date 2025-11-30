@@ -21,6 +21,7 @@ import java.util.List;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import javafx.scene.control.Button;
 import mx.uam.ayd.proyecto.negocio.modelo.Notificacion;
 
 @Component
@@ -32,6 +33,8 @@ public class VentanaPacientePrincipal {
 
     @FXML
     private TextArea avisoDisplayArea;
+    @FXML
+    private Button btnEncuestaSatisfaccion;
 
     @FXML
     private Circle notificacionBadge;
@@ -128,10 +131,6 @@ public class VentanaPacientePrincipal {
         }
     }
 
-    // --- MÉTODO ELIMINADO ---
-    // Se eliminó @FXML private void handleListaRegistros()
-    // --- FIN DE LA ELIMINACIÓN ---
-
     @FXML
     private void handleCrearCita() {
         controlador.iniciarCrearCita();
@@ -154,6 +153,23 @@ public class VentanaPacientePrincipal {
         }
     }
 
+    @FXML
+    private void handleAbrirEncuesta() {
+        if (controlador != null) {
+            controlador.handleAbrirEncuesta();
+        }
+    }
+
+    @FXML
+    public void setEncuestaHabilitada(boolean habilitada) {
+        if (!Platform.isFxApplicationThread()) {
+                Platform.runLater(() -> setEncuestaHabilitada(habilitada));
+                return;
+        } if (btnEncuestaSatisfaccion != null) {
+                btnEncuestaSatisfaccion.setDisable(!habilitada);
+        }
+    }
+}
    /**
      * HU-03: Cuando da clic en el ícono de campanita 
      * Reemplazamos el Alert simple por la llamada al controlador.

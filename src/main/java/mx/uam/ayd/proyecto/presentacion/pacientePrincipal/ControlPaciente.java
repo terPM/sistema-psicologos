@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
 
-// Imports de Ambas Ramas
 import mx.uam.ayd.proyecto.negocio.ServicioAviso;
 import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
 import java.time.LocalDate;
@@ -18,7 +17,7 @@ import mx.uam.ayd.proyecto.negocio.ServicioNotificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 import mx.uam.ayd.proyecto.negocio.modelo.Notificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
-// --- Fin de Imports ---
+import mx.uam.ayd.proyecto.negocio.ServicioEncuestaSatisfaccion;
 
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.RegistroEmocinal.ControlRegistroEmocinal;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.lineaCaptura.ControlLineaCaptura;
@@ -26,8 +25,9 @@ import mx.uam.ayd.proyecto.presentacion.principal.ControlPrincipalCentro;
 import mx.uam.ayd.proyecto.presentacion.crearCita.ControlCrearCita;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ListarCitas.ControlListarCitas;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.HistorialPagos.ControlHistorialPagos;
-// Se eliminó la importación de 'ControlListaRegistros'
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.perfilPaciente.ControlPerfilPaciente;
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.EncuestaSatisfaccion.ControlEncuestaSatisfaccion;
+
 
 @Component
 public class ControlPaciente {
@@ -43,36 +43,41 @@ public class ControlPaciente {
     @Autowired
     private ServicioCita servicioCita;
     @Autowired
-    private ControlHistorialPagos controlHistorialPagos; // De hu-16
-
-    // --- CAMPO ELIMINADO ---
-    // @Autowired
-    // private ControlListaRegistros controlListaRegistros; // <- Eliminado
+    private ControlHistorialPagos controlHistorialPagos;
+    @Autowired
+    private ServicioEncuestaSatisfaccion servicioEncuestaSatisfaccion; 
 
     @Autowired
-    private ControlCrearCita controlCrearCita; // De HEAD
+    private ControlCrearCita controlCrearCita; 
     @Autowired
-    private ControlListarCitas controlListarCitas; // De HEAD
+    private ControlListarCitas controlListarCitas; 
     @Autowired
-    private ControlReagendarCita controlReagendarCita; // De HEAD
+    private ControlReagendarCita controlReagendarCita; 
     @Autowired
-    private ServicioAviso servicioAviso; // De HEAD
+    private ServicioAviso servicioAviso; 
     @Autowired
+    private ControlPerfilPaciente controlPerfilPaciente; 
+    @Autowired
+    private ControlEncuestaSatisfaccion controlEncuestaSatisfaccion;
     private ControlPerfilPaciente controlPerfilPaciente; // de hu-13
     @Autowired
     private ServicioNotificacion servicioNotificacion; //Hu-03
     // --- Fin de Campos ---
 
     private ControlPrincipalCentro controlPrincipal;
-
     private Paciente pacienteSesion;
 
     public void inicia(Paciente paciente, ControlPrincipalCentro controlPrincipal) {
         this.pacienteSesion = paciente;
         this.controlPrincipal = controlPrincipal;
         ventana.setControlador(this);
+        
+        // NUEVO: Registrarse en el servicio para recibir notificaciones
+        servicioEncuestaSatisfaccion.registrarPacienteListener(this); 
+        
         ventana.muestra();
         cargarAvisos(); 
+        verificarEstadoEncuesta();
         verificarNotificaciones();
     }
 
@@ -109,6 +114,10 @@ public class ControlPaciente {
             controlPerfilPaciente.ocultaVentana();
         }
         ventana.oculta();
+        
+        // NUEVO: Desregistrarse del servicio al salir
+        servicioEncuestaSatisfaccion.desregistrarPacienteListener(); 
+        
         this.pacienteSesion = null;
         if (controlPrincipal != null) {
             controlPrincipal.regresaAlLogin();
@@ -124,10 +133,6 @@ public class ControlPaciente {
             System.err.println("No hay paciente en sesión para el registro emocional");
         }
     }
-
-    // --- MÉTODO ELIMINADO ---
-    // public void iniciarListaRegistros() { ... }
-    // --- FIN DE ELIMINACIÓN ---
 
     public void iniciarLineaCaptura() {
         if (pacienteSesion == null) {
@@ -180,6 +185,38 @@ public class ControlPaciente {
         }
     }
 
+    // NUEVO MÉTODO: Llamado por el Servicio para actualizar la UI
+    /**
+     * Llama al método que verifica el estado actual del servicio y actualiza 
+     * la interfaz de usuario.
+     */
+    public void actualizarEstadoEncuesta() {
+        // Como este método es llamado por el Servicio (que no está en el hilo de JavaFX),
+        // es crucial asegurar el cambio en la UI usando Platform.runLater
+        Platform.runLater(this::verificarEstadoEncuesta); 
+    }
+    
+    private void verificarEstadoEncuesta() {
+        boolean estaHabilitada = servicioEncuestaSatisfaccion.isEncuestaHabilitada();
+        ventana.setEncuestaHabilitada(estaHabilitada);
+        if (estaHabilitada) {
+            System.out.println("ControlPaciente: Encuesta de Satisfacción habilitada.");
+        }
+    }
+
+    /**
+     * Abre la ventana de la encuesta.
+     * Implementa el callback para deshabilitar el botón al finalizar.
+     */
+    public void handleAbrirEncuesta() { 
+        if (pacienteSesion != null) {
+            Runnable onCompletion = () -> {
+                ventana.setEncuestaHabilitada(false);
+            };
+            
+            controlEncuestaSatisfaccion.iniciaEncuesta(pacienteSesion, onCompletion); 
+        } else {
+            System.err.println("Error: No hay paciente en sesión.");
     /**
      * HU-03: Escenario: Visualización de notificaciones no leídas 
      * Verifica si existen notificaciones sin leer para activar la burbuja roja.

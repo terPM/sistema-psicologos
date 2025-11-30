@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="BOTTOM_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="634.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="BOTTOM_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.3" prefHeight="525.0" prefWidth="660.0" VBox.vgrow="ALWAYS">
         <items>
@@ -22,25 +22,29 @@
                   <Label layoutX="10.0" layoutY="122.0" text="Psicológos" AnchorPane.leftAnchor="10.0" />
                   <Button layoutX="17.0" layoutY="147.0" mnemonicParsing="false" onAction="#handleAgregarPsicologo" prefHeight="25.0" prefWidth="140.0" text="Agregar psicológo" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
                   <Button layoutX="17.0" layoutY="182.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleListarPsicologo" prefHeight="25.0" prefWidth="140.0" text="Listar psicológos" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
-                  <Separator layoutY="222.0" prefWidth="400.0" />
-                  <Label layoutX="10.0" layoutY="234.0" text="Avisos" AnchorPane.leftAnchor="10.0" />
-                  <Button layoutX="17.0" layoutY="259.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePublicarAviso" prefHeight="25.0" prefWidth="140.0" text="Publicar aviso" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
-                  <Button layoutX="18.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleListaAvisos" prefHeight="25.0" prefWidth="140.0" text="Lista de avisos" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+                  <Separator layoutX="-4.0" layoutY="224.0" prefWidth="400.0" />
+                  <Label layoutX="6.0" layoutY="236.0" text="Avisos" AnchorPane.leftAnchor="6.0" />
+                  <Button layoutX="21.0" layoutY="261.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePublicarAviso" prefHeight="25.0" prefWidth="140.0" text="Publicar aviso" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="29.0" />
+                  <Button layoutX="21.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleListaAvisos" prefHeight="25.0" prefWidth="140.0" text="Lista de avisos" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="29.0" />
+                  <Separator layoutX="5.0" layoutY="334.0" prefWidth="400.0" />
+                  <Label layoutX="15.0" layoutY="346.0" text="Encuesta de Satisfaccion" />
+                  <Button layoutX="22.0" layoutY="371.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleHabilitarEncuesta" prefHeight="25.0" prefWidth="140.0" text="Habilitar encuesta" />
+                  <Button layoutX="23.0" layoutY="406.0" mnemonicParsing="false" onAction="#handleReporteEncuesta" prefHeight="25.0" prefWidth="140.0" text="Reporte encuesta" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="481.0" prefWidth="485.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="55.0" text="Centro de atención psicológica " textAlignment="CENTER">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="90.0" text="Centro de atención psicológica " textAlignment="CENTER">
                      <font>
                         <Font size="23.0" />
                      </font>
                   </Label>
-                  <Label layoutX="97.0" layoutY="95.0" text="BIENESTAR EMOCIONAL" textFill="RED">
+                  <Label layoutX="95.0" layoutY="128.0" text="BIENESTAR EMOCIONAL" textFill="RED">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="23.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="avisoDisplayArea" layoutX="61.0" layoutY="152.0" prefHeight="200.0" prefWidth="320.0" />
+                  <TextArea fx:id="avisoDisplayArea" layoutX="61.0" layoutY="195.0" prefHeight="200.0" prefWidth="320.0" />
                </children>
             </AnchorPane>
         </items>
