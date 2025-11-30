@@ -45,6 +45,12 @@ public class Cita {
     @JoinColumn(name = "psicologo_id")
     private Psicologo psicologo;
 
+    @Override
+    public String toString() {
+        return "Cita " + id + " (" + fechaCita.toString() + ")";
+    }
+
+
     public LocalDate getFecha() {return fechaCita.toLocalDate();}
     public LocalTime getHora() {return fechaCita.toLocalTime();}
 }

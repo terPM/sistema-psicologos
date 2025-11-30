@@ -5,27 +5,62 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="10" alignment="TOP_CENTER"
-      xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="380" prefHeight="260"
+            style="-fx-background-color: #F7F7F7; -fx-padding: 20;">
 
-    <padding>
-        <Insets top="20" left="20" right="20" bottom="20" />
-    </padding>
+    <top>
+        <Label text="Reagendar Cita"
+               BorderPane.alignment="CENTER"
+               style="-fx-font-size: 20px; -fx-font-family: 'Segoe UI Semibold';"/>
+    </top>
 
-    <Label text="Reagendar Cita">
-        <font>
-            <Font size="20" />
-        </font>
-    </Label>
+    <center>
+        <VBox spacing="12" alignment="CENTER"
+              style="-fx-padding: 10;">
+            <children>
 
-    <ComboBox fx:id="comboCitas" prefWidth="250" />
+                <Label text="Selecciona la cita:"
+                       style="-fx-font-size: 14px;"/>
 
-    <DatePicker fx:id="dateNuevaFecha" />
+                <ComboBox fx:id="comboCitas"
+                          prefWidth="260"
+                          style="-fx-background-radius: 8; -fx-border-color: #BFBFBF; -fx-border-radius: 8;"/>
 
-    <ComboBox fx:id="comboNuevaHora" prefWidth="200" />
+                <Label text="Nueva Fecha:"
+                       style="-fx-font-size: 14px;"/>
 
-    <Button text="Reagendar" onAction="#handleReagendar" prefWidth="200" />
+                <DatePicker fx:id="dateNuevaFecha"
+                            prefWidth="260"
+                            style="-fx-background-radius: 8; -fx-border-color: #BFBFBF; -fx-border-radius: 8;"/>
 
-    <Button text="Cancelar" onAction="#handleCancelar" prefWidth="200" />
-</VBox>
+                <Label text="Nueva Hora:"
+                       style="-fx-font-size: 14px;"/>
+
+                <ComboBox fx:id="comboNuevaHora"
+                          prefWidth="260"
+                          style="-fx-background-radius: 8; -fx-border-color: #BFBFBF; -fx-border-radius: 8;"/>
+
+            </children>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="15" alignment="CENTER"
+              style="-fx-padding: 10;">
+            <children>
+                <Button text="Reagendar"
+                        prefWidth="120"
+                        onAction="#handleReagendar"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-size: 14px;"/>
+
+                <Button text="Cancelar"
+                        prefWidth="120"
+                        onAction="#handleCancelar"
+                        style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-size: 14px;"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

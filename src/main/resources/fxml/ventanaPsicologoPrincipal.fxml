@@ -10,6 +10,8 @@
       xmlns:fx="http://javafx.com/fxml/1">
 
     <children>
+
+        <!-- ENCABEZADO SUPERIOR -->
         <AnchorPane prefHeight="50" style="-fx-background-color: #EAEAEA;">
             <children>
                 <Label text="Menú Principal del Psicólogo" layoutX="14" layoutY="12">
@@ -18,6 +20,7 @@
                     </font>
                 </Label>
 
+                <!-- Botón de campana -->
                 <Button fx:id="btnCampana"
                         layoutX="580" layoutY="10"
                         mnemonicParsing="false"
@@ -28,6 +31,7 @@
                     </graphic>
                 </Button>
 
+                <!-- Burbuja roja -->
                 <Circle fx:id="burbujaNotificacion"
                         radius="6"
                         layoutX="600" layoutY="10"
@@ -38,127 +42,126 @@
 
         <AnchorPane VBox.vgrow="ALWAYS">
             <children>
-                <SplitPane dividerPositions="0.3" prefHeight="350.0" prefWidth="640.0">
-                    <items>
 
-                        <AnchorPane minWidth="200.0">
-                            <children>
-                                <VBox alignment="CENTER_LEFT" layoutX="9.0" layoutY="14.0"
-                                      prefHeight="350.0" prefWidth="171.0" spacing="10.0">
-                                    <children>
+                <!-- SPLITPANE: AHORA SOLO DOS COLUMNAS -->
+                <SplitPane dividerPositions="0.3"
+                           prefHeight="350.0" prefWidth="640.0">
 
-                                        <Label text="Opciones del Psicólogo">
-                                            <font>
-                                                <Font name="System Bold" size="13.0"/>
-                                            </font>
-                                        </Label>
+                    <!-- COLUMNA IZQUIERDA -->
+                    <AnchorPane minWidth="200.0">
+                        <children>
+                            <VBox alignment="CENTER_LEFT" layoutX="9.0" layoutY="14.0"
+                                  prefHeight="350.0" prefWidth="171.0" spacing="10.0">
+                                <children>
 
-                                        <Button text="Registrar Notas"
-                                                prefWidth="150.0"
-                                                mnemonicParsing="false"
-                                                onAction="#handleRegistrarNotas"/>
+                                    <Label text="Opciones del Psicólogo">
+                                        <font>
+                                            <Font name="System Bold" size="13.0"/>
+                                        </font>
+                                    </Label>
 
-                                        <Separator prefWidth="150.0"/>
+                                    <Button text="Registrar Notas"
+                                            prefWidth="150.0"
+                                            mnemonicParsing="false"
+                                            onAction="#handleRegistrarNotas"/>
 
-                                        <Label text="Citas">
-                                            <font>
-                                                <Font name="System Bold" size="13.0"/>
-                                            </font>
-                                            <padding>
-                                                <Insets top="5.0" />
-                                            </padding>
-                                        </Label>
+                                    <Separator prefWidth="150.0"/>
 
-                                        <Button text="Agenda"
-                                                prefWidth="150.0"
-                                                mnemonicParsing="false"
-                                                onAction="#handleVerHorario"/>
+                                    <Label text="Citas">
+                                        <font>
+                                            <Font name="System Bold" size="13.0"/>
+                                        </font>
+                                        <padding>
+                                            <Insets top="5.0" />
+                                        </padding>
+                                    </Label>
 
-                                        <Separator prefWidth="150.0"/>
+                                    <Button text="Agenda"
+                                            prefWidth="150.0"
+                                            mnemonicParsing="false"
+                                            onAction="#handleVerHorario"/>
 
-                                        <Label text="Registros del Paciente">
-                                            <font>
-                                                <Font name="System Bold" size="13.0"/>
-                                            </font>
-                                        </Label>
+                                    <Separator prefWidth="150.0"/>
 
-                                        <Button text="Lista de Registros"
-                                                prefWidth="150.0"
-                                                mnemonicParsing="false"
-                                                onAction="#handleListaRegistros"/>
+                                    <Label text="Registros del Paciente">
+                                        <font>
+                                            <Font name="System Bold" size="13.0"/>
+                                        </font>
+                                    </Label>
 
-                                        <Separator prefWidth="150.0"/>
+                                    <Button text="Lista de Registros"
+                                            prefWidth="150.0"
+                                            mnemonicParsing="false"
+                                            onAction="#handleListaRegistros"/>
 
-                                        <Button text="Salir"
-                                                prefWidth="150.0"
-                                                mnemonicParsing="false"
-                                                onAction="#handleSalir"/>
-                                    </children>
+                                    <Separator prefWidth="150.0"/>
 
-                                    <padding>
-                                        <Insets top="10.0" left="10.0"/>
-                                    </padding>
-                                </VBox>
-                            </children>
-                        </AnchorPane>
+                                    <Button text="Salir"
+                                            prefWidth="150.0"
+                                            mnemonicParsing="false"
+                                            onAction="#handleSalir"/>
+                                </children>
 
-                        <AnchorPane>
-                            <children>
-                                <BorderPane prefHeight="398.0" prefWidth="442.0"
-                                            AnchorPane.bottomAnchor="0.0"
-                                            AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0"
-                                            AnchorPane.topAnchor="0.0">
+                                <padding>
+                                    <Insets top="10.0" left="10.0"/>
+                                </padding>
+                            </VBox>
+                        </children>
+                    </AnchorPane>
 
-                                    <center>
-                                        <VBox alignment="TOP_CENTER" spacing="10.0"
-                                              BorderPane.alignment="CENTER"
-                                              maxWidth="400.0">
-                                            <children>
+                    <!-- COLUMNA CENTRAL (información) -->
+                    <AnchorPane>
+                        <children>
+                            <BorderPane prefHeight="398.0" prefWidth="442.0"
+                                        AnchorPane.bottomAnchor="0.0"
+                                        AnchorPane.leftAnchor="0.0"
+                                        AnchorPane.rightAnchor="0.0"
+                                        AnchorPane.topAnchor="0.0">
 
-                                                <Label text="Centro de atención psicologica">
-                                                    <font>
-                                                        <Font name="Leelawadee UI" size="21.0" />
-                                                    </font>
-                                                </Label>
+                                <center>
+                                    <VBox alignment="TOP_CENTER" spacing="10.0"
+                                          BorderPane.alignment="CENTER"
+                                          maxWidth="400.0">
+                                        <children>
 
-                                                <Label text="BIENESTAR EMOCIONAL" textFill="RED">
-                                                    <font>
-                                                        <Font name="Franklin Gothic Medium" size="18.0" />
-                                                    </font>
-                                                </Label>
+                                            <Label text="Centro de atención psicologica">
+                                                <font>
+                                                    <Font name="Leelawadee UI" size="21.0" />
+                                                </font>
+                                            </Label>
 
-                                                <Label text="Portal de psicologo" textFill="BLUE">
-                                                    <font>
-                                                        <Font name="Franklin Gothic Medium" size="18.0" />
-                                                    </font>
-                                                </Label>
+                                            <Label text="BIENESTAR EMOCIONAL" textFill="RED">
+                                                <font>
+                                                    <Font name="Franklin Gothic Medium" size="18.0" />
+                                                </font>
+                                            </Label>
 
-                                                <TextArea fx:id="avisoDisplayArea" editable="false"
-                                                          prefHeight="100.0"
-                                                          wrapText="true"/>
-                                            </children>
+                                            <Label text="Portal de psicologo" textFill="BLUE">
+                                                <font>
+                                                    <Font name="Franklin Gothic Medium" size="18.0" />
+                                                </font>
+                                            </Label>
 
-                                            <BorderPane.margin>
-                                                <Insets top="40.0"/>
-                                            </BorderPane.margin>
-                                        </VBox>
-                                    </center>
-                                </BorderPane>
-                            </children>
-                        </AnchorPane>
+                                            <!-- Área de avisos -->
+                                            <TextArea fx:id="avisoDisplayArea" editable="false"
+                                                      prefHeight="100.0"
+                                                      wrapText="true"/>
+                                        </children>
 
-                        <AnchorPane minWidth="250.0" maxWidth="250.0">
-                            <children>
-                                <ListView fx:id="listaNotificaciones"
-                                          layoutX="10" layoutY="10"
-                                          prefWidth="230" prefHeight="300"/>
-                            </children>
-                        </AnchorPane>
+                                        <BorderPane.margin>
+                                            <Insets top="40.0"/>
+                                        </BorderPane.margin>
+                                    </VBox>
+                                </center>
 
-                    </items>
+                            </BorderPane>
+                        </children>
+                    </AnchorPane>
+
                 </SplitPane>
+
             </children>
         </AnchorPane>
+
     </children>
 </VBox>

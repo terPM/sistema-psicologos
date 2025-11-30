@@ -126,9 +126,10 @@ public class VentanaPsicologoPrincipal {
 
     @FXML
     private void abrirNotificaciones() {
-        if (controlador != null) controlador.mostrarNotificaciones();
+        if (controlador != null) controlador.mostrarNotificacionesPopup();
         setBurbujaVisible(false);
     }
+
 
     public void mostrarListViewNotificaciones(List<Notificacion> notificaciones) {
         listaNotificaciones.getItems().clear();
