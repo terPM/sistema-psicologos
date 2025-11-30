@@ -26,69 +26,84 @@ class ServicioPacienteTest {
 
     @InjectMocks
     private ServicioPaciente servicioPaciente;
-    
-    // --- Valores de prueba para los 2 String que faltaban ---
+
+    // Constantes para pruebas
     private final String CONTRASENA_VALIDA = "pa_pass123";
     private final String USUARIO_VALIDO = "pa_user1";
-    // --------------------------------------------------------
 
     @Test
     void testAgregarPaciente() {
         // Caso 1: Agregar paciente exitosamente
         when(pacienteRepository.findByCorreo("test@correo.com")).thenReturn(null);
+        when(pacienteRepository.findByUsuario(USUARIO_VALIDO)).thenReturn(null); // Asegurar que el usuario no existe
 
         Paciente pacienteGuardado = new Paciente();
         pacienteGuardado.setNombre("Juan");
         pacienteGuardado.setCorreo("test@correo.com");
         pacienteGuardado.setTelefono("123456789");
         pacienteGuardado.setEdad(30);
+        pacienteGuardado.setUsuario(USUARIO_VALIDO);
+        pacienteGuardado.setContrasena(CONTRASENA_VALIDA);
 
         when(pacienteRepository.save(any(Paciente.class))).thenReturn(pacienteGuardado);
 
-        // **CORREGIDO:** Se pasan los 6 argumentos (nombre, correo, telefono, edad, CONTRASENA_VALIDA, USUARIO_VALIDO)
-        Paciente result = servicioPaciente.agregarPaciente("Juan", "test@correo.com", "123456789", 30, CONTRASENA_VALIDA, USUARIO_VALIDO);
+        // Prueba del método con los 6 argumentos
+        Paciente result = servicioPaciente.agregarPaciente("Juan", "test@correo.com", "123456789", 30, USUARIO_VALIDO, CONTRASENA_VALIDA);
 
         assertNotNull(result);
         assertEquals("Juan", result.getNombre());
         assertEquals("test@correo.com", result.getCorreo());
         assertEquals("123456789", result.getTelefono());
         assertEquals(30, result.getEdad());
+        assertEquals(USUARIO_VALIDO, result.getUsuario());
 
         // Caso 2: Nombre nulo o vacío
         assertThrows(IllegalArgumentException.class, () -> {
-            // **CORREGIDO:** Se pasan los 6 argumentos
-            servicioPaciente.agregarPaciente(null, "correo@dominio.com", "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
+            servicioPaciente.agregarPaciente(null, "correo@dominio.com", "123456789", 25, USUARIO_VALIDO, CONTRASENA_VALIDA);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            // **CORREGIDO:** Se pasan los 6 argumentos
-            servicioPaciente.agregarPaciente(" ", "correo@dominio.com", "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
+            servicioPaciente.agregarPaciente(" ", "correo@dominio.com", "123456789", 25, USUARIO_VALIDO, CONTRASENA_VALIDA);
         });
 
         // Caso 3: Correo nulo o vacío
         assertThrows(IllegalArgumentException.class, () -> {
-            // **CORREGIDO:** Se pasan los 6 argumentos
-            servicioPaciente.agregarPaciente("Juan", null, "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
+            servicioPaciente.agregarPaciente("Juan", null, "123456789", 25, USUARIO_VALIDO, CONTRASENA_VALIDA);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            // **CORREGIDO:** Se pasan los 6 argumentos
-            servicioPaciente.agregarPaciente("Juan", " ", "123456789", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
+            servicioPaciente.agregarPaciente("Juan", " ", "123456789", 25, USUARIO_VALIDO, CONTRASENA_VALIDA);
         });
 
         // Caso 4: Teléfono nulo o vacío
         assertThrows(IllegalArgumentException.class, () -> {
-            // **CORREGIDO:** Se pasan los 6 argumentos
-            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", null, 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
+            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", null, 25, USUARIO_VALIDO, CONTRASENA_VALIDA);
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            // **CORREGIDO:** Se pasan los 6 argumentos
-            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", " ", 25, CONTRASENA_VALIDA, USUARIO_VALIDO);
+            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", " ", 25, USUARIO_VALIDO, CONTRASENA_VALIDA);
         });
 
-        // Caso 5: Correo duplicado
+        // Caso 5: Usuario nulo o vacío
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", "123456789", 25, null, CONTRASENA_VALIDA);
+        });
+
+        // Caso 6: Contraseña nula o vacía
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioPaciente.agregarPaciente("Juan", "correo@dominio.com", "123456789", 25, USUARIO_VALIDO, null);
+        });
+
+        // Caso 7: Correo duplicado
         when(pacienteRepository.findByCorreo("repetido@correo.com")).thenReturn(new Paciente());
         assertThrows(IllegalArgumentException.class, () -> {
-            // **CORREGIDO:** Se pasan los 6 argumentos
-            servicioPaciente.agregarPaciente("Pedro", "repetido@correo.com", "111222333", 40, CONTRASENA_VALIDA, USUARIO_VALIDO);
+            servicioPaciente.agregarPaciente("Pedro", "repetido@correo.com", "111222333", 40, "otroUser", CONTRASENA_VALIDA);
+        });
+
+        // Caso 8: Usuario duplicado
+        // (Configuramos mocks para que pase el correo pero falle el usuario)
+        when(pacienteRepository.findByCorreo("nuevo@correo.com")).thenReturn(null);
+        when(pacienteRepository.findByUsuario("usuarioDuplicado")).thenReturn(new Paciente());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioPaciente.agregarPaciente("Pedro", "nuevo@correo.com", "111222333", 40, "usuarioDuplicado", CONTRASENA_VALIDA);
         });
     }
 
@@ -121,44 +136,39 @@ class ServicioPacienteTest {
 
     @Test
     void testObtenerPacientePorUsuario() {
-        // Valores de prueba
         final String USUARIO_EXISTENTE = "pa_user_test";
         final String USUARIO_NO_EXISTENTE = "usuario_fantasma";
-        
-        // Configuración de un paciente de prueba
+
         Paciente pacienteEsperado = new Paciente();
         pacienteEsperado.setUsuario(USUARIO_EXISTENTE);
         pacienteEsperado.setNombre("Test Nombre");
-        // Establecer otros campos si es necesario para una verificación más completa
-        pacienteEsperado.setCorreo("test@correo.com");
-        pacienteEsperado.setEdad(35);
-        pacienteEsperado.setContrasena(CONTRASENA_VALIDA);
 
         // Caso 1: Usuario existente
-        // Simular que el repositorio encuentra al paciente
         when(pacienteRepository.findByUsuario(USUARIO_EXISTENTE)).thenReturn(pacienteEsperado);
 
         Paciente result = servicioPaciente.obtenerPacientePorUsuario(USUARIO_EXISTENTE);
 
-        // Verificaciones
-        assertNotNull(result, "Debe retornar un Paciente cuando el usuario existe.");
-        assertEquals(USUARIO_EXISTENTE, result.getUsuario(), "El usuario del paciente debe coincidir.");
-        assertEquals("Test Nombre", result.getNombre(), "El nombre del paciente debe ser correcto.");
-        
-        // Verificar que el método del repositorio fue llamado
+        assertNotNull(result);
+        assertEquals(USUARIO_EXISTENTE, result.getUsuario());
         verify(pacienteRepository).findByUsuario(USUARIO_EXISTENTE);
 
-
         // Caso 2: Usuario no existente
-        // Simular que el repositorio no encuentra al paciente (retorna null)
         when(pacienteRepository.findByUsuario(USUARIO_NO_EXISTENTE)).thenReturn(null);
 
         result = servicioPaciente.obtenerPacientePorUsuario(USUARIO_NO_EXISTENTE);
 
-        // Verificaciones
-        assertNull(result, "Debe retornar null cuando el usuario no existe.");
-        
-        // Verificar que el método del repositorio también fue llamado para este caso
+        assertNull(result);
         verify(pacienteRepository).findByUsuario(USUARIO_NO_EXISTENTE);
+    }
+
+    @Test
+    void testActualizarPaciente() {
+        Paciente paciente = new Paciente();
+        paciente.setId(1L);
+        paciente.setNombre("Original");
+
+        servicioPaciente.actualizarPaciente(paciente);
+
+        verify(pacienteRepository).save(paciente);
     }
 }

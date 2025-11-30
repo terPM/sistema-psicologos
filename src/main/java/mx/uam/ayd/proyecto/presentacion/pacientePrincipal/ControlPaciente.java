@@ -5,7 +5,6 @@ import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.reagendarCita.ControlR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Lazy;
-
 import mx.uam.ayd.proyecto.negocio.ServicioAviso;
 import mx.uam.ayd.proyecto.negocio.modelo.Aviso;
 import java.time.LocalDate;
@@ -28,6 +27,7 @@ import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.HistorialPagos.Control
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.perfilPaciente.ControlPerfilPaciente;
 import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.EncuestaSatisfaccion.ControlEncuestaSatisfaccion;
 
+import mx.uam.ayd.proyecto.presentacion.pacientePrincipal.ActualizarInformacion.ControlActualizarInformacion;
 
 @Component
 public class ControlPaciente {
@@ -43,39 +43,41 @@ public class ControlPaciente {
     @Autowired
     private ServicioCita servicioCita;
     @Autowired
-    private ControlHistorialPagos controlHistorialPagos;
+    private ControlHistorialPagos controlHistorialPagos; // De hu-16
     @Autowired
-    private ServicioEncuestaSatisfaccion servicioEncuestaSatisfaccion; 
+    private ServicioEncuestaSatisfaccion servicioEncuestaSatisfaccion;
 
     @Autowired
-    private ControlCrearCita controlCrearCita; 
+    private ControlCrearCita controlCrearCita;
     @Autowired
-    private ControlListarCitas controlListarCitas; 
+    private ControlListarCitas controlListarCitas;
     @Autowired
-    private ControlReagendarCita controlReagendarCita; 
+    private ControlReagendarCita controlReagendarCita;
     @Autowired
-    private ServicioAviso servicioAviso; 
+    private ServicioAviso servicioAviso;
     @Autowired
     private ControlEncuestaSatisfaccion controlEncuestaSatisfaccion;
     @Autowired
     private ControlPerfilPaciente controlPerfilPaciente; // de hu-13
     @Autowired
     private ServicioNotificacion servicioNotificacion; //Hu-03
-    // --- Fin de Campos ---
+    @Autowired
+    private ControlActualizarInformacion controlActualizarInformacion;
 
     private ControlPrincipalCentro controlPrincipal;
+
     private Paciente pacienteSesion;
 
     public void inicia(Paciente paciente, ControlPrincipalCentro controlPrincipal) {
         this.pacienteSesion = paciente;
         this.controlPrincipal = controlPrincipal;
         ventana.setControlador(this);
-        
+
         // NUEVO: Registrarse en el servicio para recibir notificaciones
-        servicioEncuestaSatisfaccion.registrarPacienteListener(this); 
-        
+        servicioEncuestaSatisfaccion.registrarPacienteListener(this);
+
         ventana.muestra();
-        cargarAvisos(); 
+        cargarAvisos();
         verificarEstadoEncuesta();
         verificarNotificaciones();
     }
@@ -109,20 +111,24 @@ public class ControlPaciente {
     }
 
     public void salir() {
-        if (controlPerfilPaciente != null) {
-            controlPerfilPaciente.ocultaVentana();
-        }
+        if (controlPerfilPaciente != null) controlPerfilPaciente.ocultaVentana();
+        if (controlActualizarInformacion != null) controlActualizarInformacion.regresa();
+
         ventana.oculta();
-        
+
         // NUEVO: Desregistrarse del servicio al salir
-        servicioEncuestaSatisfaccion.desregistrarPacienteListener(); 
-        
+        servicioEncuestaSatisfaccion.desregistrarPacienteListener();
+
         this.pacienteSesion = null;
         if (controlPrincipal != null) {
             controlPrincipal.regresaAlLogin();
         } else {
             Platform.exit();
         }
+    }
+    // Método para actualizar la sesión (llamado tras guardar cambios)
+    public void actualizarSesion(Paciente pacienteActualizado) {
+        this.pacienteSesion = pacienteActualizado;
     }
 
     public void iniciarRegistroEmocional() {
@@ -186,15 +192,15 @@ public class ControlPaciente {
 
     // NUEVO MÉTODO: Llamado por el Servicio para actualizar la UI
     /**
-     * Llama al método que verifica el estado actual del servicio y actualiza 
+     * Llama al método que verifica el estado actual del servicio y actualiza
      * la interfaz de usuario.
      */
     public void actualizarEstadoEncuesta() {
         // Como este método es llamado por el Servicio (que no está en el hilo de JavaFX),
         // es crucial asegurar el cambio en la UI usando Platform.runLater
-        Platform.runLater(this::verificarEstadoEncuesta); 
+        Platform.runLater(this::verificarEstadoEncuesta);
     }
-    
+
     private void verificarEstadoEncuesta() {
         boolean estaHabilitada = servicioEncuestaSatisfaccion.isEncuestaHabilitada();
         ventana.setEncuestaHabilitada(estaHabilitada);
@@ -207,19 +213,19 @@ public class ControlPaciente {
      * Abre la ventana de la encuesta.
      * Implementa el callback para deshabilitar el botón al finalizar.
      */
-    public void handleAbrirEncuesta() { 
+    public void handleAbrirEncuesta() {
         if (pacienteSesion != null) {
             Runnable onCompletion = () -> {
                 ventana.setEncuestaHabilitada(false);
             };
-            
-            controlEncuestaSatisfaccion.iniciaEncuesta(pacienteSesion, onCompletion); 
+
+            controlEncuestaSatisfaccion.iniciaEncuesta(pacienteSesion, onCompletion);
         } else {
             System.err.println("Error: No hay paciente en sesión.");
         }
     }
     /**
-     * HU-03: Escenario: Visualización de notificaciones no leídas 
+     * HU-03: Escenario: Visualización de notificaciones no leídas
      * Verifica si existen notificaciones sin leer para activar la burbuja roja.
      */
     public void verificarNotificaciones() {
@@ -227,8 +233,8 @@ public class ControlPaciente {
             try {
                 servicioCita.verificarCitasProximas(pacienteSesion);
                 long cantidadNoLeidas = servicioNotificacion.contarNoLeidasPaciente(pacienteSesion);
-                
-                // Si existe una notificación sin leer, sale la burbuja 
+
+                // Si existe una notificación sin leer, sale la burbuja
                 ventana.setNotificacionActiva(cantidadNoLeidas > 0);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -248,9 +254,16 @@ public class ControlPaciente {
             // 2. Mostrar la lista en la ventana
             ventana.mostrarPanelNotificaciones(notificaciones);
 
-            // 3. Marcar como leídas y desactivar burbuja 
+            // 3. Marcar como leídas y desactivar burbuja
             servicioNotificacion.marcarTodasComoLeidasPaciente(pacienteSesion);
             ventana.setNotificacionActiva(false);
+        }
+    }
+
+    // Este sí recibe el Paciente porque es el controlador nuevo que hicimos
+    public void iniciarActualizarInformacion() {
+        if (pacienteSesion != null) {
+            controlActualizarInformacion.inicia(pacienteSesion, this);
         }
     }
 }

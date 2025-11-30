@@ -131,6 +131,12 @@ public class VentanaPacientePrincipal {
         }
     }
 
+    // NUEVO HANDLER
+    @FXML private void handleActualizarInformacion() { controlador.iniciarActualizarInformacion(); }
+    // --- MÉTODO ELIMINADO ---
+    // Se eliminó @FXML private void handleListaRegistros()
+    // --- FIN DE LA ELIMINACIÓN ---
+
     @FXML
     private void handleCrearCita() {
         controlador.iniciarCrearCita();
