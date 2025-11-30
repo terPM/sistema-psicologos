@@ -56,8 +56,6 @@ public class ControlPaciente {
     @Autowired
     private ServicioAviso servicioAviso; 
     @Autowired
-    private ControlPerfilPaciente controlPerfilPaciente; 
-    @Autowired
     private ControlEncuestaSatisfaccion controlEncuestaSatisfaccion;
     private ControlPerfilPaciente controlPerfilPaciente; // de hu-13
     @Autowired
@@ -217,6 +215,8 @@ public class ControlPaciente {
             controlEncuestaSatisfaccion.iniciaEncuesta(pacienteSesion, onCompletion); 
         } else {
             System.err.println("Error: No hay paciente en sesión.");
+        }
+    }
     /**
      * HU-03: Escenario: Visualización de notificaciones no leídas 
      * Verifica si existen notificaciones sin leer para activar la burbuja roja.

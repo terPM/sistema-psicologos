@@ -169,7 +169,6 @@ public class VentanaPacientePrincipal {
                 btnEncuestaSatisfaccion.setDisable(!habilitada);
         }
     }
-}
    /**
      * HU-03: Cuando da clic en el ícono de campanita 
      * Reemplazamos el Alert simple por la llamada al controlador.
