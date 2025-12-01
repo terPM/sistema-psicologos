@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Comparator; // Importado para ordenar la gráfica
+import java.util.stream.Collectors; // Importado para la lógica de ordenamiento
 
 /**
  * Vista de Reporte de Encuesta.
@@ -34,6 +36,8 @@ public class VentanaReporteEncuesta {
     @FXML private Label tituloGrafica;
     @FXML private BarChart<String, Number> barChartEncuesta;
     @FXML private ListView<String> listaComentarios; 
+    
+    // ... (Métodos setControl, muestra, cerrarVentana, handleVolver no modificados) ...
     
     /**
      * Establece la referencia al controlador de la lógica de negocio.
@@ -54,7 +58,7 @@ public class VentanaReporteEncuesta {
                 stage = new Stage();
                 stage.setTitle("Reporte de Estadísticas de Encuesta");
                 stage.setScene(new Scene(root)); 
-                stage.setResizable(true); // Permito redimensionar si las gráficas son grandes
+                stage.setResizable(true); 
                 stage.initModality(Modality.APPLICATION_MODAL); 
             }
             
@@ -81,7 +85,6 @@ public class VentanaReporteEncuesta {
     
     /**
      * Maneja la acción de los botones P1 a P7 (Opción Múltiple).
-     * Delega la lógica de obtención de datos al Control.
      */
     @FXML
     private void mostrarGrafica(ActionEvent event) {
@@ -94,7 +97,6 @@ public class VentanaReporteEncuesta {
     
     /**
      * Maneja la acción de los botones P8 y P9 (Preguntas Abiertas).
-     * Delega la lógica de obtención de datos al Control.
      */
     @FXML
     private void mostrarComentarios(ActionEvent event) {
@@ -117,8 +119,9 @@ public class VentanaReporteEncuesta {
     
     /**
      * Actualiza la interfaz para mostrar la gráfica de barras con los conteos.
+     * CORRECCIÓN CRÍTICA: La firma del método ahora acepta Map<String, Long>.
      */
-    public void actualizarGrafica(String pregunta, Map<Integer, Long> conteos) {
+    public void actualizarGrafica(String pregunta, Map<String, Long> conteos) {
         listaComentarios.setVisible(false);
         listaComentarios.setManaged(false);
         barChartEncuesta.setVisible(true);
@@ -129,11 +132,28 @@ public class VentanaReporteEncuesta {
         barChartEncuesta.getData().clear();
         
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Frecuencia"); 
+        series.setName("Votos"); 
 
-        conteos.forEach((calificacion, conteo) -> {
-            series.getData().add(new XYChart.Data<>(String.valueOf(calificacion), conteo));
-        });
+        // 1. Crear una lista ordenada de las entradas del mapa para asegurar que la gráfica
+        // muestre las barras en el orden lógico (Malo -> Excelente)
+        List<Map.Entry<String, Long>> listaOrdenada = conteos.entrySet().stream()
+            // Comparator que traduce la etiqueta a su valor numérico (1, 2, 3, 4) para ordenar
+            .sorted(Comparator.comparingInt(entry -> {
+                return switch (entry.getKey()) {
+                    case "Malo" -> 1;
+                    case "Regular" -> 2;
+                    case "Bueno" -> 3;
+                    case "Excelente" -> 4;
+                    default -> 5; // Para cualquier etiqueta desconocida
+                };
+            }))
+            .collect(Collectors.toList());
+
+        // 2. Llenar la serie con las entradas ordenadas
+        for (Map.Entry<String, Long> entry : listaOrdenada) {
+            // entry.getKey() ya es la etiqueta textual (Malo, Regular, Bueno, Excelente)
+            series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
         
         barChartEncuesta.getData().add(series);
     }

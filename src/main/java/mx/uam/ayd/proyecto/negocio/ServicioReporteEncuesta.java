@@ -11,15 +11,30 @@ import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-/**
- * Servicio de Negocio dedicado a la obtención de los datos
- * estadísticos de las Encuestas de Satisfacción para su presentación en el reporte.
- */
 @Service 
 public class ServicioReporteEncuesta { 
 
     @Autowired
     private EncuestaSatisfaccionRepository encuestaSatisfaccionRepository;
+
+    // 1. Mapa estático para eliminar el bloque switch (de la refactorización anterior)
+    private static final Map<String, ToIntFunction<EncuestaSatisfaccion>> GETTER_MAP = Map.of(
+        "Pregunta 1", EncuestaSatisfaccion::getQ1Empatia,
+        "Pregunta 2", EncuestaSatisfaccion::getQ2Confianza,
+        "Pregunta 3", EncuestaSatisfaccion::getQ3Respeto,
+        "Pregunta 4", EncuestaSatisfaccion::getQ4Confidencialidad,
+        "Pregunta 5", EncuestaSatisfaccion::getQ5Herramientas,
+        "Pregunta 6", EncuestaSatisfaccion::getQ6Satisfaccion,
+        "Pregunta 7", EncuestaSatisfaccion::getQ7Recomendacion
+    );
+    
+    // 2. NUEVO: Mapa de traducción de número (clave) a etiqueta (valor)
+    private static final Map<Integer, String> ETIQUETA_MAP = Map.of(
+        1, "Malo",
+        2, "Regular",
+        3, "Bueno",
+        4, "Excelente"
+    );
 
     /**
      * Obtiene todas las encuestas registradas.
@@ -30,31 +45,34 @@ public class ServicioReporteEncuesta {
     }
 
     /**
-     * Calcula el conteo de respuestas (1-4) para una pregunta específica de opción múltiple.
+     * Calcula el conteo de respuestas para una pregunta específica,
+     * devolviendo el resultado mapeado a etiquetas textuales.
      * @param preguntaId El identificador de la pregunta (e.g., "Pregunta 3").
-     * @return Un mapa donde la clave es la calificación (1-4) y el valor es la frecuencia.
+     * @return Un mapa donde la clave es la etiqueta (String: Malo, Regular, etc.) y el valor es la frecuencia (Long).
      */
-    public Map<Integer, Long> obtenerConteoRespuestas(String preguntaId) {
+    public Map<String, Long> obtenerConteoRespuestas(String preguntaId) { // CAMBIAMOS Map<Integer, Long> a Map<String, Long>
         
         List<EncuestaSatisfaccion> encuestas = obtenerTodasLasEncuestas();
-        ToIntFunction<EncuestaSatisfaccion> getter;
+        ToIntFunction<EncuestaSatisfaccion> getter = GETTER_MAP.get(preguntaId);
         
-        switch (preguntaId) {
-            case "Pregunta 1": getter = EncuestaSatisfaccion::getQ1Empatia; break;
-            case "Pregunta 2": getter = EncuestaSatisfaccion::getQ2Confianza; break;
-            case "Pregunta 3": getter = EncuestaSatisfaccion::getQ3Respeto; break;
-            case "Pregunta 4": getter = EncuestaSatisfaccion::getQ4Confidencialidad; break;
-            case "Pregunta 5": getter = EncuestaSatisfaccion::getQ5Herramientas; break;
-            case "Pregunta 6": getter = EncuestaSatisfaccion::getQ6Satisfaccion; break;
-            case "Pregunta 7": getter = EncuestaSatisfaccion::getQ7Recomendacion; break;
-            default: return Map.of();
+        if (getter == null) {
+            return Map.of();
         }
-        return encuestas.stream()
-                .filter(e -> getter.applyAsInt(e) > 0) 
-                .collect(Collectors.groupingBy(
-                    getter::applyAsInt, 
-                    Collectors.counting()
-                ));
+
+        // Paso 1: Agrupamos y contamos por el número (1, 2, 3, 4)
+        Map<Integer, Long> conteoNumerico = encuestas.stream()
+            .filter(e -> getter.applyAsInt(e) > 0) 
+            .collect(Collectors.groupingBy(
+                getter::applyAsInt, 
+                Collectors.counting()
+            ));
+
+        // Paso 2: Transformamos las claves numéricas a etiquetas textuales (String)
+        return conteoNumerico.entrySet().stream()
+            .collect(Collectors.toMap(
+                entry -> ETIQUETA_MAP.getOrDefault(entry.getKey(), "Desconocido"), // Transforma 1 -> Malo, 4 -> Excelente
+                Map.Entry::getValue // Mantiene el conteo
+            ));
     }
     
     /**
@@ -66,17 +84,17 @@ public class ServicioReporteEncuesta {
         
         List<EncuestaSatisfaccion> encuestas = obtenerTodasLasEncuestas();
         
-        if (preguntaId.equals("Pregunta 8")) {
+        if ("Pregunta 8".equals(preguntaId)) {
             return encuestas.stream()
                     .map(EncuestaSatisfaccion::getQ8Mejora)
                     .filter(s -> s != null && !s.trim().isEmpty())
                     .collect(Collectors.toList());
-        } else if (preguntaId.equals("Pregunta 9")) {
+        } else if ("Pregunta 9".equals(preguntaId)) {
             return encuestas.stream()
                     .map(EncuestaSatisfaccion::getQ9Comentarios)
                     .filter(s -> s != null && !s.trim().isEmpty())
                     .collect(Collectors.toList());
         }
-        return List.of("Pregunta no reconocida.");
+        return List.of(); 
     }
 }

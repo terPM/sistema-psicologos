@@ -38,8 +38,10 @@ public class ControlReporteEncuesta {
      * Obtiene y muestra los conteos de respuestas para una pregunta de opción múltiple.
      */
     public void mostrarGrafica(String pregunta) {
-        // El servicio usa la lógica de negocio para obtener los datos
-        Map<Integer, Long> conteos = servicioReporteEncuesta.obtenerConteoRespuestas(pregunta);
+        // CORRECCIÓN APLICADA AQUÍ: Se cambia Map<Integer, Long> a Map<String, Long>
+        Map<String, Long> conteos = servicioReporteEncuesta.obtenerConteoRespuestas(pregunta);
+        
+        // La ventana (VentanaReporteEncuesta) debe ser actualizada para recibir Map<String, Long>
         ventana.actualizarGrafica(pregunta, conteos);
     }
     
