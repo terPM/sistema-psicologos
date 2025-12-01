@@ -3,6 +3,7 @@ package mx.uam.ayd.proyecto.negocio;
 import mx.uam.ayd.proyecto.datos.CitaRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 import mx.uam.ayd.proyecto.negocio.modelo.Paciente;
+import mx.uam.ayd.proyecto.negocio.modelo.Notificacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Psicologo;
 import mx.uam.ayd.proyecto.negocio.modelo.TipoConfirmacionCita;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -29,8 +37,17 @@ public class ServicioCitaTest {
     @Mock // Creamos un simulador del Servicio de Línea de Captura
     private ServicioLineaCaptura servicioLineaCaptura;
 
+    @Mock
+    private ServicioNotificacion servicioNotificacion;
+
     @InjectMocks // Inyectamos los simuladores en el Servicio real que probamos
     private ServicioCita servicioCita;
+
+    @Mock
+    private Paciente pacienteMock;
+
+    @Mock
+    private Cita citaMock;
 
     @Test
     void testListarCitasPorPacienteExitoso() {
@@ -126,5 +143,92 @@ public class ServicioCitaTest {
         assertEquals("Ya existe una cita agendada en esta fecha y hora", excepcion.getMessage());
 
         verify(citaRepository, never()).save(any());
+    }
+
+    /**
+     * Prueba: Verificar citas próximas (dentro de 48 horas).
+     */
+    @Test
+    void testVerificarCitasProximas_DebeNotificar() {
+        // 1. Configurar fecha de cita para MAÑANA (aprox 24 horas, entra en el rango <= 48)
+        LocalDate fechaManana = LocalDate.now().plusDays(1);
+        LocalTime horaCita = LocalTime.of(10, 0); // 10:00 AM
+
+        when(citaMock.getFecha()).thenReturn(fechaManana);
+        when(citaMock.getHora()).thenReturn(horaCita);
+        
+        // Simulamos que el repositorio devuelve esta cita futura
+        List<Cita> listaCitas = Collections.singletonList(citaMock);
+        when(citaRepository.findByPacienteAndFechaCitaAfterAndEstadoCitaNot(
+            eq(pacienteMock), any(LocalDateTime.class), eq(TipoConfirmacionCita.CANCELADA))
+             ).thenReturn(listaCitas);
+
+        // Simulamos que NO existen notificaciones previas (lista vacía)
+        when(servicioNotificacion.obtenerTodasPorPaciente(pacienteMock)).thenReturn(new ArrayList<>());
+
+        // 2. Ejecutar el método
+        servicioCita.verificarCitasProximas(pacienteMock);
+
+        // 3. Verificar que SE LLAMÓ al servicio de notificación
+        // Se espera el mensaje exacto construido en tu lógica
+        String mensajeEsperado = "Recordatorio: Tienes una cita el " + fechaManana + " a las " + horaCita;
+        verify(servicioNotificacion).crearNotificacionPaciente(pacienteMock, mensajeEsperado);
+    }
+
+    /**
+     * Prueba: Cita lejana (más de 48 horas).
+     */
+    @Test
+    void testVerificarCitasProximas_NoDebeNotificarSiFaltaMucho() {
+        // 1. Configurar fecha de cita para dentro de 5 DÍAS (> 48 horas)
+        LocalDate fechaLejana = LocalDate.now().plusDays(5);
+        LocalTime horaCita = LocalTime.of(10, 0);
+
+        when(citaMock.getFecha()).thenReturn(fechaLejana);
+        when(citaMock.getHora()).thenReturn(horaCita);
+
+        List<Cita> listaCitas = Collections.singletonList(citaMock);
+        when(citaRepository.findByPacienteAndFechaCitaAfterAndEstadoCitaNot(
+                eq(pacienteMock), any(LocalDateTime.class), eq(TipoConfirmacionCita.CANCELADA))
+        ).thenReturn(listaCitas);
+
+        // 2. Ejecutar
+        servicioCita.verificarCitasProximas(pacienteMock);
+
+        // 3. Verificar que NUNCA se llamó a crear notificación
+        verify(servicioNotificacion, never()).crearNotificacionPaciente(any(), anyString());
+    }
+
+    /**
+     * Prueba: Evitar duplicados.
+     */
+    @Test
+    void testVerificarCitasProximas_NoDebeDuplicarNotificacion() {
+        // 1. Configurar fecha para MAÑANA (Rango válido)
+        LocalDate fechaManana = LocalDate.now().plusDays(1);
+        LocalTime horaCita = LocalTime.of(15, 30); // 3:30 PM
+
+        when(citaMock.getFecha()).thenReturn(fechaManana);
+        when(citaMock.getHora()).thenReturn(horaCita);
+
+        List<Cita> listaCitas = Collections.singletonList(citaMock);
+        when(citaRepository.findByPacienteAndFechaCitaAfterAndEstadoCitaNot(
+                eq(pacienteMock), any(LocalDateTime.class), eq(TipoConfirmacionCita.CANCELADA))
+        ).thenReturn(listaCitas);
+
+        // 2. AQUI ESTÁ LA CLAVE: Simulamos que YA existe esa notificación en el historial
+        String mensajeGenerado = "Recordatorio: Tienes una cita el " + fechaManana + " a las " + horaCita;
+        
+        Notificacion notificacionExistente = new Notificacion();
+        notificacionExistente.setMensaje(mensajeGenerado); // El mensaje es IDÉNTICO
+        
+        when(servicioNotificacion.obtenerTodasPorPaciente(pacienteMock))
+                .thenReturn(Collections.singletonList(notificacionExistente));
+
+        // 3. Ejecutar
+        servicioCita.verificarCitasProximas(pacienteMock);
+
+        // 4. Verificar que NUNCA se crea una nueva (porque ya existía)
+        verify(servicioNotificacion, never()).crearNotificacionPaciente(any(), anyString());
     }
 }
