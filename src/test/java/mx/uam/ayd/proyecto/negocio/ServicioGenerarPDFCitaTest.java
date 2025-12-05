@@ -30,22 +30,22 @@ public class ServicioGenerarPDFCitaTest {
     private Psicologo psicologo;
     private Cita cita;
 
-    /** Inicialización de datos de prueba antes de cada test */
+    // Inicialización de datos de prueba antes de cada test 
     @BeforeEach
     void setUp() {
         servicio = new ServicioGenerarPDFCita();
-
+        // Sustitución de las entidades por mocks
         paciente = mock(Paciente.class);
         psicologo = mock(Psicologo.class);
         cita = mock(Cita.class);
-
+        // Configuración de los mocks con datos de prueba
         when(paciente.getNombre()).thenReturn("Juan Perez");
         when(paciente.getTelefono()).thenReturn("5551234567");
         when(paciente.getCorreo()).thenReturn("juan@mail.com");
-
+        // Datos del psicólogo
         when(psicologo.getNombre()).thenReturn("Dra. Ana López");
         when(psicologo.getTelefono()).thenReturn("5559876543");
-
+        // Datos de la cita
         when(cita.getMotivo()).thenReturn("Consulta general");
         when(cita.getFechaCita()).thenReturn(LocalDateTime.of(2025, 5, 15, 14, 30));
     }
