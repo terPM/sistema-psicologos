@@ -33,19 +33,14 @@ public class ServicioCitaTest {
 
     @Mock // Creamos un simulador del Repositorio de Citas
     private CitaRepository citaRepository;
-
     @Mock // Creamos un simulador del Servicio de Línea de Captura
     private ServicioLineaCaptura servicioLineaCaptura;
-
     @Mock
     private ServicioNotificacion servicioNotificacion;
-
     @InjectMocks // Inyectamos los simuladores en el Servicio real que probamos
     private ServicioCita servicioCita;
-
     @Mock
     private Paciente pacienteMock;
-
     @Mock
     private Cita citaMock;
 
@@ -216,7 +211,7 @@ public class ServicioCitaTest {
                 eq(pacienteMock), any(LocalDateTime.class), eq(TipoConfirmacionCita.CANCELADA))
         ).thenReturn(listaCitas);
 
-        // 2. AQUI ESTÁ LA CLAVE: Simulamos que YA existe esa notificación en el historial
+        // Simulamos que ya existe esa notificación en el historial
         String mensajeGenerado = "Recordatorio: Tienes una cita el " + fechaManana + " a las " + horaCita;
         
         Notificacion notificacionExistente = new Notificacion();
