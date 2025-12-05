@@ -22,10 +22,8 @@ public class ServicioNotifiacionTest {
 
     @Mock
     private NotificacionRepository notificacionRepository;
-
     @InjectMocks
     private ServicioNotificacion servicioNotificacion;
-
     @Mock
     private Paciente pacienteMock;
 
@@ -114,12 +112,8 @@ public class ServicioNotifiacionTest {
         servicioNotificacion.marcarTodasComoLeidasPaciente(pacienteMock);
 
         // 4. Verificaciones
-        
-        // Verificamos que se cambió el estado a TRUE en los objetos
-        assertTrue(n1.isLeida());
+                assertTrue(n1.isLeida());
         assertTrue(n2.isLeida());
-
-        // Verificamos que se llamó a save() 2 veces (una por cada notificación)
         verify(notificacionRepository, times(2)).save(any(Notificacion.class));
     }
     
