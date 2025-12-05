@@ -22,13 +22,11 @@ public class ServicioEncuestaSatisfaccionTest {
 
     @Mock
     private EncuestaSatisfaccionRepository encuestaSatisfaccionRepository;
-
     @Mock
     private ControlPaciente controlPacienteMock; 
      
     @InjectMocks
     private ServicioEncuestaSatisfaccion servicioEncuestaSatisfaccion; 
-
     private Paciente pacienteTest;
     private EncuestaSatisfaccion encuestaCompleta;
 
@@ -36,7 +34,7 @@ public class ServicioEncuestaSatisfaccionTest {
     void setUp() {
         pacienteTest = new Paciente(); 
         pacienteTest.setUsuario("Juanito123"); 
-        
+
         encuestaCompleta = new EncuestaSatisfaccion();
         encuestaCompleta.setPaciente(pacienteTest); 
         encuestaCompleta.setQ1Empatia(4);
@@ -61,8 +59,7 @@ public class ServicioEncuestaSatisfaccionTest {
             // findAll() no devuelve encuestas para ese paciente
             when(encuestaSatisfaccionRepository.findAll()).thenReturn(Collections.emptyList());
         }
-        
-        // Ejecutamos la lógica de verificación basada en métodos existentes en el servicio
+        // Lógica de verificación basada en métodos existentes en el servicio
         return servicioEncuestaSatisfaccion.obtenerTodasLasEncuestas().stream()
                 .filter(e -> e.getPaciente() != null && e.getPaciente().getUsuario().equals(paciente.getUsuario()))
                 .findFirst()
